@@ -2,3 +2,12 @@ First Commit
 Project will be created by 
 Dmitry Saleny - samyi krutoi chuvak na planety
 Stepan Berendiaev - v psuti spisival u dimasa
+
+$ django-admin --version
+2.2.1
+$ python -V
+Python 3.7.2
+
+
+django-admin startproject doc_filler
+python manage.py startapp doc_filler_app
