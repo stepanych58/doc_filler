@@ -23,16 +23,17 @@ def addClient(request):
 	p_last_name = request.POST['last_name']
 	client = Client(first_name = p_first_name, part_name = p_part_name, last_name = p_last_name)
 	client.save()
-	return render(request, 'clients.html', {'all_clients': ALL_CLIENTS, 'all_docs': ALL_DOCS,
+	return render(request, 'clients.html', {'all_clients': Client.objects.all(), 'all_docs': Document.objects.all(),
 		'test_param':'addClient'});
 
 
 def deleteClient(request, client_id):
 	Client.objects.get(id = client_id).delete();
-	return render(request, 'clients.html', {'all_clients': ALL_CLIENTS,});
 
 def generateDoc(request, client_id, doc_id):
-	res = 'generate button is clicked' + "  s"
+	res = 'generate button is clicked' + 'client_id: ' + str(client_id) + ', doc_id: ' + str(doc_id)
+	f = open("demofile.txt", "a")
+	f.write(res)
 	allClients(request, res);
 
 def clientForm(request, client_id):
@@ -44,6 +45,6 @@ def clientForm(request, client_id):
 	if btn == GENERATE:
 		generateDoc(request, client_id, doc_id)
 		res = 'generate button is clicked' + 'client_id: ' + str(client_id) + ', doc_id: ' + str(doc_id)	
-	return render(request, 'clients.html', {'all_clients': ALL_CLIENTS, 'all_docs': ALL_DOCS,
+	return render(request, 'clients.html', {'all_clients': Client.objects.all(), 'all_docs': Document.objects.all(),
 		 'test_param':res});
 
