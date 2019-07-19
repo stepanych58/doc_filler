@@ -10,6 +10,12 @@ def todoView(request):
 def addTodo(request):
 	new_item = TodoItem(content=request.POST['content'])
 	new_item.save()
+	checked_item = request.POST['chxn']
+	if checked_item is not None:
+		new_item2 = TodoItem(content=checked_item)
+		new_item2.save()
+	
+	
 	return HttpResponseRedirect('/todo/');
 
 def deleteTodo(request, todo_id):

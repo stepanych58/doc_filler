@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from hello import views
 from todo.views import todoView, addTodo, deleteTodo
+from clients.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +25,8 @@ urlpatterns = [
     path('todo/', todoView),
     path('todo/addTodo/', addTodo),
     path('todo/deleteTodo/<int:todo_id>/', deleteTodo),
+    path('clients/', allClients),
+    path('addClient/', addClient),
+    path('deleteClient/<int:client_id>', deleteClient),
+    path('clientForm/<int:client_id>', clientForm)
 ]

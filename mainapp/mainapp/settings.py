@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'hello',
     'doc_filler_app',
     'todo',
+    'clients',
 ]
 
 MIDDLEWARE = [
