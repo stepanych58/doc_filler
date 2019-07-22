@@ -18,7 +18,8 @@
 
 {% endfor %}
 
-
+{% load static %}
+<a href="{% static "demofile.txt" %}">my file</a>
 <!-- <a href="/addClient"> Add Client </a> -->
 <form action="/addClient/" method="POST">{% csrf_token %}
 	<input type="submit" name="sbm" value="Add Client"/>
