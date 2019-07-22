@@ -1,0 +1,7 @@
+<h1>Add new client page</h1>
+<form action="/addClient/" method="POST">{% csrf_token %}
+	<br>Name: <input type="text" name="first_name"  />
+	<br>Patronymic Name: <input type="text" name="part_name" />
+	<br>Last Name: <input type="text" name="last_name" />
+	<br><input type="submit" name="sbm" value="Add">
+</form>

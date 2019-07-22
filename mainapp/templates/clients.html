@@ -1,0 +1,29 @@
+<h1>Clients Page</h1>
+<p>All clients:</p>
+
+
+{% for client in all_clients %}
+ <form action="/clientForm/{{client.id}}" method="POST" style="display:inline;">
+  	{% csrf_token %}
+
+  <br>{{client.first_name}} {{client.part_name}} {{client.last_name}}
+  <input type="submit" name="sbm" value="Delete">
+  <select name="doc_id">
+  {% for doc in all_docs %}
+  	<option value="{{doc.id}}">{{doc.name}}</option>
+  {% endfor %}
+</select>
+  <input type="submit" name="sbm" value="Generete Doc">
+  </form>
+
+{% endfor %}
+
+{% load static %}
+<a href="{% static "demofile.txt" %}">my file</a>
+<!-- <a href="/addClient"> Add Client </a> -->
+<form action="/addClient/" method="POST">{% csrf_token %}
+	<input type="submit" name="sbm" value="Add Client"/>
+</form>
+
+
+<p>test param: {{test_param}}</p>
