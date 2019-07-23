@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import *
+from .main_file_filler import *
+
 # Create your views here.
 
 ALL_CLIENTS = Client.objects.all()
