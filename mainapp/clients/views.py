@@ -4,7 +4,7 @@ from .models import *
 from doc_filler_app.main_file_filler import *
 from .utils import *
 from mainapp.settings import *
-
+from .create_test_data import *
 # Create your views here.
 
 ALL_CLIENTS = Client.objects.all()
@@ -50,4 +50,18 @@ def clientForm(request, client_id):
 		res = 'generate button is clicked' + 'client_id: ' + str(client_id) + ', doc_id: ' + str(doc_id) + ' test_util:' + testUtil('test doc filler param') 	
 	return render(request, 'clients.html', {'all_clients': Client.objects.all(), 'all_docs': Document.objects.all(),
 		 'test_param':res});
+
+def createTestData(request):
+    create_test_data()
+    return render(request, 'clients.html', {'all_clients': Client.objects.all(), 'all_docs': Document.objects.all(),
+		 'test_param':'create test data was clicked'});
+
+def clearData(request):
+    #clear data
+    Client.objects.all().delete()
+    Document.objects.all().delete()
+    return render(request, 'clients.html', {'all_clients': Client.objects.all(), 'all_docs': Document.objects.all(),
+		 'test_param':'create test data was clicked'});
+    
+    
 

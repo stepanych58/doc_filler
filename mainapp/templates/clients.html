@@ -53,16 +53,42 @@
 </table>
 <table id="keywords" cellspacing="0" cellpadding="0">
 <tr>
-  <th><span><form action="/addClient/" method="POST">{% csrf_token %}
-	<input type="submit" name="sbm" value="Add Client"/>
-  </form></span></th>
+  <th>
+    <span>
+	  <form action="/addClient/" method="POST">{% csrf_token %}
+	    <input type="submit" name="sbm" value="Add Client"/>
+      </form>
+	</span>
+  </th>
+</tr>
+
+<tr>
+  <th>
+    <span>
+	  <form action="/createTestData/" method="POST">{% csrf_token %}
+	    <input type="submit" name="sbm" value="Create test data"/>
+      </form>
+	</span>
+  </th>
+</tr>
+<tr>
+  <th>
+    <span>
+	  <form action="/clearData/" method="POST">{% csrf_token %}
+	    <input type="submit" name="sbm" value="Clear data"/>
+      </form>
+	</span>
+  </th>
 </tr>
 
 <tr>
  <th><span> test param: {{test_param}}</span></th>
 </tr>
+
 </table>
+
 </div>
 
 </body>
+
 </html>

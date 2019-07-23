@@ -28,5 +28,7 @@ urlpatterns = [
     path('clients/', allClients),
     path('addClient/', addClient),
     path('deleteClient/<int:client_id>', deleteClient),
-    path('clientForm/<int:client_id>', clientForm)
+    path('clientForm/<int:client_id>', clientForm),
+    path('createTestData/', createTestData),
+	path('clearData/', clearData),
 ]
