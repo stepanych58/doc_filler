@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import *
-from .main_file_filler import *
+from doc_filler_app.main_file_filler import *
+from .utils import *
+from mainapp.settings import *
 
 # Create your views here.
 
@@ -33,10 +35,9 @@ def deleteClient(request, client_id):
 	Client.objects.get(id = client_id).delete();
 
 def generateDoc(request, client_id, doc_id):
-	res = 'generate button is clicked' + 'client_id: ' + str(client_id) + ', doc_id: ' + str(doc_id)
-	f = open("demofile.txt", "a")
-	f.write(res)
-	allClients(request, res);
+	anketa = Document.objects.get(id = doc_id).name
+	writeToPdf('spravka_po_forme_banka.pdf', 'spravka_po_forme_banka_res.pdf')
+	#	writeToPdf(anketa, client_id)
 
 def clientForm(request, client_id):
 	btn = request.POST['sbm']
@@ -46,7 +47,7 @@ def clientForm(request, client_id):
 		res = 'delete button is clicked' + 'client_id: ' + str(client_id) + ', doc_id: ' + str(doc_id)
 	if btn == GENERATE:
 		generateDoc(request, client_id, doc_id)
-		res = 'generate button is clicked' + 'client_id: ' + str(client_id) + ', doc_id: ' + str(doc_id)	
+		res = 'generate button is clicked' + 'client_id: ' + str(client_id) + ', doc_id: ' + str(doc_id) + ' test_util:' + testUtil('test doc filler param') 	
 	return render(request, 'clients.html', {'all_clients': Client.objects.all(), 'all_docs': Document.objects.all(),
 		 'test_param':res});
 

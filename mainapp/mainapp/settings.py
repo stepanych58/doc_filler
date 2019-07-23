@@ -123,10 +123,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "static/genereted_docs"),
-    os.path.join(BASE_DIR, "static/genereted_docs/txt"),
-    os.path.join(BASE_DIR, "static/genereted_docs/pdf"),
-    os.path.join(BASE_DIR, "static/genereted_docs/exel"),
-    os.path.join(BASE_DIR, "static/genereted_docs/doc"),
+    os.path.join(BASE_DIR, "static"),						     #0
+    os.path.join(BASE_DIR, "static\\genereted_docs"),   	     #1
+    os.path.join(BASE_DIR, "static\\genereted_docs\\txt"),       #2
+    os.path.join(BASE_DIR, "static\\genereted_docs\\pdf"),	     #3
+    os.path.join(BASE_DIR, "static\\genereted_docs\\exel"),      #4
+    os.path.join(BASE_DIR, "static\\genereted_docs\\doc"),      #5
+    os.path.join(BASE_DIR, "static\\template_docs"),    	  	#6
+    os.path.join(BASE_DIR, "static\\template_docs\\txt"),		 #7
+    os.path.join(BASE_DIR, "static\\template_docs\\pdf"),		 #8
+    os.path.join(BASE_DIR, "static\\template_docs\\exel"),	     #9
+    os.path.join(BASE_DIR, "static\\template_docs\\doc"),		 #10
+    os.path.join(BASE_DIR, "static\\css"),                      #11
+    os.path.join(BASE_DIR, "static\\js"),                       #12
 ]

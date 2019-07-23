@@ -1,29 +1,68 @@
-<h1>Clients Page</h1>
-<p>All clients:</p>
+<!DOCTYPE html>
+<html>
+<title>Doc filler test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% load staticfiles %}
+    <link href="{% static 'css/clients_table.css' %}" rel="stylesheet" type="text/css" >
+<body>
 
+<h1>Clients Page</h1>
+<h1>All clients:</h1>
+
+ <div id="wrapper">
+<table id="keywords" cellspacing="0" cellpadding="0">
+	
+<thead>	
+<tr>
+  <th><span> Client </span></th>
+  <th><span> Delete button </span></th>
+  <th><span> Document to fill </span></th>
+  <th><span> Generate document button </span></th>
+  <th><span> Links to generated files </span></th>
+</tr>
+</thead>
 
 {% for client in all_clients %}
- <form action="/clientForm/{{client.id}}" method="POST" style="display:inline;">
-  	{% csrf_token %}
-
-  <br>{{client.first_name}} {{client.part_name}} {{client.last_name}}
+ 	<form action="/clientForm/{{client.id}}" method="POST" style="display:inline;">
+ <tr>
+  <td>
+  	{% csrf_token %}{{client.first_name}} {{client.part_name}} {{client.last_name}}
+  </td>
+  <td>
   <input type="submit" name="sbm" value="Delete">
+  </td>
+  <td>
   <select name="doc_id">
   {% for doc in all_docs %}
   	<option value="{{doc.id}}">{{doc.name}}</option>
   {% endfor %}
-</select>
+   </select>
+  </td>
+  <td>
   <input type="submit" name="sbm" value="Generete Doc">
-  </form>
-
-{% endfor %}
-
-{% load static %}
-<a href="{% static "demofile.txt" %}">my file</a>
-<!-- <a href="/addClient"> Add Client </a> -->
-<form action="/addClient/" method="POST">{% csrf_token %}
+  </td>
+  <td> 
+  	<ul>
+   <li><a href=""> test link</a></li>
+   <li><a href=""> test link</a></li>
+    </ul>
+  </td>
+ </tr>
+ </form>
+ {% endfor %}
+</table>
+<table id="keywords" cellspacing="0" cellpadding="0">
+<tr>
+  <th><span><form action="/addClient/" method="POST">{% csrf_token %}
 	<input type="submit" name="sbm" value="Add Client"/>
-</form>
+  </form></span></th>
+</tr>
 
+<tr>
+ <th><span> test param: {{test_param}}</span></th>
+</tr>
+</table>
+</div>
 
-<p>test param: {{test_param}}</p>
+</body>
+</html>
