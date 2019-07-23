@@ -22,11 +22,11 @@
 </tr>
 </thead>
 
-{% for client in all_clients %}
- 	<form action="/clientForm/{{client.id}}" method="POST" style="display:inline;">
+{% for p_client in all_clients %}
+ 	<form action="/clientForm/{{p_client.id}}" method="POST" style="display:inline;">
  <tr>
   <td>
-  	{% csrf_token %}{{client.first_name}} {{client.part_name}} {{client.last_name}}
+  	{% csrf_token %}{{p_client.first_name}} {{p_client.part_name}} {{p_client.last_name}}
   </td>
   <td>
   <input type="submit" name="sbm" value="Delete">
@@ -34,7 +34,7 @@
   <td>
   <select name="doc_id">
   {% for doc in all_docs %}
-  	<option value="{{doc.id}}">{{doc.name}}</option>
+  	<option value="{{doc.id}}"><a href="">{{doc.name}}</a></option>
   {% endfor %}
    </select>
   </td>
@@ -43,8 +43,12 @@
   </td>
   <td> 
   	<ul>
-   <li><a href=""> test link</a></li>
-   <li><a href=""> test link</a></li>
+	{% for client_file in all_clients_files %}
+	  {% if client_file.client.id == p_client.id %}
+	    {% load static %}
+         <li><a href="{% static client_file.file_path %}"> {{client_file.file_name}}</a></li>
+	  {% endif %}
+    {% endfor %}
     </ul>
   </td>
  </tr>

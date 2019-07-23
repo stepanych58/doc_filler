@@ -2,7 +2,7 @@ from PyPDF2 import PdfFileWriter, PdfFileReader
 from PyPDF2.generic import BooleanObject, NameObject, IndirectObject
 from mainapp.settings import *
 import os
-
+from clients.models import *
 #PDF TEMPLATE DIR
 PDF_TEMPLATE_DIR = STATICFILES_DIRS[8]
 #PDF GENERETED RESULT DIR
@@ -22,36 +22,36 @@ def set_need_appearances_writer(writer: PdfFileWriter):
         print('set_need_appearances_writer() catch : ', repr(e))
         return writer
 
-def writeToPdf(in_file_name, out_file_name):
-    #todo if if document.type = pdf file path = then and so on
-#    print('start writeToPdf')
-    path_in_file = os.path.join(PDF_TEMPLATE_DIR, in_file_name)
-    path_out_file = os.path.join(PDF_GENERATED_RESULT_DIR, out_file_name)
-    inpt = open(path_in_file, 'rb')
-    print(inpt)
-    reads = PdfFileReader(inpt)
-    read = reads.getFormTextFields()
-    Page = reads.getPage(0)
-    for i, value in Page.items():
-        read['20'] = '19'
-        read['1'] = 'Arkadfi'
-        read['2'] = 'Аркадий'
-        read['undefined_4'] = 'Олегович'
-        read['undefined_5'] = 'Ничего не делаю'
-        read['undefined_11'] = '9999999999999999999'
-    outpt = open(path_out_file, 'wb')
-    write = PdfFileWriter()
-    set_need_appearances_writer(write)
-    write.addPage(Page)
-    write.updatePageFormFieldValues(Page,read)
-    write.write(outpt)
-    inpt.close()
-    outpt.close()
-#    print('end writeToPdf')
+def writeToPdf(client_id, doc_id):
+	p_client = Client.objects.get(id=client_id)
+	p_doc = Document.objects.get(id=doc_id)
+	clients_file_name = str(p_client.first_name) + str(p_client.last_name) + '_' + str(p_doc.file_name)   #date or time
+	p_file_path = ''
+	if p_doc.file_type == 'pdf':
+	  p_file_path = os.path.join(PDF_GENERATED_RESULT_DIR, clients_file_name)
+	client_file = ClientsFile(client = p_client, file_path = p_file_path)
+	client_file.save()
+	path_in_file = os.path.join(PDF_TEMPLATE_DIR, p_doc.file_name)
+	path_out_file = p_file_path
+	inpt = open(path_in_file, 'rb')
+	reads = PdfFileReader(inpt)
+	read = reads.getFormTextFields()
+	Page = reads.getPage(0)
+	for i, value in Page.items():
+		read['20'] = '19'
+		read['1'] = p_client.last_name
+		read['2'] = p_client.first_name
+		read['undefined_4'] = p_client.part_name
+		read['undefined_5'] = 'Ничего не делаю'
+		read['undefined_11'] = '9999999999999999999'
+	outpt = open(path_out_file, 'wb')
+	write = PdfFileWriter()
+	set_need_appearances_writer(write)
+	write.addPage(Page)
+	write.updatePageFormFieldValues(Page,read)
+	write.write(outpt)
+	inpt.close()
+	outpt.close()
+	#return client_file
 
 
-#example to execute
-#if __name__ == "__main__":
-#   anketa = 'spravka_po_forme_banka.pdf'
-#    out = '2.pdf'
-#    writeToPdf(anketa, out)
