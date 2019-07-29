@@ -5,6 +5,8 @@ from doc_filler_app.main_file_filler import *
 from .utils import *
 from mainapp.settings import *
 from .create_test_data import *
+from django.core.files.storage import FileSystemStorage
+from .forms import UploadFileForm
 # Create your views here.
 
 ALL_CLIENTS = Client.objects.all()
@@ -58,5 +60,21 @@ def clearData(request):
     return render(request, 'clients.html', {'all_clients': Client.objects.all(), 'all_docs': Document.objects.all(),
 		 'test_param':'create test data was clicked', 'all_clients_files':ClientsFile.objects.all(),});
     
+def uploadTemplate(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+        	print(form)
+        # = request.FILES.get('template')
+        #uploaded_file = request.POST.get('template')
+        print( 'uploaded_file')
+        #print( uploaded_file)
+        print( form)
+        print('req file:')
+        print(request.FILES)
+        #fs = FileSystemStorage()
+#        fs.save('22', uploaded_file)
+    return render(request, 'clients.html', {'all_clients': Client.objects.all(), 'all_docs': Document.objects.all(),
+		 'test_param':'uploadfiles was clicked', 'all_clients_files':ClientsFile.objects.all(),});
     
 

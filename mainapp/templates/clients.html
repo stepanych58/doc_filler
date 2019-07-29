@@ -64,6 +64,17 @@
       </form>
 	</span>
   </th>
+
+  <th>
+    <span>
+    <form action="/uploadTemplate/" method="POST" enctype="multipart/form-data">{% csrf_token %}
+      <input type="file" name="tmpl">
+      <input type="submit" name="sbm" value="Uplouad Template"/>
+      </form>
+  </span>
+  </th>
+
+
 </tr>
 
 <tr>

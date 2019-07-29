@@ -18,6 +18,8 @@ from django.urls import path
 from hello import views
 from todo.views import todoView, addTodo, deleteTodo
 from clients.views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +33,8 @@ urlpatterns = [
     path('clientForm/<int:client_id>', clientForm),
     path('createTestData/', createTestData),
 	path('clearData/', clearData),
+    path('uploadTemplate/', uploadTemplate),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

@@ -137,3 +137,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static\\css"),                      #11
     os.path.join(BASE_DIR, "static\\js"),                       #12
 ]
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media');
+MEDIA_URL = '/media/';
