@@ -4,7 +4,6 @@ from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
 from mainapp.settings import *
 
-from mainapp.doc_filler_app.main_file_filler import writeToPdf
 from .create_test_data import *
 
 # Create your views here.
@@ -17,8 +16,11 @@ GENERATE = 'Generete Doc'
 
 
 def allClients(request, test_param="tp"):
-	return render(request, 'clients.html', {'all_clients': Client.objects.all(), 'all_docs': Document.objects.all(),
-		'test_param':test_param, 'all_clients_files':ClientsFile.objects.all(),});
+	return render(request, 'clients.html',
+				  {'all_clients': Client.objects.all(),
+				   'all_docs': Document.objects.all(),
+				   'test_param':test_param,
+				   'all_clients_files':ClientsFile.objects.all(),});
 
 def addClient(request):
 	sbm = request.POST['sbm']
@@ -54,6 +56,7 @@ def clearData(request):
     return HttpResponseRedirect('/clients/');
 
 def uploadTemplate(request):
+	#add logic to save template in certain directory
     if request.method == 'POST':
         uploaded_file = request.FILES['template']
         fs = FileSystemStorage()
