@@ -139,8 +139,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static\\js"),                       #12
 ]
 
-PDF_TEMPL_DIR = STATICFILES_DIRS[7]
-TXT_TEMPL_DIR = STATICFILES_DIRS[8]
+TXT_TEMPL_DIR = STATICFILES_DIRS[7]
+PDF_TEMPL_DIR = STATICFILES_DIRS[8]
 EXEL_TEMPL_DIR = STATICFILES_DIRS[9]
 DOC_TEMPL_DIR = STATICFILES_DIRS[10]
 
@@ -149,6 +149,12 @@ DOC_EXT = '.doc'
 DOCX_EXT = '.docx'
 EXEL_EXT = '.xls'
 TXT_EXT = '.txt'
+
+PDF = 'pdf'
+DOC = 'doc'
+DOCX = 'docx'
+EXEL = 'xls'
+TXT = 'txt'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media');
 MEDIA_URL = '/media/';

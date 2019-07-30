@@ -64,15 +64,21 @@ def uploadTemplate(request):
 		uploaded_file = request.FILES['template']
 		file_name = os.path.splitext(uploaded_file.name)[0]
 		ext = os.path.splitext(uploaded_file.name)[1]
+		loc, type = None, None
 		if ext == PDF_EXT:
-			FileSystemStorage(location = PDF_TEMPL_DIR).save(file_name, uploaded_file)
+			loc, type, res_mes = PDF_TEMPL_DIR, PDF, 'PDF File uploaded';
 		elif ext == DOC_EXT:
-			FileSystemStorage(location = DOC_TEMPL_DIR).save(file_name, uploaded_file)
+			loc, type, res_mes = DOC_TEMPL_DIR, DOC, 'DOC File uploaded';
 		elif ext == TXT_EXT:
-			FileSystemStorage(location = TXT_TEMPL_DIR).save(file_name, uploaded_file)
+			loc, type, res_mes = TXT_TEMPL_DIR, TXT, 'TXT File uploaded';
 		elif ext == EXEL_EXT:
-			FileSystemStorage(location = EXEL_TEMPL_DIR).save(file_name, uploaded_file)
-		else: view_params['test_param'] = 'No file extentions!'
+			loc, type, res_mes = EXEL_TEMPL_DIR, EXEL, 'Exel File uploaded';
+		else:
+			view_params['test_param'] = 'No file extentions!'
+			return HttpResponseRedirect('/clients/');
+		view_params['test_param'] = res_mes
+		FileSystemStorage(location=loc).save(file_name, uploaded_file)
+		Document(file_name, file_name, type)
 	return HttpResponseRedirect('/clients/');
 
 
