@@ -1,12 +1,12 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from .models import *
-from doc_filler_app.main_file_filler import *
-from .utils import *
-from mainapp.settings import *
-from .create_test_data import *
 from django.core.files.storage import FileSystemStorage
-from .forms import UploadFileForm
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from doc_filler_app.main_file_filler import *
+from mainapp.settings import *
+
+from mainapp.doc_filler_app.main_file_filler import writeToPdf
+from .create_test_data import *
+
 # Create your views here.
 
 #ALL_CLIENTS = Client.objects.all()
@@ -34,7 +34,6 @@ def addClient(request):
 
 def deleteClient(request, client_id):
 	Client.objects.get(id = client_id).delete();
-	
 
 def clientForm(request, client_id):
 	btn = request.POST['sbm']
@@ -50,7 +49,6 @@ def createTestData(request):
     return HttpResponseRedirect('/clients/');
 
 def clearData(request):
-    #clear data
     Client.objects.all().delete()
     Document.objects.all().delete()
     return HttpResponseRedirect('/clients/');
@@ -58,10 +56,6 @@ def clearData(request):
 def uploadTemplate(request):
     if request.method == 'POST':
         uploaded_file = request.FILES['template']
-        print( 'uploaded_file')
-        print( uploaded_file.name )
-        print( uploaded_file.size )
-        print(request.FILES)
         fs = FileSystemStorage()
         fs.save(uploaded_file.name, uploaded_file)
     return HttpResponseRedirect('/clients/');
