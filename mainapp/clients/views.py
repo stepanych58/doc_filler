@@ -24,6 +24,7 @@ def allClients(request, test_param="tp"):
 	view_params['all_docs'] = Document.objects.all()
 	view_params['all_clients_files'] = ClientsFile.objects.all()
 	view_params['p_table'] = 'clients'
+	view_params['page_title'] = 'Clients page'
 	return render(request, 'index.html', view_params);
 
 def allTemplates(request):
