@@ -3,8 +3,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
 from mainapp.settings import *
-
-from .create_test_data import *
+import os
+from .utils import *
 
 # Create your views here.
 
@@ -14,13 +14,16 @@ from .create_test_data import *
 DELETE = 'Delete'
 GENERATE = 'Generete Doc'
 
+view_params = {'all_clients': Client.objects.all(),
+			   'all_docs': Document.objects.all(),
+			   'test_param':'tp',
+			   'all_clients_files':ClientsFile.objects.all(),}
 
 def allClients(request, test_param="tp"):
-	return render(request, 'clients.html',
-				  {'all_clients': Client.objects.all(),
-				   'all_docs': Document.objects.all(),
-				   'test_param':test_param,
-				   'all_clients_files':ClientsFile.objects.all(),});
+	view_params['all_clients'] = Client.objects.all()
+	view_params['all_docs'] = Document.objects.all()
+	view_params['all_clients_files'] = ClientsFile.objects.all()
+	return render(request, 'clients.html', view_params);
 
 def addClient(request):
 	sbm = request.POST['sbm']
@@ -57,10 +60,19 @@ def clearData(request):
 
 def uploadTemplate(request):
 	#add logic to save template in certain directory https://www.programcreek.com/python/example/59557/django.core.files.storage.FileSystemStorage
-    if request.method == 'POST':
-        uploaded_file = request.FILES['template']
-        fs = FileSystemStorage()
-        fs.save(uploaded_file.name, uploaded_file)
-    return HttpResponseRedirect('/clients/');
+	if request.method == 'POST':
+		uploaded_file = request.FILES['template']
+		file_name = os.path.splitext(uploaded_file.name)[0]
+		ext = os.path.splitext(uploaded_file.name)[1]
+		if ext == PDF_EXT:
+			FileSystemStorage(location = PDF_TEMPL_DIR).save(file_name, uploaded_file)
+		elif ext == DOC_EXT:
+			FileSystemStorage(location = DOC_TEMPL_DIR).save(file_name, uploaded_file)
+		elif ext == TXT_EXT:
+			FileSystemStorage(location = TXT_TEMPL_DIR).save(file_name, uploaded_file)
+		elif ext == EXEL_EXT:
+			FileSystemStorage(location = EXEL_TEMPL_DIR).save(file_name, uploaded_file)
+		else: view_params['test_param'] = 'No file extentions!'
+	return HttpResponseRedirect('/clients/');
 
 

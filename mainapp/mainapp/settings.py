@@ -122,6 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),						     #0
     os.path.join(BASE_DIR, "static\\genereted_docs"),   	     #1
@@ -138,6 +139,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static\\js"),                       #12
 ]
 
+PDF_TEMPL_DIR = STATICFILES_DIRS[7]
+TXT_TEMPL_DIR = STATICFILES_DIRS[8]
+EXEL_TEMPL_DIR = STATICFILES_DIRS[9]
+DOC_TEMPL_DIR = STATICFILES_DIRS[10]
+
+PDF_EXT = '.pdf'
+DOC_EXT = '.doc'
+DOCX_EXT = '.docx'
+EXEL_EXT = '.xls'
+TXT_EXT = '.txt'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media');
 MEDIA_URL = '/media/';

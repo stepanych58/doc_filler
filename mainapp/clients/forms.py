@@ -1,6 +1,6 @@
 from django import forms
 
 
-class UploadFileForm(forms.Form):
-    title = forms.CharField(max_length=50)
-    file = forms.FileField()
+class UploadTemplateForm(forms.Form):
+    #title = forms.CharField(max_length=50, label = 'Template Name')
+    template = forms.FileField(label = 'Choose template')
