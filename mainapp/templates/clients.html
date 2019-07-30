@@ -1,18 +1,6 @@
-<!DOCTYPE html>
-<html>
-<title>Doc filler test</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-{% load staticfiles %}
-    <link href="{% static 'css/clients_table.css' %}" rel="stylesheet" type="text/css" >
-<body>
-
-<h1>Clients Page</h1>
-<h1>All clients:</h1>
-
- <div id="wrapper">
 <table id="keywords" cellspacing="0" cellpadding="0">
-	
-<thead>	
+
+<thead>
 <tr>
   <th><span> Client </span></th>
   <th><span> Delete button </span></th>
@@ -24,6 +12,7 @@
 
 {% for p_client in all_clients %}
  	<form action="/clientForm/{{p_client.id}}" method="POST" style="display:inline;">
+    <input type="hidden" name="page" value="clients">
  <tr>
   <td>
   	{% csrf_token %}{{p_client.first_name}} {{p_client.part_name}} {{p_client.last_name}}
@@ -41,7 +30,7 @@
   <td>
   <input type="submit" name="sbm" value="Generete Doc">
   </td>
-  <td> 
+  <td>
   	<ul>
 	{% for client_file in all_clients_files %}
 	  {% if client_file.client.id == p_client.id %}
@@ -55,55 +44,3 @@
  </form>
  {% endfor %}
 </table>
-<table id="keywords" cellspacing="0" cellpadding="0">
-<tr>
-  <th>
-    <span>
-	  <form action="/addClient/" method="POST">{% csrf_token %}
-	    <input type="submit" name="sbm" value="Add Client"/>
-      </form>
-	</span>
-  </th>
-
-  <th>
-    <span>
-    <form action="/uploadTemplate/" method="POST" enctype="multipart/form-data">{% csrf_token %}
-      <input type="file" name="template">
-      <input type="submit" name="sbm" value="Uplouad Template"/>
-      </form>
-  </span>
-  </th>
-
-
-</tr>
-
-<tr>
-  <th>
-    <span>
-	  <form action="/createTestData/" method="POST">{% csrf_token %}
-	    <input type="submit" name="sbm" value="Create test data"/>
-      </form>
-	</span>
-  </th>
-</tr>
-<tr>
-  <th>
-    <span>
-	  <form action="/clearData/" method="POST">{% csrf_token %}
-	    <input type="submit" name="sbm" value="Clear data"/>
-      </form>
-	</span>
-  </th>
-</tr>
-
-<tr>
- <th><span> test param: {{test_param}}</span></th>
-</tr>
-
-</table>
-
-</div>
-
-</body>
-
-</html>

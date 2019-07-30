@@ -34,6 +34,7 @@ urlpatterns = [
     path('createTestData/', createTestData),
 	path('clearData/', clearData),
     path('uploadTemplate/', uploadTemplate),
+    path('templates/', allTemplates),
 ]
 
 #if settings.DEBUG:

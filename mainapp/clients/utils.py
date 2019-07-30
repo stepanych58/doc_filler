@@ -15,11 +15,11 @@ def create_clients():
 	Client(first_name="Антон", part_name="Владимирович", last_name="Кузнецов").save()
 
 def create_documents():
-	Document(name="Credit", file_name='', file_type='pdf').save()
-	Document(name="Ipoteka", file_name='', file_type='pdf').save()
+	# Document(name="Credit", file_name='', file_type='pdf').save()
+	# Document(name="Ipoteka", file_name='', file_type='pdf').save()
 	Document(name="Справка по форме банка (сбер)", file_name='spravka_po_forme_banka.pdf', file_type='pdf').save()
-	Document(name="Spravka1", file_name='', file_type='pdf').save()
-	Document(name="Spravka3", file_name='', file_type='pdf').save()
-	Document(name="Spravka4", file_name='', file_type='pdf').save()
-	Document(name="Spravka5", file_name='', file_type='pdf').save()
+	# Document(name="Spravka1", file_name='', file_type='pdf').save()
+	# Document(name="Spravka3", file_name='', file_type='pdf').save()
+	# Document(name="Spravka4", file_name='', file_type='pdf').save()
+	# Document(name="Spravka5", file_name='', file_type='pdf').save()
 

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<title>Doc filler test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% load staticfiles %}
+    <link href="{% static 'css/clients_table.css' %}" rel="stylesheet" type="text/css" >
+<body>
+
+<h1>{{page_title}}</h1>
+ <div id="wrapper">
+     {% if p_table == 'clients' %}
+        {% include 'clients.html' %}
+     {% endif %}
+     {% if p_table == 'templates' %}
+        {% include 'templates.html' %}
+     {% endif %}
+{% include 'clients_button.html' %}
+</div>
+
+</body>
+
+</html>

@@ -6,8 +6,6 @@ from mainapp.settings import *
 import os
 from .utils import *
 
-# Create your views here.
-
 #ALL_CLIENTS = Client.objects.all()
 #ALL_DOCS = Document.objects.all()
 
@@ -15,15 +13,26 @@ DELETE = 'Delete'
 GENERATE = 'Generete Doc'
 
 view_params = {'all_clients': Client.objects.all(),
+			   'page_title': 'Clients page',
 			   'all_docs': Document.objects.all(),
 			   'test_param':'tp',
+			   'p_table' : 'clients',
 			   'all_clients_files':ClientsFile.objects.all(),}
 
 def allClients(request, test_param="tp"):
 	view_params['all_clients'] = Client.objects.all()
 	view_params['all_docs'] = Document.objects.all()
 	view_params['all_clients_files'] = ClientsFile.objects.all()
-	return render(request, 'clients.html', view_params);
+	view_params['p_table'] = 'clients'
+	return render(request, 'index.html', view_params);
+
+def allTemplates(request):
+	view_params['all_clients'] = Client.objects.all()
+	view_params['all_docs'] = Document.objects.all()
+	view_params['all_clients_files'] = ClientsFile.objects.all()
+	view_params['p_table'] = 'templates'
+	view_params['page_title'] = 'Templates page'
+	return render(request, 'index.html', view_params);
 
 def addClient(request):
 	sbm = request.POST['sbm']
@@ -37,14 +46,20 @@ def addClient(request):
 	return HttpResponseRedirect('/clients/');
 
 
-def deleteClient(request, client_id):
+def deleteClient(client_id):
 	Client.objects.get(id = client_id).delete();
+
+def deleteTemplate(template_id):
+	Document.objects.get(id = template_id).delete();
 
 def clientForm(request, client_id):
 	btn = request.POST['sbm']
-	doc_id = request.POST['doc_id']
-	if btn == DELETE:
-		deleteClient(request, client_id)
+	page = request.POST['page']
+	doc_id = request.POST.get('doc_id')
+	if btn == DELETE and page == 'clients':
+		deleteClient(client_id)
+	if btn == DELETE and page == 'templates':
+		deleteTemplate(client_id)
 	if btn == GENERATE:
 		writeToPdf(client_id, doc_id)
 	return HttpResponseRedirect('/clients/');
@@ -62,6 +77,7 @@ def uploadTemplate(request):
 	#add logic to save template in certain directory https://www.programcreek.com/python/example/59557/django.core.files.storage.FileSystemStorage
 	if request.method == 'POST':
 		uploaded_file = request.FILES['template']
+		tmp_name = request.POST['tmp_name']
 		file_name = os.path.splitext(uploaded_file.name)[0]
 		ext = os.path.splitext(uploaded_file.name)[1]
 		loc, type = None, None
@@ -78,7 +94,7 @@ def uploadTemplate(request):
 			return HttpResponseRedirect('/clients/');
 		view_params['test_param'] = res_mes
 		FileSystemStorage(location=loc).save(file_name, uploaded_file)
-		Document(file_name, file_name, type)
+		Document(name=tmp_name, file_name=file_name, file_type=type).save()
 	return HttpResponseRedirect('/clients/');
 
 
