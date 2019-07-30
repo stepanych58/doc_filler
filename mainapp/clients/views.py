@@ -56,7 +56,7 @@ def clearData(request):
     return HttpResponseRedirect('/clients/');
 
 def uploadTemplate(request):
-	#add logic to save template in certain directory
+	#add logic to save template in certain directory https://www.programcreek.com/python/example/59557/django.core.files.storage.FileSystemStorage
     if request.method == 'POST':
         uploaded_file = request.FILES['template']
         fs = FileSystemStorage()
