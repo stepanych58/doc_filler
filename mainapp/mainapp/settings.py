@@ -137,6 +137,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static\\template_docs\\doc"),		 #10
     os.path.join(BASE_DIR, "static\\css"),                      #11
     os.path.join(BASE_DIR, "static\\js"),                       #12
+    os.path.join(BASE_DIR, "static\\img"),                       #13
 ]
 
 TXT_TEMPL_DIR = STATICFILES_DIRS[7]
