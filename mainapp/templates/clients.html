@@ -24,7 +24,7 @@
 {#                    <button class="btn" name="sbm" value="Delete"><i class="fa fa-close"></i></button>#}
                 </td>
                 <td>
-                    <select name="doc_id">
+                    <select name="doc_id" multiple>
                         {% for doc in all_docs %}
                             <option value="{{ doc.id }}"><a href="">{{ doc.name }}</a></option>
                         {% endfor %}
