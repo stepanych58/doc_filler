@@ -5,6 +5,7 @@ from doc_filler_app.main_file_filler import *
 from mainapp.settings import *
 import os
 from .utils import *
+from .forms import *
 
 #ALL_CLIENTS = Client.objects.all()
 #ALL_DOCS = Document.objects.all()
@@ -97,5 +98,8 @@ def uploadTemplate(request):
 		FileSystemStorage(location=loc).save(file_name, uploaded_file)
 		Document(name=tmp_name, file_name=file_name, file_type=type).save()
 	return HttpResponseRedirect('/clients/');
+
+def testPage(request):
+	return render(request, 'test_page.html', {'client_form': ClientForm()})
 
 
