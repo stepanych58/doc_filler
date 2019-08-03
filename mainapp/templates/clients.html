@@ -2,8 +2,9 @@
 
     <thead>
     <tr>
-        <th><span> Client </span></th>
-        <th><span> Delete button </span></th>
+        <th></th>
+        <th ><span> Client </span></th>
+        <th style="width: 100px"><span>  </span></th>
         <th><span> Document to fill </span></th>
         <th><span> Generate document button </span></th>
         <th><span> Links to generated files </span></th>
@@ -13,16 +14,28 @@
     {% for p_client in all_clients %}
         <form action="/clientForm/{{ p_client.id }}" method="POST" style="display:inline;">
             <input type="hidden" name="page" value="clients">
+
             <tr>
-                <td>
-                    {% csrf_token %}{{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
-                </td>
-                <td>
-                    {#                    <input type="submit" name="sbm" value="Delete">#}
-                    <button class="btn" name="sbm" value="Delete"><i class="fa fa-close"></i></button>
-                    <button class="btn" name="sbm" value="Edit"><i class="fa fa-edit"></i></button>
-{#                    <button class="btn" name="sbm" value="Delete"><i class="fa fa-close"></i></button>#}
-                </td>
+                <div >
+                    <td>
+                        {% csrf_token %}
+                        <input type="checkbox" name="cl_checked" value="{{ p_client.id }}">
+                    </td>
+                    <td>
+
+                        <a href="/clientInfo/{{ p_client.id }}">
+                            {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
+                        </a>
+                    </td>
+                    <td style="display:inline;">
+
+                        {#                    <input type="submit" name="sbm" value="Delete">#}
+                        <button class="btn" name="sbm" value="Delete"><i class="fa fa-close"></i></button>
+                        <button class="btn" name="sbm" value="Edit"><i class="fa fa-edit"></i></button>
+                        {#                    <button class="btn" name="sbm" value="Delete"><i class="fa fa-close"></i></button>#}
+
+                    </td>
+                </div>
                 <td>
                     <select name="doc_id" multiple>
                         {% for doc in all_docs %}
@@ -43,6 +56,8 @@
                         {% endfor %}
                     </ul>
                 </td>
+            </tr>
+            <tr>
             </tr>
         </form>
     {% endfor %}

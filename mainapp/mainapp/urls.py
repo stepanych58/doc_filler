@@ -30,6 +30,7 @@ urlpatterns = [
     path('uploadTemplate/', uploadTemplate),
     path('templates/', allTemplates),
     path('test_page/', testPage),
+    path('clientInfo/<int:client_id>', clientInfo),
 ]
 
 #if settings.DEBUG:

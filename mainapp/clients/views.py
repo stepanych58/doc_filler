@@ -6,6 +6,7 @@ from mainapp.settings import *
 import os
 from .utils import *
 from .forms import *
+from django.template import Context, Template
 
 #ALL_CLIENTS = Client.objects.all()
 #ALL_DOCS = Document.objects.all()
@@ -47,6 +48,8 @@ def addClient(request):
 	client.save()
 	return HttpResponseRedirect('/clients/');
 
+def clientInfo(request, client_id):
+	return render(request, 'client.html', {'client': Client.objects.get(id = client_id)})
 
 def deleteClient(client_id):
 	Client.objects.get(id = client_id).delete();
@@ -58,6 +61,7 @@ def clientForm(request, client_id):
 	btn = request.POST['sbm']
 	page = request.POST['page']
 	doc_id = request.POST.get('doc_id')
+	print(request.POST)
 	if btn == DELETE and page == 'clients':
 		deleteClient(client_id)
 	if btn == DELETE and page == 'templates':
@@ -100,6 +104,21 @@ def uploadTemplate(request):
 	return HttpResponseRedirect('/clients/');
 
 def testPage(request):
-	return render(request, 'test_page.html', {'client_form': ClientForm()})
+	page_text_param = None
+	userlistform = UserlistForm()
+	clientForm = ClientForm()
+	userlistform.fields['users'].choices = [(x.id, x) for x in Client.objects.all()]
+	check = None
+	client_row =None
+	context = None
+	if request.method == 'POST':
+		page_text_param = request.POST.get('users')
+		client_row = Template('<a href={{ client_link }}> {{ client_value }} </a>')
+		context = Context({'client_link': '/clients/',
+						   'client_value': 'Дмитрий Алексеевич Саленый'})
+		print(page_text_param)
+		print(check)
+	return render(request, 'test_page.html', {'client_form': clientForm,
+											  'page_text_param': '',})
 
 
