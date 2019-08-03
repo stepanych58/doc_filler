@@ -1,6 +1,7 @@
+# from django.contrib.postgres.fields import JSONField
 from django.db import models
 from mainapp.settings import *
-
+import jsonfield
 #PDF TEMPLATE DIR
 PDF_TEMPLATE_DIR = STATICFILES_DIRS[8]
 #PDF GENERETED RESULT DIR
@@ -25,4 +26,7 @@ class ClientsFile(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     file_name = models.CharField(max_length=500, default = "clients file name")
     file_path = models.CharField(max_length=1000, default = "/")
-# Create your models here.
+
+class Passport(models.Model):
+	client = models.ForeignKey(Client, on_delete = models.CASCADE)
+	info = jsonfield.JSONField()

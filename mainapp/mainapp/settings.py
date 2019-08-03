@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'doc_filler_app',
     'clients',
+    'psycopg2',
+    'jsonfield',
+#    'json_field',
 ]
 
 MIDDLEWARE = [

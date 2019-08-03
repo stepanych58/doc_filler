@@ -10,7 +10,11 @@ Python 3.7.2
 
 #to work with pdf files
 pip install pypdf2 
+Install from PyPI:
 
+pip install django-json-field
+pip install python-dateutil six
+pip install  psycopg2
 
 django-admin startproject doc_filler
 python manage.py startapp doc_filler_app
