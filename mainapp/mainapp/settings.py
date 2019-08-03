@@ -137,21 +137,25 @@ TEMPLATES = [{
     },
 }]
 
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+GENERETED_DOCS_DIR = os.path.join(STATIC_DIR, 'genereted_docs')
+TEMPLATES_DIR = os.path.join(STATIC_DIR, 'template_docs')
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),						     #0
-    os.path.join(BASE_DIR, "static\\genereted_docs"),   	     #1
-    os.path.join(BASE_DIR, "static\\genereted_docs\\txt"),       #2
-    os.path.join(BASE_DIR, "static\\genereted_docs\\pdf"),	     #3
-    os.path.join(BASE_DIR, "static\\genereted_docs\\exel"),      #4
-    os.path.join(BASE_DIR, "static\\genereted_docs\\doc"),      #5
-    os.path.join(BASE_DIR, "static\\template_docs"),    	  	#6
-    os.path.join(BASE_DIR, "static\\template_docs\\txt"),		 #7
-    os.path.join(BASE_DIR, "static\\template_docs\\pdf"),		 #8
-    os.path.join(BASE_DIR, "static\\template_docs\\exel"),	     #9
-    os.path.join(BASE_DIR, "static\\template_docs\\doc"),		 #10
-    os.path.join(BASE_DIR, "static\\css"),                      #11
-    os.path.join(BASE_DIR, "static\\js"),                       #12
-    os.path.join(BASE_DIR, "static\\img"),                       #13
+    STATIC_DIR,						     #0
+    GENERETED_DOCS_DIR,   	     #1
+    os.path.join(GENERETED_DOCS_DIR, 'txt'),       #2
+    os.path.join(GENERETED_DOCS_DIR, 'pdf'),	     #3
+    os.path.join(GENERETED_DOCS_DIR, 'exel'),      #4
+    os.path.join(GENERETED_DOCS_DIR, 'doc'),       #5
+    TEMPLATES_DIR,    	  	 #6
+    os.path.join(TEMPLATES_DIR, 'txt'),		 #7
+    os.path.join(TEMPLATES_DIR, 'pdf'),		 #8
+    os.path.join(TEMPLATES_DIR, 'exel'),	     #9
+    os.path.join(TEMPLATES_DIR, 'doc'),		 #10
+    os.path.join(TEMPLATES_DIR, 'css'),                       #11
+    os.path.join(STATIC_DIR, 'js'),                        #12
+    os.path.join(STATIC_DIR, 'img'),                       #13
 ]
 
 TXT_TEMPL_DIR = STATICFILES_DIRS[7]
