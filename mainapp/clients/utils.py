@@ -29,8 +29,11 @@ def create_clients():
 		'пол':'муж.',
 		'Дата рождения':'23.07.1999',
 		'Место рождения':'г. Саратов Самарская обл.'
-	}
-			 ).save()
+	}).save()
+	SNILS(client = client, info={
+		'документ':'Cнилс',
+		'номер': '123-123-123 11',
+	}).save()
 	client = Client(first_name="Ирина", part_name="Генадьевна", last_name="Иванова")
 	if not is_exist(client):
 		client.save()

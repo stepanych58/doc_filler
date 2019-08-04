@@ -40,7 +40,10 @@ def allTemplates(request):
 def addClient(request):
 	sbm = request.POST['sbm']
 	if sbm == 'Add Client':
-		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),})
+		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
+												  'passport_f':PassportForm(),
+												  'snils_f':SNILSForm(),
+												  })
 	p_first_name = request.POST['first_name']
 	p_part_name = request.POST['part_name']
 	p_last_name = request.POST['last_name']

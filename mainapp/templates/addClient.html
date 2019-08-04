@@ -1,7 +1,11 @@
-<h1>Add new client page</h1>
+<h1>Добавить клиента:</h1>
 <form action="/addClient/" method="POST">{% csrf_token %}
-	<br>Name: <input type="text" name="first_name"  />
-	<br>Patronymic Name: <input type="text" name="part_name" />
-	<br>Last Name: <input type="text" name="last_name" />
+	<br>Имя: <input type="text" name="first_name"  />
+	<br>Отчество: <input type="text" name="part_name" />
+	<br>Фамилия: <input type="text" name="last_name" />
+    <p>Паспорт</p>
+    {{ passport_f.as_p }}
+    <p>СНИЛС</p>
+    {{ snils_f.as_p }}
 	<br><input type="submit" name="sbm" value="Add">
 </form>

@@ -12,6 +12,8 @@ class Client(models.Model):
 	first_name = models.CharField(max_length=30)
 	part_name = models.CharField(max_length=30)
 	last_name = models.CharField(max_length=30)
+	class Meta:
+		unique_together = ('first_name', 'part_name', 'last_name',)
 
 class Document(models.Model):
 	name = models.CharField(max_length=500)
@@ -28,5 +30,17 @@ class ClientsFile(models.Model):
     file_path = models.CharField(max_length=1000, default = "/")
 
 class Passport(models.Model):
-	client = models.ForeignKey(Client, on_delete = models.CASCADE)
+    client = models.OneToOneField(
+        Client,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    info = jsonfield.JSONField()
+
+class SNILS(models.Model):
+	client = models.OneToOneField(
+		Client,
+		on_delete=models.CASCADE,
+		primary_key=True,
+	)
 	info = jsonfield.JSONField()
