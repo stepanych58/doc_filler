@@ -1,9 +1,14 @@
+{% load staticfiles %}
 <table id="keywords" cellspacing="0" cellpadding="0">
     <tr>
         <th>
     <span>
 	  <form action="/addClient/" method="POST">{% csrf_token %}
-	    <input type="submit" name="sbm" value="Add Client"/>
+          {#	    <input type="submit" name="sbm" value="Add Client"/>#}
+          <button class="btn" name="sbm" value="Add Client"><img src="{% static 'img/add_user.png' %}"/>
+          <p>New Client</p>
+          </button>
+          {#          add_user.png#}
       </form>
 	</span>
         </th>
@@ -12,9 +17,11 @@
     <span>
     <form action="/uploadTemplate/" method="POST" enctype="multipart/form-data">{% csrf_token %}
 {#      <label for="id_tmp_name">Input template name: <label>#}
-      <input type="text" name="tmp_name" id="id_tmp_name"/>
-      <input type="file" name="template"/>
-      <input type="submit" name="sbm" value="Uplouad Template"/>
+        <input type="text" name="tmp_name" id="id_tmp_name"/>
+        <input type="file" name="template"/>
+        <button class="btn" name="sbm" value="Uplouad Template"><img src="{% static 'img/upload.png' %}"/><p>Uplouad Template</p></button>
+{#        <input type="submit" name="sbm" value="Uplouad Template"/>#}
+{#        upload.png#}
       </form>
   </span>
         </th>
@@ -26,7 +33,8 @@
         <th>
     <span>
 	  <form action="/createTestData/" method="POST">{% csrf_token %}
-	    <input type="submit" name="sbm" value="Create test data"/>
+{#	    <input type="submit" name="sbm" value="Create test data"/>#}
+      <button class="btn" name="sbm" value="Create test data"><img src="{% static 'img/test.png' %}"/><p>Create test data</p></button>
       </form>
 	</span>
         </th>
@@ -35,7 +43,9 @@
         <th>
     <span>
 	  <form action="/clearData/" method="POST">{% csrf_token %}
-	    <input type="submit" name="sbm" value="Clear data"/>
+{#	    <input type="submit" name="sbm" value="Clear data"/>#}
+          <button class="btn" name="sbm" value="Clear data"><img src="{% static 'img/clean-database.png' %}"/><p>Clear data</p></button>
+{#          clean-database.png#}
       </form>
 	</span>
         </th>
@@ -45,13 +55,18 @@
     <span>
         {% if p_table == 'templates' %}
             <form action="/clients/" method="POST">{% csrf_token %}
-	    <input type="submit" name="sbm" value="All Clients"/>
-      </form>
+{#	    <input type="submit" name="sbm" value="All Clients"/>#}
+                 <button class="btn" name="sbm" value="All Clients"><img
+                         src="{% static 'img/bible.png' %}"/><p>All Clients</p></button>
+{#      bible.png#}
+            </form>
         {% endif %}
         {% if p_table == 'clients' %}
             <form action="/templates/" method="POST">{% csrf_token %}
-	    <input type="submit" name="sbm" value="All Templates"/>
-      </form>
+{#	    <input type="submit" name="sbm" value="All Templates"/>#}
+      <button class="btn" name="sbm" value="All Templates"><img
+                         src="{% static 'img/bible.png' %}"/><p>All Templates</p></button>
+            </form>
         {% endif %}
 	</span>
         </th>

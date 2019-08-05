@@ -3,10 +3,9 @@
     <thead>
     <tr>
         <th></th>
-        <th ><span> Client </span></th>
-        <th style="width: 100px"><span>  </span></th>
-        <th><span> Document to fill </span></th>
-        <th><span> Generate document button </span></th>
+        <th colspan="2"><span> Client </span></th>
+        <th rowspan="{{ all_clients.count }}"><span> Document to fill</span></th>
+        {#        <th><span> Generate document button </span></th>#}
         <th><span> Links to generated files </span></th>
     </tr>
     </thead>
@@ -16,7 +15,7 @@
             <input type="hidden" name="page" value="clients">
 
             <tr>
-                <div >
+                <div>
                     <td>
                         {% csrf_token %}
                         <input type="checkbox" name="cl_checked" value="{{ p_client.id }}">
@@ -27,31 +26,42 @@
                             {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
                         </a>
                     </td>
-                    <td style="display:inline;">
-
-                        {#                    <input type="submit" name="sbm" value="Delete">#}
-                        <button class="btn" name="sbm" value="Delete"><i class="fa fa-close"></i></button>
-                        <button class="btn" name="sbm" value="Edit"><i class="fa fa-edit"></i></button>
-                        {#                    <button class="btn" name="sbm" value="Delete"><i class="fa fa-close"></i></button>#}
-
+                    <td     style="display: inherit;">
+                            {#                    <input type="submit" name="sbm" value="Delete">#}
+                            {% load staticfiles %}
+                            {#                        <input type="submit" name="sbm" value="Delete" src="{% static 'img/x-button.png' %}" alt="delete client">#}
+                            {#                        <input type="submit" name="sbm" value="Edit" src="{% static 'img/edit_client.png' %}" alt="edit client">#}
+                            <button class="btn" name="sbm" value="Delete"><img src="{% static 'img/x-button.png' %}"/>
+                            </button>
+                            <button class="btn" name="sbm" value="Edit"><img src="{% static 'img/edit_icon.png' %}"/>
+                            </button>
+                            {#                        <button class="btn" name="sbm" value="Edit"><i class="fa fa-edit"></i></button>#}
+                            {#                    <button class="btn" name="sbm" value="Delete"><i class="fa fa-close"></i></button>#}
                     </td>
                 </div>
                 <td>
-                    <select name="doc_id" multiple>
-                        {% for doc in all_docs %}
-                            <option value="{{ doc.id }}"><a href="">{{ doc.name }}</a></option>
-                        {% endfor %}
-                    </select>
+                    {#                    <select name="doc_id" multiple>#}
+                    {#                        {% for doc in all_docs %}#}
+                    {#                            <option value="{{ doc.id }}"><a href="">{{ doc.name }}</a></option>#}
+                    {#                        {% endfor %}#}
+                    {#                    </select>#}
+
+                    {% for doc in all_docs %}
+                        <br><input type="hidden" name="doc_id" value="{{ doc.id }}"><a href="{% static doc.get_path %}">{{ doc.name }}</a></input><button class="btn" name="sbm" value="Generete Doc"><img
+                                src="{% static 'img/fill_file.png' %}"/></button>
+
+                    {% endfor %}
                 </td>
-                <td>
-                    <input type="submit" name="sbm" value="Generete Doc">
-                </td>
+                {#                <td>#}
+                {#                    <button class="btn" name="sbm" value="Generete Doc"><img src="{% static 'img/fill_file.png' %}" /></button>#}
+                {#                </td>#}
                 <td>
                     <ul>
                         {% for client_file in all_clients_files %}
                             {% if client_file.client.id == p_client.id %}
                                 {% load static %}
-                                <li><a href="{% static client_file.file_path %}"> {{ client_file.file_name }}</a></li>
+                                <li><a href="{% static client_file.file_path %}"> {{ client_file.file_name }}</a><button class="btn" name="sbm" value="Delete generated doc"><img
+                                        src="{% static 'img/x-button.png' %}"/></button></li>
                             {% endif %}
                         {% endfor %}
                     </ul>

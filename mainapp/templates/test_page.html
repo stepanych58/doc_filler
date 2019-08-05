@@ -6,9 +6,37 @@
 </head>
 <body>
 <form method="POST" action="/test_page/" style="display:inline;">
+<table>
+    <tr>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    </tr>
+    <tr>
+        <td>123</td>
+        <td>123</td>
+
+    </tr>
+    <tr>
+        <td>123</td>
+        <td>123</td>
+
+    </tr>
+        <tr>
+        <td>123</td>
+        <td>123</td>
+
+    </tr>
+</table>
+
     {% csrf_token %}{{ client_form }}
     <button name="subm"> Ok</button>
+
+
 </form>
 {{ page_text_param }}
+
+
+
 </body>
 </html>
