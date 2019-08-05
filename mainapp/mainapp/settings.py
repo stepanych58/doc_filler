@@ -149,12 +149,12 @@ STATICFILES_DIRS = [
     GENERETED_DOCS_DIR,   	     #1
     os.path.join(GENERETED_DOCS_DIR, 'txt'),       #2
     os.path.join(GENERETED_DOCS_DIR, 'pdf'),	     #3
-    os.path.join(GENERETED_DOCS_DIR, 'exel'),      #4
+    os.path.join(GENERETED_DOCS_DIR, 'excel'),      #4
     os.path.join(GENERETED_DOCS_DIR, 'doc'),       #5
     TEMPLATES_DIR,    	  	 #6
     os.path.join(TEMPLATES_DIR, 'txt'),		 #7
     os.path.join(TEMPLATES_DIR, 'pdf'),		 #8
-    os.path.join(TEMPLATES_DIR, 'exel'),	     #9
+    os.path.join(TEMPLATES_DIR, 'excel'),	     #9
     os.path.join(TEMPLATES_DIR, 'doc'),		 #10
     os.path.join(TEMPLATES_DIR, 'css'),                       #11
     os.path.join(STATIC_DIR, 'js'),                        #12
