@@ -13,6 +13,7 @@ from django.template import Context, Template
 
 DELETE = 'Delete'
 GENERATE = 'Generete Doc'
+DELETE_GEN_DOC = 'Delete generated doc'
 
 view_params = {'all_clients': Client.objects.all(),
 			   'page_title': 'Clients page',
@@ -60,15 +61,21 @@ def deleteClient(client_id):
 def deleteTemplate(template_id):
 	Document.objects.get(id = template_id).delete();
 
+def deleteGenDoc(gen_doc_id):
+	ClientsFile.objects.get(id = gen_doc_id).delete();
+
 def clientForm(request, client_id):
 	btn = request.POST['sbm']
 	page = request.POST['page']
 	doc_id = request.POST.get('doc_id')
-	print(request.POST)
+	gen_doc_id = request.POST.get('clientf_id')
+	# print(request.POST)
 	if btn == DELETE and page == 'clients':
 		deleteClient(client_id)
 	if btn == DELETE and page == 'templates':
 		deleteTemplate(client_id)
+	if btn == DELETE_GEN_DOC:
+		deleteGenDoc(gen_doc_id)
 	if btn == GENERATE:
 		writeToPdf(client_id, doc_id)
 	return HttpResponseRedirect('/clients/');
