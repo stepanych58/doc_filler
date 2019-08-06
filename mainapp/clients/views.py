@@ -22,6 +22,9 @@ view_params = {'all_clients': Client.objects.all(),
 			   'p_table' : 'clients',
 			   'all_clients_files':ClientsFile.objects.all(),}
 
+def welcomePage(request):
+	return render(request, 'welcome.html')
+
 def allClients(request, test_param="tp"):
 	view_params['all_clients'] = Client.objects.all()
 	view_params['all_docs'] = Document.objects.all()

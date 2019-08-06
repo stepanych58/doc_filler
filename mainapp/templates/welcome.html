@@ -1,0 +1,22 @@
+{% load staticfiles %}
+<h1>Hi all</h1>
+<h2>Please choose option</h2>
+<style>
+    body {
+        background-image: url("{% static 'img/6597.jpg' %} ");
+    }
+
+    .btn {
+        border: none;
+        cursor: pointer;
+        display: block;
+        display: inline;
+        background: transparent;
+    }
+</style>
+<body>
+<form action="/clients/" method="POST">{% csrf_token %}
+    <button class="btn" name="sbm" value="clients"><img src="{% static 'img/team.png' %}"/>
+        <p>Clients</p></button>
+</form>
+</body>
