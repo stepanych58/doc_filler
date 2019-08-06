@@ -42,21 +42,34 @@ def allTemplates(request):
 	return render(request, 'index.html', view_params);
 
 def addClient(request):
-	sbm = request.POST['sbm']
-	if sbm == 'Add Client':
-		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
-												  'passport_f':PassportForm(),
-												  'snils_f':SNILSForm(),
-												  })
-	p_first_name = request.POST['first_name']
-	p_part_name = request.POST['part_name']
-	p_last_name = request.POST['last_name']
-	client = Client(first_name = p_first_name, part_name = p_part_name, last_name = p_last_name)
-	client.save()
-	return HttpResponseRedirect('/clients/');
+    sbm = request.POST['sbm']
+    print(sbm)
+    if sbm == 'Add Client':
+        return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
+                                                  'passport_f': PassportForm(),
+                                                  'snils_f': SNILSForm(),
+                                                  'client_f': ClientForm(),
+                                                  'orginfo_f': OrganizationInfoForm(),
+                                                  })
+    elif sbm =='Add':
+        print(request.POST)
+        client = ClientForm(request.POST)
+        if client.is_valid():
+            client.save()
+        passport = PassportForm(request.POST)
+        passport.client = client
+        print(passport.is_valid())
+        if passport.is_valid():
+            print('1234')
+            passport.save()
+        snils = SNILSForm(request.POST)
+        snils.client = client
+        if snils.is_valid():
+            snils.save()
+    return HttpResponseRedirect('/clients/');
 
 def clientInfo(request, client_id):
-	return render(request, 'client.html', {'client': Client.objects.get(id = client_id)})
+	return render(request, 'client.html', {'client': Client.objects.get(id = client_id),})
 
 def deleteClient(client_id):
 	Client.objects.get(id = client_id).delete();

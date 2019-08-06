@@ -48,7 +48,7 @@ class SNILS(models.Model):
 		on_delete=models.CASCADE,
 		primary_key=True,
 	)
-	number = models.CharField(max_length=20, default="123-123-123 00")
+	snils_number = models.CharField(max_length=20, default="123-123-123 00")
 
 class Address(models.Model):
 	index = models.CharField(max_length=6)
