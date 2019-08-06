@@ -1,8 +1,7 @@
 <h1>Добавить клиента:</h1>
 <form action="/addClient/" method="POST">{% csrf_token %}
-	<br>Имя: <input type="text" name="first_name"  />
-	<br>Отчество: <input type="text" name="part_name" />
-	<br>Фамилия: <input type="text" name="last_name" />
+    <p>ФИО</p>
+    {{ client_f.as_p }}
     <p>Паспорт</p>
     {{ passport_f.as_p }}
     <p>СНИЛС</p>

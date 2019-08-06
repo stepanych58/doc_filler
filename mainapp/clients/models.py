@@ -30,12 +30,17 @@ class ClientsFile(models.Model):
     file_path = models.CharField(max_length=1000, default = "/")
 
 class Passport(models.Model):
-    client = models.OneToOneField(
-        Client,
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
-    info = jsonfield.JSONField()
+	client = models.OneToOneField(
+		Client,
+		on_delete=models.CASCADE,
+		primary_key=True,
+	)
+	serial = models.CharField(max_length=4, default = "0000")
+	number = models.CharField(max_length=6, default = "000000")
+	_from = models.CharField(max_length=200, default = "")
+	gender = models.CharField(max_length=5, default = "м")
+	bith_day = models.DateField(default="1999-01-01")
+	bith_place = models.CharField(max_length=200, default = "")
 
 class SNILS(models.Model):
 	client = models.OneToOneField(
@@ -43,4 +48,4 @@ class SNILS(models.Model):
 		on_delete=models.CASCADE,
 		primary_key=True,
 	)
-	info = jsonfield.JSONField()
+	number = models.CharField(max_length=20, default="123-123-123 00")

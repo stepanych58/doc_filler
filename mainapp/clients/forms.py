@@ -16,10 +16,10 @@ class StbeField(forms.Widget):
         return context
 
 
-class ClientForm(forms.Form):
+class ClientForm(forms.ModelForm):
      class Meta:
          model = Client
-         fields = ('first_name', 'part_name', 'last_name',)
+         fields = ['first_name', 'part_name', 'last_name',]
 
 class ClientChecked(forms.Form):
     cl_check = forms.CharField(widget=CheckboxInput(), label = 'ch_l',required=False)
@@ -27,16 +27,30 @@ class ClientChecked(forms.Form):
 class UserlistForm(forms.Form):
     users = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,label="Notify and subscribe users to this post:")
 
-class PassportForm(forms.Form):
-    serial = forms.CharField(widget=NumberInput(), label = 'серия', required=True)
-    number = forms.CharField(widget=NumberInput(), label = 'номер', required=True)
-    _from = forms.CharField(label = 'Кем выдан', required=True)
-    male = forms.CharField(label = 'пол', required=True)
-    bith_day = forms.CharField(widget=DateInput(), label = 'Дата рождения', required=True)
-    bith_place = forms.CharField(label = 'Место рождения', required=True)
+class PassportForm(forms.ModelForm):
+    class Meta:
+        model = Passport
+        labels = {
+            'serial': 'Серия',
+            'number': 'Номер',
+            '_from': 'Кем выдан',
+            'gender': 'пол',
+            'bith_day': 'Дата рождения',
+            'bith_place': 'Место рождения',
+        }
+        fields = ['serial',
+                  'number',
+                  '_from',
+                  'gender',
+                  'bith_day',
+                  'bith_place',
+                  ]
 
-class SNILSForm(forms.Form):
-    number = forms.CharField(widget=NumberInput(), label = 'номер', required=True)
+class SNILSForm(forms.ModelForm):
+    class Meta:
+        model = SNILS
+        labels ={'number':'Номер (№)',}
+        fields =['number',]
 # '''
 # 		'документ':'пасспорт гр. РФ',
 # 		'серия': '3345',

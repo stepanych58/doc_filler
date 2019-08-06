@@ -117,20 +117,11 @@ def uploadTemplate(request):
 	return HttpResponseRedirect('/clients/');
 
 def testPage(request):
-	page_text_param = None
-	userlistform = UserlistForm()
-	clientForm = ClientForm()
-	userlistform.fields['users'].choices = [(x.id, x) for x in Client.objects.all()]
-	check = None
-	client_row =None
-	context = None
 	if request.method == 'POST':
-		page_text_param = request.POST.get('users')
-		client_row = Template('<a href={{ client_link }}> {{ client_value }} </a>')
-		context = Context({'client_link': '/clients/',
-						   'client_value': 'Дмитрий Алексеевич Саленый'})
-		print(page_text_param)
-		print(check)
+		client = ClientForm(request.POST)
+		client.save()
+	else:
+		clientForm = ClientForm()
 	return render(request, 'test_page.html', {'client_form': clientForm,
 											  'page_text_param': '',})
 
