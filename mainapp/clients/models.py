@@ -62,6 +62,15 @@ class Address(models.Model):
 	structure = models.CharField(max_length=6,default="",blank=True)
 	flat = models.CharField(max_length=6, default="25",blank=True)
 
+class PostAddress(models.Model):
+	index = models.CharField(max_length=6, default="446100")
+	city = models.CharField(max_length=200, default="Самара")
+	street = models.CharField(max_length=200, default="Николая-Панова")
+	buildingNumber = models.CharField(max_length=6, default="144")
+	housing = models.CharField(max_length=6,default="",blank=True)
+	structure = models.CharField(max_length=6,default="",blank=True)
+	flat = models.CharField(max_length=6, default="25",blank=True)
+
 class BankDetail(models.Model):
 	account_number = models.CharField(max_length=24, default='0000 0000 0000 0000 0000', blank=True)
 	correspondent_account_number =models.CharField(max_length=24, default='0000 0000 0000 0000 0000', blank=True)
@@ -81,11 +90,10 @@ class OrganizationInfo(models.Model):
 		Address,
 		on_delete=models.CASCADE,
 	)
-	# post_address = models.ForeignKey(
-	# 	Address,
-	# 	on_delete=models.CASCADE,
-	# 	primary_key=True
-	# )
+	post_address = models.ForeignKey(
+		PostAddress,
+		on_delete=models.CASCADE,
+	)
 	bank_detail = models.ForeignKey(
 		BankDetail,
 		on_delete=models.CASCADE,

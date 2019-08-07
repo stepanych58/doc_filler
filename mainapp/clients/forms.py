@@ -69,6 +69,27 @@ class AddressForm(forms.ModelForm):
             'structure',
             'flat',
         ]
+class PostAddressForm(forms.ModelForm):
+    class Meta:
+        model = PostAddress
+        labels = {
+            'index':'Индекс',
+            'city':'Город/Населенный пункт',
+            'street':'Улица',
+            'buildingNumber':'Номер дома',
+            'housing':'Корпус',
+            'structure':'Строение',
+            'flat':'Офис/Квартира',
+        }
+        fields = [
+            'index',
+            'city',
+            'street',
+            'buildingNumber',
+            'housing',
+            'structure',
+            'flat',
+        ]
 
 class BankDetailForm(forms.ModelForm):
     class Meta:

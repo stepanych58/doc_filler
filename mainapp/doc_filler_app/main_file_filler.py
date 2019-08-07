@@ -25,6 +25,10 @@ def set_need_appearances_writer(writer: PdfFileWriter):
 def writeToPdf(client_id, doc_id):
 	p_client = Client.objects.get(id=client_id)
 	p_doc = Document.objects.get(id=doc_id)
+	organization = p_client.organizationinfo
+	organization_address = organization.address
+	organization_postaddress = organization.post_address
+	organization_bank_detail = organization.bank_detail
 	clients_file_name = str(p_client.first_name) + str(p_client.last_name) + '_' + str(p_doc.file_name)   #date or time
 	p_file_path = ''
 	if p_doc.file_type == 'pdf':
@@ -38,14 +42,36 @@ def writeToPdf(client_id, doc_id):
 	read = reads.getFormTextFields()
 	Page = reads.getPage(0)
 	for i, value in Page.items():
-		read['20'] = '19'
 		read['1'] = p_client.last_name
 		read['2'] = p_client.first_name
 		read['undefined_4'] = p_client.part_name
 		read['undefined_5'] = p_client.position
-
 		#Организация
-		# read['1_2'] = наименование организации 1 стр
+		read['1_2'] = organization.full_name
+		read['fill_11'] = organization_address.index
+		read['fill_12'] = organization_address.city
+		read['undefined_6'] = organization_address.street
+		read['fill_14'] = organization_address.buildingNumber
+		read['fill_15'] = organization_address.housing
+		read['fill_16'] = organization_address.structure
+		read['fill_17'] = organization_address.flat
+		read['fill_25'] = organization.accountent_number
+		read['undefined_8'] = organization.hr_number
+		read['undefined_9'] = organization.inn_number
+		read['fill_28'] = organization_bank_detail.account_number
+		read['fill_29'] = organization_bank_detail.correspondent_account_number
+		read['fill_30'] = organization_bank_detail.bic
+		read['fill_31'] = organization_bank_detail.bank_name
+		# почтовый адрес
+		read['fill_18'] = organization_postaddress.index
+		read['fill_19'] = organization_postaddress.city
+		read['undefined_7'] = organization_postaddress.street
+		read['fill_21'] = organization_postaddress.buildingNumber
+		read['fill_22'] =  organization_postaddress.housing
+		read['fill_23'] = organization_postaddress.structure
+		read['fill_24'] = organization_postaddress.flat
+
+	# read['1_2'] = наименование организации 1 стр
 		# read['2_2'] = наименование организации 2 стр
 		# read['fill_11'] = индекс
 		# read['fill_12'] = город населенный пункт

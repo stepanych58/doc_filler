@@ -52,6 +52,7 @@ def addClient(request):
 												  'snils_f': SNILSForm(),
 												  'client_f': ClientForm(),
 												  'address_f': AddressForm(),
+												  'postaddress_f': PostAddressForm(),
 												  'bankdetail_f': BankDetailForm(),
 												  'orginfo_f': OrganizationInfoForm(),
 												  })
@@ -60,20 +61,23 @@ def addClient(request):
 		passport = PassportForm(post)
 		snils = SNILSForm(post)
 		address = AddressForm(post)
+		post_address = PostAddressForm(post)
 		bank_detail = BankDetailForm(post)
 		organization = OrganizationInfoForm(request.POST)
 		if (client.is_valid() and passport.is_valid() and address.is_valid() and bank_detail.is_valid() and
-			snils.is_valid() and organization.is_valid()):
+			snils.is_valid() and organization.is_valid() and post_address.is_valid()):
 			client = client.save()
 			passport.instance.client = client
 			passport.save()
 			snils.instance.client = client
 			# todo dont add existing addresses in table
 			address = address.save()
+			post_address = post_address.save()
 			bank_detail = bank_detail.save()
 			organization.instance.client = client
 			organization.instance.address = address
 			organization.instance.bank_detail = bank_detail
+			organization.instance.post_address = post_address
 			organization.save()
 		else:
 			for errorform in (client, passport, snils, address, bank_detail, organization):
