@@ -42,8 +42,37 @@ def writeToPdf(client_id, doc_id):
 		read['1'] = p_client.last_name
 		read['2'] = p_client.first_name
 		read['undefined_4'] = p_client.part_name
-		read['undefined_5'] = 'Ничего не делаю'
-		read['undefined_11'] = '9999999999999999999'
+		read['undefined_5'] = p_client.position
+
+		#Организация
+		# read['1_2'] = наименование организации 1 стр
+		# read['2_2'] = наименование организации 2 стр
+		# read['fill_11'] = индекс
+		# read['fill_12'] = город населенный пункт
+		# read['undefined_6'] = улица
+		# read['fill_14'] = Номер дома
+		# read['fill_15'] = корпус
+		# read['fill_16'] = строение
+		# read['fill_17'] = офис/квартира
+
+		# почтовый адрес
+		# read['fill_18'] = индекс
+		# read['fill_19'] = город населенный пункт
+		# read['undefined_7'] = улица
+		# read['fill_21'] = Номер дома
+		# read['fill_22'] = корпус
+		# read['fill_23'] = строение
+		# read['fill_24'] = офис/квартира
+
+		# read['fill_25'] = телефоны отдела кадров
+		# read['undefined_8'] = телефоны бугалтерии
+		# read['undefined_9'] = Инн
+		# read['fill_28'] = номер расчетного счета
+		# read['fill_29'] = номер корреспондентского счета
+		# read['fill_30'] = БИК
+		# read['fill_31'] = наименование банка, в котором рассчетный счет
+		# read['undefined_10'] = офис/квартира
+
 	outpt = open(path_out_file, 'wb')
 	write = PdfFileWriter()
 	set_need_appearances_writer(write)

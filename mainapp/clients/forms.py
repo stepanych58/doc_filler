@@ -14,11 +14,13 @@ class ClientForm(forms.ModelForm):
              'last_name': 'Фамилия',
              'first_name':'Имя',
              'part_name':'Отчество',
+             'position':'Должность',
          }
          fields = [
              'last_name',
              'first_name',
              'part_name',
+             'position',
          ]
 
 class PassportForm(forms.ModelForm):

@@ -12,6 +12,7 @@ class Client(models.Model):
 	first_name = models.CharField(max_length=30, default='Иван')
 	part_name = models.CharField(max_length=30, default='Иванович')
 	last_name = models.CharField(max_length=30,  default='Иванов')
+	position = models.CharField(max_length=300,  default='Инженер')
 	# class Meta:
 	# 	unique_together = ('first_name', 'part_name', 'last_name',)
 
