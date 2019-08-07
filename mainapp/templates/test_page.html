@@ -7,6 +7,7 @@
 <body>
 <form method="POST" action="/test_page/" style="display:inline;">{% csrf_token %}
   {{ client_form.as_p }}
+    {{ passport_f.as_p }}
   <input type="submit" name="sbm" value="save">
 </form>
 </body>

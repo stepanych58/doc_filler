@@ -1,12 +1,13 @@
+import os
+
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
 from mainapp.settings import *
-import os
-from .utils import *
+
 from .forms import *
-from django.template import Context, Template
+from .utils import *
 
 #ALL_CLIENTS = Client.objects.all()
 #ALL_DOCS = Document.objects.all()
@@ -42,31 +43,42 @@ def allTemplates(request):
 	return render(request, 'index.html', view_params);
 
 def addClient(request):
-    sbm = request.POST['sbm']
-    print(sbm)
-    if sbm == 'Add Client':
-        return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
-                                                  'passport_f': PassportForm(),
-                                                  'snils_f': SNILSForm(),
-                                                  'client_f': ClientForm(),
-                                                  'orginfo_f': OrganizationInfoForm(),
-                                                  })
-    elif sbm =='Add':
-        print(request.POST)
-        client = ClientForm(request.POST)
-        if client.is_valid():
-            client.save()
-        passport = PassportForm(request.POST)
-        passport.client = client
-        print(passport.is_valid())
-        if passport.is_valid():
-            print('1234')
-            passport.save()
-        snils = SNILSForm(request.POST)
-        snils.client = client
-        if snils.is_valid():
-            snils.save()
-    return HttpResponseRedirect('/clients/');
+	post = request.POST
+	sbm = post['sbm']
+	print(sbm)
+	if sbm == 'Add Client':
+		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
+												  'passport_f': PassportForm(),
+												  'snils_f': SNILSForm(),
+												  'client_f': ClientForm(),
+												  'address_f': AddressForm(),
+												  'bankdetail_f': BankDetailForm(),
+												  'orginfo_f': OrganizationInfoForm(),
+												  })
+	elif sbm =='Add':
+		client = ClientForm(post)
+		passport = PassportForm(post)
+		snils = SNILSForm(post)
+		address = AddressForm(post)
+		bank_detail = BankDetailForm(post)
+		organization = OrganizationInfoForm(request.POST)
+		if (client.is_valid() and passport.is_valid() and address.is_valid() and bank_detail.is_valid() and
+			snils.is_valid() and organization.is_valid()):
+			client = client.save()
+			passport.instance.client = client
+			passport.save()
+			snils.instance.client = client
+			# todo dont add existing addresses in table
+			address = address.save()
+			bank_detail = bank_detail.save()
+			organization.instance.client = client
+			organization.instance.address = address
+			organization.instance.bank_detail = bank_detail
+			organization.save()
+		else:
+			for errorform in (client, passport, snils, address, bank_detail, organization):
+				print(errorform.errors)
+	return HttpResponseRedirect('/clients/');
 
 def clientInfo(request, client_id):
 	return render(request, 'client.html', {'client': Client.objects.get(id = client_id),})

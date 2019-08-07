@@ -1,12 +1,14 @@
 <h1>Добавить клиента:</h1>
 <form action="/addClient/" method="POST">{% csrf_token %}
-    <p>ФИО</p>
+    <h1>ФИО</h1>
     {{ client_f.as_p }}
-    <p>Паспорт</p>
+    <h3>Паспорт</h3>
     {{ passport_f.as_p }}
-    <p>СНИЛС</p>
+    <h3>СНИЛС</h3>
     {{ snils_f.as_p }}
-    <p>Сведения об организации</p>
+    <h3>Сведения об организации</h3>
     {{ orginfo_f.as_p }}
+    {{ address_f.as_p }}
+    {{ bankdetail_f.as_p }}
 	<br><input type="submit" name="sbm" value="Add">
 </form>
