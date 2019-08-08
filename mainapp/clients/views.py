@@ -1,6 +1,7 @@
 import os
 
 from django.core.files.storage import FileSystemStorage
+from django.forms import inlineformset_factory, modelformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
@@ -128,6 +129,7 @@ def uploadTemplate(request):
 		tmp_name = request.POST['tmp_name']
 		file_name = os.path.splitext(uploaded_file.name)[0]
 		ext = os.path.splitext(uploaded_file.name)[1]
+		file_name +=ext
 		loc, type = None, None
 		if ext == PDF_EXT:
 			loc, type, res_mes = PDF_TEMPL_DIR, PDF, 'PDF File uploaded';
@@ -153,5 +155,9 @@ def testPage(request):
 		clientForm = ClientForm()
 	return render(request, 'test_page.html', {'client_form': clientForm,
 											  'page_text_param': '',})
+
+def addTemplate(request):
+	# if request.method == 'POST':
+	return render(request, 'addTemplate.html', {'doc_f': modelformset_factory(Document, fields='__all__')})
 
 

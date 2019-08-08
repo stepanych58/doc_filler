@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Template</title>
+</head>
+<body>
+  <form method="POST" action="/addTemplate/">{% csrf_token %}
+      {{ doc_f.as_p }}
+      <input type="submit" name="sbm"  value="Add Template" />
+      <a href="/clients/"> Go to Clients table</a>
+  </form>
+</body>
+</html>

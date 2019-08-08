@@ -1,5 +1,4 @@
 <table id="keywords" cellspacing="0" cellpadding="0">
-
     <thead>
     <tr>
         <th></th>
@@ -13,8 +12,6 @@
     {% for p_client in all_clients %}
         <form action="/clientForm/{{ p_client.id }}" method="POST" style="display:inline;">
             <input type="hidden" name="page" value="clients">
-
-            <form>
                 <div>
                     <td>
                         {% csrf_token %}
@@ -49,7 +46,6 @@
                     {% for doc in all_docs %}
                         <br><input type="hidden" name="doc_id" value="{{ doc.id }}"><a href="{% static doc.get_path %}">{{ doc.name }}</a></input><button class="btn" name="sbm" value="Generete Doc"><img
                                 src="{% static 'img/fill_file.png' %}"/></button>
-
                     {% endfor %}
                 </td>
             </form>
