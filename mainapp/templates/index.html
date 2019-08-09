@@ -6,28 +6,15 @@
     <link href="{% static 'css/clients_table.css' %}" rel="stylesheet" type="text/css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% csrf_token %}
+<script src="{% static 'js/clients.js' %}"></script>
 <body>
-{% load staticfiles %}
 <style>
 body {
         background-image: url("{% static 'img/6597.jpg' %} ");
 } 
 </style>
-<style>
-.btn {
-  background-color: DodgerBlue;
-  border: none;
-  cursor: pointer;
-    display: block;
-    display: inline;
-    background: transparent;
-}
 
-/* Darker background on mouse-over */
-{#.btn:hover {#}
-{#  background-color: RoyalBlue;#}
-{#}#}
-</style>
 
 <h1>{{page_title}}</h1>
  <div id="wrapper">

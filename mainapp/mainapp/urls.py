@@ -33,6 +33,7 @@ urlpatterns = [
     path('templates/', allTemplates),
     path('test_page/', testPage),
     path('clientInfo/<int:client_id>', clientInfo),
+    path('generateReport/', generateReport),
 ]
 
 #if settings.DEBUG:

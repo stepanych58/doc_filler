@@ -155,6 +155,13 @@ def testPage(request):
 		clientForm = ClientForm()
 	return render(request, 'test_page.html', {'client_form': clientForm,
 											  'page_text_param': '',})
+def generateReport(request):
+	if request.method == 'POST':
+		post = request.POST
+		client_ids = post['cl_ids']
+		print(client_ids)
+		# writeToPdf(client_id, doc_id)
+	return HttpResponseRedirect('/clients/');
 
 def addTemplate(request):
 	# if request.method == 'POST':
