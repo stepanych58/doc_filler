@@ -2,11 +2,11 @@ import os
 
 from django.core.files.storage import FileSystemStorage
 from django.forms import inlineformset_factory, modelformset_factory
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
 from mainapp.settings import *
-
+import json
 from .forms import *
 from .utils import *
 
@@ -155,11 +155,16 @@ def testPage(request):
 		clientForm = ClientForm()
 	return render(request, 'test_page.html', {'client_form': clientForm,
 											  'page_text_param': '',})
+
 def generateReport(request):
+	view_params = request.body.decode('utf-8')
+	json_view_params = json.loads(view_params)
+	clientids = json_view_params['checkedClients']
+	pdocs = json_view_params['checkedDocs']
+	# for client_id in clientids :
+		# writeToPdf(client_id, pdocs[0])
 	if request.method == 'POST':
 		post = request.POST
-		client_ids = post['cl_ids']
-		print(client_ids)
 		# writeToPdf(client_id, doc_id)
 	return HttpResponseRedirect('/clients/');
 

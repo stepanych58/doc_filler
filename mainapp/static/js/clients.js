@@ -30,24 +30,22 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function generateReport(message) {
-    console.log(message)
+function generateReport(doc_id) {
     csrftoken = getCookie('csrftoken')
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/generateReport/", true)
     xhr.setRequestHeader("X-CSRFToken", csrftoken);
-    var generateTemplateContext = JSON.stringify({mes: message});;
     cl_checkboxes = document.getElementsByName('cl_checked');
-    console.log(cl_checkboxes)
-   var checkedClients = [];
+    var checkedClients = [];
+    var checkedDocs = [doc_id];
     cl_checkboxes.forEach(function (element) {
-      console.log(element)
-      if (element.checked)
-      {
-        console.log('checked: ' + element.value)
-        checkedClients.push(String(element.value) )
-      }
+        if (element.checked) {
+            checkedClients.push(String(element.value))
+        }
     })
-   console.log(checkedClients)
-    xhr.send(checkedClients)
+    var viewParams = JSON.stringify({
+        'checkedClients': checkedClients,
+        'checkedDocs': checkedDocs
+    });
+    xhr.send(viewParams)
 }

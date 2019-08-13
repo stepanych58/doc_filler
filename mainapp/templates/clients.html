@@ -35,7 +35,7 @@
                 {% for doc in all_docs %}
                     <a href="{% static doc.get_path %}">{{ doc.name }}</a>
                     <button class="btn" name="sbm" id="genRep" doc_id="{{ doc.id }}" value="Generete Doc"
-                            onclick="generateReport('clicked generate report')"
+                            onclick="generateReport('{{ doc.id }}')"
                     >{% csrf_token %}<img
                             src="{% static 'img/fill_file.png' %}"/></button>
                 {% endfor %}
