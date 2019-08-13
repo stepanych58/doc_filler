@@ -1,73 +1,53 @@
-function post(path, params, method='post') {
+// window.onload = function () {
+//   var generateReportButton = document.getElementById('genRep')
+//   generateReportButton.addEventListener("click", function () {
+//     csrftoken = getCookie('csrftoken')
+//     var xhr = new XMLHttpRequest();
+//     xhr.open("POST", "/generateReport/", true)
+//     xhr.setRequestHeader("X-CSRFToken", csrftoken);
+//     var generateTemplateContext;
+//
+//     cl_checkboxes = document.getElementsByName('cl_checked');
+//
+//     xhr.send(generateTemplateContext)
+//   })
+// }
+//https://www.youtube.com/watch?v=FVEtgUNVhGk
 
-  // The rest of this code assumes you are not using a library.
-  // It can be made less wordy if you use one.
-  const form = document.createElement('form');
-  form.method = method;
-  form.action = path;
-
-  for (const key in params) {
-    if (params.hasOwnProperty(key)) {
-      const hiddenField = document.createElement('input');
-      hiddenField.type = 'hidden';
-      hiddenField.name = key;
-      hiddenField.value = params[key];
-
-      form.appendChild(hiddenField);
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
-  }
-
-  document.body.appendChild(form);
-  form.submit();
+    return cookieValue;
 }
 
-
-
-
-
-
 function generateReport(message) {
-  cl_checkboxes = document.getElementsByName('cl_checked');
-
-  // for (var i = 0; i < cl_checkboxes.length; i++)
-  // {
-  //   client_ch = cl_checkboxes[i];
-    // var form = document.createElement("form");
-    // form.setAttribute('method', 'POST') ;
-    // form.setAttribute('action', '/generateReport/') ;
-    // form.setAttribute('cl_ids', '/generateReport/') ;
-    // form.setAttribute('data', 'csrfmiddlewaretoken={{csrf_token}}') ;
-    // if(client_ch.checked)
-    // {
-    //   var input = document.createElement("input");
-    //   input.setAttribute("type", "hidden");
-    //   input.setAttribute("name", client_ch.name);
-    //   input.setAttribute("value", client_ch.value);
-    //   form.appendChild(input);
-    // }
-    // document.body.appendChild(form);
-    // form.submit();
-    // method = 'POST';
-    // var form = document.createElement('form');
-    // Move the submit function to another variable
-    // so that it doesn't get overwritten.
-    // form._submit_function_ = form.submit;
-    //
-    // form.setAttribute('method', method);
-    // form.setAttribute('action', '/generateReport/');
-    // form.setAttribute('target', '_blank');
-    //
-    // for(var i =0; i<cl_checkboxes.length; i++) {
-    //   client_ch = cl_checkboxes[i];
-    //   if(client_ch.checked){
-    //     var hiddenField = document.createElement('input');
-    //     hiddenField.setAttribute('type', 'hidden');
-    //     hiddenField.setAttribute('name', client_ch.name);
-    //     hiddenField.setAttribute('value', client_ch.value);
-    //     form.appendChild(hiddenField);
-    //   }
-    // }
-    // document.body.appendChild(form);
-    // form._submit_function_();
-  // }
+    console.log(message)
+    csrftoken = getCookie('csrftoken')
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/generateReport/", true)
+    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    var generateTemplateContext = JSON.stringify({mes: message});;
+    cl_checkboxes = document.getElementsByName('cl_checked');
+    console.log(cl_checkboxes)
+   var checkedClients = [];
+    cl_checkboxes.forEach(function (element) {
+      console.log(element)
+      if (element.checked)
+      {
+        console.log('checked: ' + element.value)
+        checkedClients.push(String(element.value) )
+      }
+    })
+   console.log(checkedClients)
+    xhr.send(checkedClients)
 }
