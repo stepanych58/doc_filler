@@ -20,7 +20,7 @@ class Document(models.Model):
 	name = models.CharField(max_length=500)
 	file_name = models.CharField(max_length=500, default = "file name")
 	file_type = models.CharField(max_length=20, default = "pdf")
-	
+	class_name = models.CharField(max_length=500, default = "SberPoFormeBanka")
 	def get_path(self):
 	    if self.file_type == 'pdf':
 		    return os.path.join(PDF_TEMPLATE_DIR, self.file_name)

@@ -115,8 +115,6 @@ def clientForm(request, client_id):
 		deleteTemplate(client_id)
 	if btn == DELETE_GEN_DOC:
 		deleteGenDoc(gen_doc_id)
-	if btn == GENERATE:
-		writeToPdf(client_id, doc_id)
 	return HttpResponseRedirect('/clients/');
 
 def createTestData(request):
@@ -168,7 +166,7 @@ def generateReport(request):
 	clientids = json_view_params['checkedClients']
 	pdocs = json_view_params['checkedDocs']
 	for client_id in clientids :
-		writeToPdf(client_id, pdocs[0])
+		writeClientDoc(client_id, pdocs[0])
 	return HttpResponseRedirect('/clients/');
 
 def addTemplate(request):
