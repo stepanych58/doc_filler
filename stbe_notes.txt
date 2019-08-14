@@ -15,28 +15,20 @@ Install from PyPI:
 pip install django-json-field
 pip install python-dateutil six
 pip install  psycopg2
+pip install  jsonfield
 
 django-admin startproject doc_filler
 python manage.py startapp doc_filler_app
 
 
---need to create methods vith creating test data 
---20 users
---10 ankets
-
--- развернуть на локальном сервере
 -- обратывать несколько анкет
--- добавить документы для клиента(Инн, паспорт, сканы справок хранить в базе)
 -- добавить редактированиие/удаление клиента
 -- добавить редактирование шаблонов, чтобы можно было обновить функцию которой обрабатывается шаблон, имя шаблона, подгрузить другой документ для этого шаблона
--- (подумать о скачивании сформированной анкеты по клику на кнопку)
 
 
 
 --https://stackoverflow.com/questions/8659808/how-does-http-file-upload-work
 
--- отрисовку клиента, шаблона сделать через Form (добавить поле checkbox)
--- рядом с каждым сгенерированым файлом рисовать маленький крестик для удаления этого файла
 -- оформить страницу с информацией о киенте
 -- шаблоны анкет тоже можно сделать кликабельными, чтобы смотреть что это за шаблон
 -- оформить страницу добавления клиента
@@ -47,7 +39,8 @@ python manage.py startapp doc_filler_app
 -- посмотеть как делать дамп django db
 -- добавить функциональность на страницу добавления клиента
 
-ВАЖНО!
-РЕАЛИЗОВАТЬ ДОБАВЛЕНИЕ ТЕМПЛЕЙТА
-РЕАЛИЗОВАТЬ ЧЕКАНЬЕ КЛИЕНТОВ
-НАСТРОИТЬ НОРМАЛЬНОЕ ОТОБРАЖЕНИЕ ТЕМПЛЕЙТОВ
+link to manage users API in django
+https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
+https://wsvincent.com/django-user-authentication-tutorial-login-and-logout/
+https://pypi.org/project/django-classic-user-accounts/
+https://docs.djangoproject.com/en/2.2/topics/auth/
