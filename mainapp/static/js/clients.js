@@ -31,10 +31,12 @@ function getCookie(name) {
 }
 
 function generateReport(doc_id) {
-    csrftoken = getCookie('csrftoken')
+    csrftoken = getCookie('csrftoken')//in future we can change name of cookie
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/generateReport/", true)
+    xhr.open("POST", "/generateReport/")
     xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    xhr.setRequestHeader("Location", '/clients/');
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     cl_checkboxes = document.getElementsByName('cl_checked');
     var checkedClients = [];
     var checkedDocs = [doc_id];
@@ -48,4 +50,7 @@ function generateReport(doc_id) {
         'checkedDocs': checkedDocs
     });
     xhr.send(viewParams)
+    xhr.onreadystatechange = function () {
+        location = location //to reload page
+    }
 }

@@ -98,11 +98,17 @@ def deleteGenDoc(gen_doc_id):
 	ClientsFile.objects.get(id = gen_doc_id).delete();
 
 def clientForm(request, client_id):
-	btn = request.POST['sbm']
-	page = request.POST['page']
+	btn = request.POST.get('sbm')
+	page = request.POST.get('page')
 	doc_id = request.POST.get('doc_id')
 	gen_doc_id = request.POST.get('clientf_id')
-	# print(request.POST)
+	if (
+			btn == None and
+			page == None and
+			doc_id == None and
+			gen_doc_id == None
+	):
+		return HttpResponseRedirect('/clients/')
 	if btn == DELETE and page == 'clients':
 		deleteClient(client_id)
 	if btn == DELETE and page == 'templates':
@@ -157,19 +163,15 @@ def testPage(request):
 											  'page_text_param': '',})
 
 def generateReport(request):
-	view_params = request.body.decode('utf-8')
-	json_view_params = json.loads(view_params)
+	client_view_params = request.body.decode('utf-8')
+	json_view_params = json.loads(client_view_params)
 	clientids = json_view_params['checkedClients']
 	pdocs = json_view_params['checkedDocs']
-	# for client_id in clientids :
-		# writeToPdf(client_id, pdocs[0])
-	if request.method == 'POST':
-		post = request.POST
-		# writeToPdf(client_id, doc_id)
+	for client_id in clientids :
+		writeToPdf(client_id, pdocs[0])
 	return HttpResponseRedirect('/clients/');
 
 def addTemplate(request):
-	# if request.method == 'POST':
 	return render(request, 'addTemplate.html', {'doc_f': modelformset_factory(Document, fields='__all__')})
 
 
