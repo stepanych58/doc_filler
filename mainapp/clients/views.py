@@ -161,13 +161,14 @@ def testPage(request):
 											  'page_text_param': '',})
 
 def generateReport(request):
-	client_view_params = request.body.decode('utf-8')
-	json_view_params = json.loads(client_view_params)
-	clientids = json_view_params['checkedClients']
-	pdocs = json_view_params['checkedDocs']
-	for client_id in clientids :
-		writeClientDoc(client_id, pdocs[0])
-	return HttpResponseRedirect('/clients/');
+        print(request)
+        client_view_params = request.body.decode('utf-8')
+        json_view_params = json.loads(client_view_params)
+        clientids = json_view_params['checkedClients']
+        pdocs = json_view_params['checkedDocs']
+        for client_id in clientids :
+                writeClientDoc(client_id, pdocs[0])
+        return HttpResponseRedirect('/clients/');
 
 def addTemplate(request):
 	return render(request, 'addTemplate.html', {'doc_f': modelformset_factory(Document, fields='__all__')})
