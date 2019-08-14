@@ -11,7 +11,7 @@
 
     {% for p_client in all_clients %}
         {% if forloop.first %}
-            <form action="/clientForm/{{ p_client.id }}" method="POST" style="display:inline;">
+            <form action="/clientForm/{{ p_client.id }}" method="POST" style="display:inline;" id="clientForm">
                     {% csrf_token %}
                 <input type="hidden" name="page" value="clients">
                 <td>
@@ -33,10 +33,10 @@
             </form>
             <td rowspan="0">
                 {% for doc in all_docs %}
-                    <br><input type="hidden" name="doc_id" value="{{ doc.id }}">
-                    <a href="{% static doc.get_path %}">{{ doc.name }}</a></input>
-                    <button class="btn" name="sbm" value="Generete Doc"
-                            onclick="generateReport('clicked generate report')">{% csrf_token %}<img
+                    <a href="{% static doc.get_path %}">{{ doc.name }}</a>
+                    <button class="btn" name="sbm" id="genRep" doc_id="{{ doc.id }}" value="Generete Doc"
+                            onclick="generateReport('{{ doc.id }}')"
+                    >{% csrf_token %}<img
                             src="{% static 'img/fill_file.png' %}"/></button>
                 {% endfor %}
             </td>

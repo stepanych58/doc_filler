@@ -18,6 +18,8 @@ from django.urls import path
 from clients.views import *
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.decorators import login_required, permission_required
+
 
 urlpatterns = [
     path('', welcomePage),
@@ -36,5 +38,22 @@ urlpatterns = [
     path('generateReport/', generateReport),
 ]
 
+
+# urlpatterns = [
+#     path('', login_required(welcomePage)),
+#     path('admin/', admin.site.urls),
+#     path('clients/', login_required(allClients)),
+#     path('addClient/', login_required(addClient)),
+#     path('addTemplate/', login_required(addTemplate)),
+#     path('deleteClient/<int:client_id>', login_required(deleteClient)),
+#     path('clientForm/<int:client_id>', login_required(clientForm)),
+#     path('createTestData/', login_required(createTestData)),
+# 	path('clearData/', login_required(clearData)),
+#     path('uploadTemplate/', login_required(uploadTemplate)),
+#     path('templates/', login_required(allTemplates)),
+#     path('test_page/', testPage),
+#     path('clientInfo/<int:client_id>', login_required(clientInfo)),
+#     path('generateReport/', generateReport),
+# ]
 #if settings.DEBUG:
 #    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

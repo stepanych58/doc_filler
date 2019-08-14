@@ -2,11 +2,11 @@ import os
 
 from django.core.files.storage import FileSystemStorage
 from django.forms import inlineformset_factory, modelformset_factory
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
 from mainapp.settings import *
-
+import json
 from .forms import *
 from .utils import *
 
@@ -98,19 +98,23 @@ def deleteGenDoc(gen_doc_id):
 	ClientsFile.objects.get(id = gen_doc_id).delete();
 
 def clientForm(request, client_id):
-	btn = request.POST['sbm']
-	page = request.POST['page']
+	btn = request.POST.get('sbm')
+	page = request.POST.get('page')
 	doc_id = request.POST.get('doc_id')
 	gen_doc_id = request.POST.get('clientf_id')
-	# print(request.POST)
+	if (
+			btn == None and
+			page == None and
+			doc_id == None and
+			gen_doc_id == None
+	):
+		return HttpResponseRedirect('/clients/')
 	if btn == DELETE and page == 'clients':
 		deleteClient(client_id)
 	if btn == DELETE and page == 'templates':
 		deleteTemplate(client_id)
 	if btn == DELETE_GEN_DOC:
 		deleteGenDoc(gen_doc_id)
-	if btn == GENERATE:
-		writeToPdf(client_id, doc_id)
 	return HttpResponseRedirect('/clients/');
 
 def createTestData(request):
@@ -155,16 +159,17 @@ def testPage(request):
 		clientForm = ClientForm()
 	return render(request, 'test_page.html', {'client_form': clientForm,
 											  'page_text_param': '',})
+
 def generateReport(request):
-	if request.method == 'POST':
-		post = request.POST
-		client_ids = post['cl_ids']
-		print(client_ids)
-		# writeToPdf(client_id, doc_id)
+	client_view_params = request.body.decode('utf-8')
+	json_view_params = json.loads(client_view_params)
+	clientids = json_view_params['checkedClients']
+	pdocs = json_view_params['checkedDocs']
+	for client_id in clientids :
+		writeClientDoc(client_id, pdocs[0])
 	return HttpResponseRedirect('/clients/');
 
 def addTemplate(request):
-	# if request.method == 'POST':
 	return render(request, 'addTemplate.html', {'doc_f': modelformset_factory(Document, fields='__all__')})
 
 
