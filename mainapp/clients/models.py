@@ -16,33 +16,42 @@ class Client(models.Model):
 	phone_number = models.CharField(max_length=10, default = '89276976453')
 	email = models.EmailField(max_length=100, default = 'ivan@gmail.com')
 	# class Meta:
-	FAMILY_STATUS_CHOISES = ['not maried', 'maried', 'divorced', 'single/widow']
+	FAMILY_STATUS_CHOISES = [
+		('not maried','not maried1'),
+		('maried','maried1'),
+		('divorced','divorced1'),
+		 ('single/widow','single/widow1'),
+	]
 	family_status = models.CharField(choices=FAMILY_STATUS_CHOISES, max_length=13)
-	EDUCATION_STATUS_CHOISES = [
-		'below the average',
-		'the average',
-		'specialized secondary',
-		'incomplete higher education',
-		'higher',
-		'academic degree'
-	]
-	education_status = models.CharField(choices=EDUCATION_STATUS_CHOISES, max_length=50)
-	ALL_WORK_EXPIREANCE_CHOISES = [
-		'менее 1 года',
-		'1 - 2 года',
-		'2 - 5 лет',
-		'более 5 лет',
-	]
-	POSITION_CATEGORY_CHOISES = [
-		'Руководитель высшего звена',
-		'руководитель среднего сзвена',
-		'специалист',
-		'рабочий',
-		'высококвалифицированный специалист',
-		'руководитель низшего звена',
-		'военносулжащий',
-		'обслуживающий персонал',
-	]
+	# EDUCATION_STATUS_CHOISES = [
+	# 	'below the average',
+	# 	'the average',
+	# 	'specialized secondary',
+	# 	'incomplete higher education',
+	# 	'higher',
+	# 	'academic degree'
+	# ]
+	# education_status = models.CharField(choices=EDUCATION_STATUS_CHOISES, max_length=50)
+	# ALL_WORK_EXPIREANCE_CHOISES = [
+	# 	'менее 1 года',
+	# 	'1 - 2 года',
+	# 	'2 - 5 лет',
+	# 	'более 5 лет',
+	# ]
+	# work_expireance = models.CharField(choices=ALL_WORK_EXPIREANCE_CHOISES, max_length=50)
+	#
+	# POSITION_CATEGORY_CHOISES = [
+	# 	'Руководитель высшего звена',
+	# 	'руководитель среднего сзвена',
+	# 	'специалист',
+	# 	'рабочий',
+	# 	'высококвалифицированный специалист',
+	# 	'руководитель низшего звена',
+	# 	'военносулжащий',
+	# 	'обслуживающий персонал',
+	# ]
+	# position_category = models.CharField(choices=POSITION_CATEGORY_CHOISES, max_length=50)
+#
 # 	unique_together = ('first_name', 'part_name', 'last_name',)
 
 class Document(models.Model):

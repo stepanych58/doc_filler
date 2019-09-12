@@ -171,6 +171,6 @@ def generateReport(request):
         return HttpResponseRedirect('/clients/');
 
 def addTemplate(request):
-	return render(request, 'addTemplate.html', {'doc_f': modelformset_factory(Document, fields='__all__')})
+	return render(request, 'addTemplate.html', {'doc_f': modelformset_factory(Client, fields='__all__')})
 
 
