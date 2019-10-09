@@ -16,33 +16,33 @@ class Client(models.Model):
 	phone_number = models.CharField(max_length=10, default = '89276976453')
 	email = models.EmailField(max_length=100, default = 'ivan@gmail.com')
 	# class Meta:
-	FAMILY_STATUS_CHOISES = ['not maried', 'maried', 'divorced', 'single/widow']
-	family_status = models.CharField(choices=FAMILY_STATUS_CHOISES, max_length=13)
-	EDUCATION_STATUS_CHOISES = [
-		'below the average',
-		'the average',
-		'specialized secondary',
-		'incomplete higher education',
-		'higher',
-		'academic degree'
-	]
-	education_status = models.CharField(choices=EDUCATION_STATUS_CHOISES, max_length=50)
-	ALL_WORK_EXPIREANCE_CHOISES = [
-		'менее 1 года',
-		'1 - 2 года',
-		'2 - 5 лет',
-		'более 5 лет',
-	]
-	POSITION_CATEGORY_CHOISES = [
-		'Руководитель высшего звена',
-		'руководитель среднего сзвена',
-		'специалист',
-		'рабочий',
-		'высококвалифицированный специалист',
-		'руководитель низшего звена',
-		'военносулжащий',
-		'обслуживающий персонал',
-	]
+	FAMILY_STATUS_CHOISES = (('1','not maried'), ('2','maried'))
+	family_status = models.CharField(choices=FAMILY_STATUS_CHOISES, max_length=13, default=FAMILY_STATUS_CHOISES[0])
+	# EDUCATION_STATUS_CHOISES = [
+	# 	'below the average',
+	# 	'the average',
+	# 	'specialized secondary',
+	# 	'incomplete higher education',
+	# 	'higher',
+	# 	'academic degree'
+	# ]
+	# education_status = models.CharField(choices=EDUCATION_STATUS_CHOISES, max_length=50)
+	# ALL_WORK_EXPIREANCE_CHOISES = [
+	# 	'менее 1 года',
+	# 	'1 - 2 года',
+	# 	'2 - 5 лет',
+	# 	'более 5 лет',
+	# ]
+	# POSITION_CATEGORY_CHOISES = [
+	# 	'Руководитель высшего звена',
+	# 	'руководитель среднего сзвена',
+	# 	'специалист',
+	# 	'рабочий',
+	# 	'высококвалифицированный специалист',
+	# 	'руководитель низшего звена',
+	# 	'военносулжащий',
+	# 	'обслуживающий персонал',
+	# ]
 # 	unique_together = ('first_name', 'part_name', 'last_name',)
 
 class Document(models.Model):
@@ -140,37 +140,37 @@ class OrganizationInfo(models.Model):
 	hr_number = models.CharField(max_length=10, default='1345678911')
 	inn_number = models.CharField(max_length=100, default='1345678911')
 	field_of_activity = models.CharField(max_length=100, default='IT')
-	EMPLOYMENT_TYPE_CHOISES = [
-	'hire',
-	'Privte buisness',
-	'lawyer',
-	'notary',
-	'business owner',
+	# EMPLOYMENT_TYPE_CHOISES = [
+	# 'hire',
+	# 'Privte buisness',
+	# 'lawyer',
+	# 'notary',
+	# 'business owner',
 	# ( in this case	indicate	the	size	of	the	share(string)), I
-	'do not work',
-	]
-	INCORPARATION_FORM_CHOISES = [
-		'ООО',
-		'ПАО',
-		'ЗАО\АО',
-		'гос.учреждение',
-		'иное(здесь строка)',
-	]
-	NUMBER_OF_STAFF_CHOISES = [
-		'до 10',
-		'10-100',
-		'101-500',
-		'более 500',
-	]
-	WORK_EXPERIENCE_CHOISES = [
-		'до 4 мес',
-		'4 - 6 мес',
-		'от 6 мес',
-		'до 1 года',
-		'1 - 2 года',
-		'2 - 5 лет',
-		'более 5 лет',
-	]
+	# 'do not work',
+	# ]
+	# INCORPARATION_FORM_CHOISES = [
+	# 	'ООО',
+	# 	'ПАО',
+	# 	'ЗАО\АО',
+	# 	'гос.учреждение',
+	# 	'иное(здесь строка)',
+	# ]
+	# NUMBER_OF_STAFF_CHOISES = [
+	# 	'до 10',
+	# 	'10-100',
+	# 	'101-500',
+	# 	'более 500',
+	# ]
+	# WORK_EXPERIENCE_CHOISES = [
+	# 	'до 4 мес',
+	# 	'4 - 6 мес',
+	# 	'от 6 мес',
+	# 	'до 1 года',
+	# 	'1 - 2 года',
+	# 	'2 - 5 лет',
+	# 	'более 5 лет',
+	# ]
 # class EmployeeIncomeInfo(models.Model):
 # СРЕДНЕМЕСЯЧНЫЙ ДОХОД ЗА ПОСЛЕДНИЕ МЕСЯЦЕВ2 (указывается 6 месяцев; если стаж работы меньше 6 месяцев, указывается
 # фактическое количество месяцев, за которые произведен расчет, и среднемесячный доход за фактически отработанные месяцы):

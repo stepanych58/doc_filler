@@ -157,7 +157,7 @@ def testPage(request):
 		client.save()
 	else:
 		clientForm = ClientForm()
-	return render(request, 'test_page.html', {'client_form': clientForm,
+	return render(request, 'test_page.html', {'client_form': modelformset_factory(Client, fields='__all__'),
 											  'page_text_param': '',})
 
 def generateReport(request):
