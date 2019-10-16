@@ -10,8 +10,8 @@ import json
 from .forms import *
 from .utils import *
 
-#ALL_CLIENTS = Client.objects.all()
-#ALL_DOCS = Document.objects.all()
+# ALL_CLIENTS = Client.objects.all()
+# ALL_DOCS = Document.objects.all()
 
 DELETE = 'Delete'
 GENERATE = 'Generete Doc'
@@ -20,12 +20,14 @@ DELETE_GEN_DOC = 'Delete generated doc'
 view_params = {'all_clients': Client.objects.all(),
 			   'page_title': 'Clients page',
 			   'all_docs': Document.objects.all(),
-			   'test_param':'tp',
-			   'p_table' : 'clients',
-			   'all_clients_files':ClientsFile.objects.all(),}
+			   'test_param': 'tp',
+			   'p_table': 'clients',
+			   'all_clients_files': ClientsFile.objects.all(), }
+
 
 def welcomePage(request):
 	return render(request, 'welcome.html')
+
 
 def allClients(request, test_param="tp"):
 	view_params['all_clients'] = Client.objects.all()
@@ -34,6 +36,7 @@ def allClients(request, test_param="tp"):
 	view_params['p_table'] = 'clients'
 	view_params['page_title'] = 'Clients page'
 	return render(request, 'index.html', view_params);
+
 
 def allTemplates(request):
 	view_params['all_clients'] = Client.objects.all()
@@ -51,13 +54,25 @@ def addClient(request):
 		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 												  'passport_f': PassportForm(),
 												  'snils_f': SNILSForm(),
-												  'client_f': modelformset_factory(Client, fields='__all__'),
+												  'client_f': modelformset_factory(Client, fields='__all__',
+																				   labels={
+																					   'last_name': 'Фамилия',
+																					   'first_name': 'Имя',
+																					   'part_name': 'Отчество',
+																					   'position': 'Должность',
+																					   'phone_number': 'Телефонный номер',
+																					   'family_status': 'Семейное положение',
+																					   'education_status': 'Образование',
+																					   'work_expireance': 'Опыт работы',
+																					   'position_category': 'Категория должности',
+																				   }
+																				   ),
 												  'address_f': AddressForm(),
 												  'postaddress_f': PostAddressForm(),
 												  'bankdetail_f': BankDetailForm(),
 												  'orginfo_f': OrganizationInfoForm(),
 												  })
-	elif sbm =='Add':
+	elif sbm == 'Add':
 		client = ClientForm(post)
 		passport = PassportForm(post)
 		snils = SNILSForm(post)
@@ -66,7 +81,7 @@ def addClient(request):
 		bank_detail = BankDetailForm(post)
 		organization = OrganizationInfoForm(request.POST)
 		if (client.is_valid() and passport.is_valid() and address.is_valid() and bank_detail.is_valid() and
-			snils.is_valid() and organization.is_valid() and post_address.is_valid()):
+				snils.is_valid() and organization.is_valid() and post_address.is_valid()):
 			client = client.save()
 			passport.instance.client = client
 			passport.save()
@@ -85,17 +100,22 @@ def addClient(request):
 				print(errorform.errors)
 	return HttpResponseRedirect('/clients/');
 
+
 def clientInfo(request, client_id):
-	return render(request, 'client.html', {'client': Client.objects.get(id = client_id),})
+	return render(request, 'client.html', {'client': Client.objects.get(id=client_id), })
+
 
 def deleteClient(client_id):
-	Client.objects.get(id = client_id).delete();
+	Client.objects.get(id=client_id).delete();
+
 
 def deleteTemplate(template_id):
-	Document.objects.get(id = template_id).delete();
+	Document.objects.get(id=template_id).delete();
+
 
 def deleteGenDoc(gen_doc_id):
-	ClientsFile.objects.get(id = gen_doc_id).delete();
+	ClientsFile.objects.get(id=gen_doc_id).delete();
+
 
 def clientForm(request, client_id):
 	btn = request.POST.get('sbm')
@@ -117,23 +137,26 @@ def clientForm(request, client_id):
 		deleteGenDoc(gen_doc_id)
 	return HttpResponseRedirect('/clients/');
 
+
 def createTestData(request):
-    create_test_data()
-    return HttpResponseRedirect('/clients/');
+	create_test_data()
+	return HttpResponseRedirect('/clients/');
+
 
 def clearData(request):
-    Client.objects.all().delete()
-    Document.objects.all().delete()
-    return HttpResponseRedirect('/clients/');
+	Client.objects.all().delete()
+	Document.objects.all().delete()
+	return HttpResponseRedirect('/clients/');
+
 
 def uploadTemplate(request):
-	#add logic to save template in certain directory https://www.programcreek.com/python/example/59557/django.core.files.storage.FileSystemStorage
+	# add logic to save template in certain directory https://www.programcreek.com/python/example/59557/django.core.files.storage.FileSystemStorage
 	if request.method == 'POST':
 		uploaded_file = request.FILES['template']
 		tmp_name = request.POST['tmp_name']
 		file_name = os.path.splitext(uploaded_file.name)[0]
 		ext = os.path.splitext(uploaded_file.name)[1]
-		file_name +=ext
+		file_name += ext
 		loc, type = None, None
 		if ext == PDF_EXT:
 			loc, type, res_mes = PDF_TEMPL_DIR, PDF, 'PDF File uploaded';
@@ -151,6 +174,7 @@ def uploadTemplate(request):
 		Document(name=tmp_name, file_name=file_name, file_type=type).save()
 	return HttpResponseRedirect('/clients/');
 
+
 def testPage(request):
 	if request.method == 'POST':
 		client = ClientForm(request.POST)
@@ -158,19 +182,19 @@ def testPage(request):
 	else:
 		clientForm = ClientForm()
 	return render(request, 'test_page.html', {'client_form': modelformset_factory(Client, fields='__all__'),
-											  'page_text_param': '',})
+											  'page_text_param': '', })
+
 
 def generateReport(request):
-        print(request)
-        client_view_params = request.body.decode('utf-8')
-        json_view_params = json.loads(client_view_params)
-        clientids = json_view_params['checkedClients']
-        pdocs = json_view_params['checkedDocs']
-        for client_id in clientids :
-                writeClientDoc(client_id, pdocs[0])
-        return HttpResponseRedirect('/clients/');
+	print(request)
+	client_view_params = request.body.decode('utf-8')
+	json_view_params = json.loads(client_view_params)
+	clientids = json_view_params['checkedClients']
+	pdocs = json_view_params['checkedDocs']
+	for client_id in clientids:
+		writeClientDoc(client_id, pdocs[0])
+	return HttpResponseRedirect('/clients/');
+
 
 def addTemplate(request):
 	return render(request, 'addTemplate.html', {'doc_f': modelformset_factory(Client, fields='__all__')})
-
-

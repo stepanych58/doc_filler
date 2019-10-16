@@ -17,19 +17,19 @@ class Client(models.Model):
 	email = models.EmailField(max_length=100, default = 'ivan@gmail.com')
 	# class Meta:
 	FAMILY_STATUS_CHOISES = [
-		('not maried','not maried'),
-		('maried','maried'),
-		('divorced','divorced'),
-		 ('single/widow','single/widow'),
+		('not maried','не женат/не замужем'),
+		('maried','женат/замужем'),
+		('divorced','в разводе'),
+		 ('single/widow','вдовец/вдова'),
 	]
 	family_status = models.CharField(choices=FAMILY_STATUS_CHOISES, max_length=13, default=FAMILY_STATUS_CHOISES[0])
 	EDUCATION_STATUS_CHOISES = [
-		('below the average'          ,'below the average'          ),
-		('the average'                ,'the average'                ),
-		('specialized secondary'      ,'specialized secondary'      ),
-		('incomplete higher education','incomplete higher education'),
-		('higher'                     ,'higher'                     ),
-		('academic degree'            ,'academic degree'            ),
+		('below the average'          ,'ниже среднего'          ),
+		('the average'                ,'среднее'                ),
+		('specialized secondary'      ,'второе высшее'      ),
+		('incomplete higher education','незаконченное высшее образование'),
+		('higher'                     ,'высшее'                     ),
+		('academic degree'            ,'академическая степень'            ),
 	]
 	education_status = models.CharField(choices=EDUCATION_STATUS_CHOISES, max_length=50, default=EDUCATION_STATUS_CHOISES[0])
 	ALL_WORK_EXPIREANCE_CHOISES = [
