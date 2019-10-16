@@ -51,7 +51,7 @@ def addClient(request):
 		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 												  'passport_f': PassportForm(),
 												  'snils_f': SNILSForm(),
-												  'client_f': ClientForm(),
+												  'client_f': modelformset_factory(Client, fields='__all__'),
 												  'address_f': AddressForm(),
 												  'postaddress_f': PostAddressForm(),
 												  'bankdetail_f': BankDetailForm(),

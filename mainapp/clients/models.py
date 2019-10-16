@@ -17,40 +17,40 @@ class Client(models.Model):
 	email = models.EmailField(max_length=100, default = 'ivan@gmail.com')
 	# class Meta:
 	FAMILY_STATUS_CHOISES = [
-		('not maried','not maried1'),
-		('maried','maried1'),
-		('divorced','divorced1'),
-		 ('single/widow','single/widow1'),
+		('not maried','not maried'),
+		('maried','maried'),
+		('divorced','divorced'),
+		 ('single/widow','single/widow'),
 	]
-	family_status = models.CharField(choices=FAMILY_STATUS_CHOISES, max_length=13)
-	# EDUCATION_STATUS_CHOISES = [
-	# 	'below the average',
-	# 	'the average',
-	# 	'specialized secondary',
-	# 	'incomplete higher education',
-	# 	'higher',
-	# 	'academic degree'
-	# ]
-	# education_status = models.CharField(choices=EDUCATION_STATUS_CHOISES, max_length=50)
-	# ALL_WORK_EXPIREANCE_CHOISES = [
-	# 	'менее 1 года',
-	# 	'1 - 2 года',
-	# 	'2 - 5 лет',
-	# 	'более 5 лет',
-	# ]
-	# work_expireance = models.CharField(choices=ALL_WORK_EXPIREANCE_CHOISES, max_length=50)
-	#
-	# POSITION_CATEGORY_CHOISES = [
-	# 	'Руководитель высшего звена',
-	# 	'руководитель среднего сзвена',
-	# 	'специалист',
-	# 	'рабочий',
-	# 	'высококвалифицированный специалист',
-	# 	'руководитель низшего звена',
-	# 	'военносулжащий',
-	# 	'обслуживающий персонал',
-	# ]
-	# position_category = models.CharField(choices=POSITION_CATEGORY_CHOISES, max_length=50)
+	family_status = models.CharField(choices=FAMILY_STATUS_CHOISES, max_length=13, default=FAMILY_STATUS_CHOISES[0])
+	EDUCATION_STATUS_CHOISES = [
+		('below the average'          ,'below the average'          ),
+		('the average'                ,'the average'                ),
+		('specialized secondary'      ,'specialized secondary'      ),
+		('incomplete higher education','incomplete higher education'),
+		('higher'                     ,'higher'                     ),
+		('academic degree'            ,'academic degree'            ),
+	]
+	education_status = models.CharField(choices=EDUCATION_STATUS_CHOISES, max_length=50, default=EDUCATION_STATUS_CHOISES[0])
+	ALL_WORK_EXPIREANCE_CHOISES = [
+		('менее 1 года' ,'менее 1 года'),
+		('1 - 2 года'   ,'1 - 2 года'  ),
+		('2 - 5 лет'    ,'2 - 5 лет'   ),
+		('более 5 лет'  ,'более 5 лет' ),
+	]
+	work_expireance = models.CharField(choices=ALL_WORK_EXPIREANCE_CHOISES, max_length=50, default=ALL_WORK_EXPIREANCE_CHOISES[0])
+
+	POSITION_CATEGORY_CHOISES = [
+		('руководитель среднего сзвена',       'руководитель среднего сзвена'       ),
+		('Руководитель высшего звена',         'Руководитель высшего звена'         ),
+		('специалист',                         'специалист'                         ),
+		('рабочий',                            'рабочий'                            ),
+		('высококвалифицированный специалист', 'высококвалифицированный специалист' ),
+		('руководитель низшего звена',         'руководитель низшего звена'         ),
+		('военносулжащий',                     'военносулжащий'                     ),
+		('обслуживающий персонал',             'обслуживающий персонал'             ),
+	]
+	position_category = models.CharField(choices=POSITION_CATEGORY_CHOISES, max_length=50, default= POSITION_CATEGORY_CHOISES[0])
 #
 # 	unique_together = ('first_name', 'part_name', 'last_name',)
 
