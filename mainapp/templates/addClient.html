@@ -2,6 +2,7 @@
 <form action="/addClient/" method="POST">{% csrf_token %}
     <h1>ФИО</h1>
     {{ client_f.as_p }}
+    {{ additional_client_info_f.as_p }}
     <h3>Паспорт</h3>
     {{ passport_f.as_p }}
     <h3>СНИЛС</h3>

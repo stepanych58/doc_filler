@@ -71,6 +71,7 @@ def addClient(request):
 												  'postaddress_f': PostAddressForm(),
 												  'bankdetail_f': BankDetailForm(),
 												  'orginfo_f': OrganizationInfoForm(),
+												  'additional_client_info_f': modelformset_factory(AdditionalClientInfo, fields='__all__'),
 												  })
 	elif sbm == 'Add':
 		client = ClientForm(post)
