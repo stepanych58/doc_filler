@@ -178,6 +178,11 @@ class OrganizationInfo(models.Model):
 
 
 class AdditionalClientInfo(models.Model):
+	client = models.OneToOneField(
+		Client,
+		on_delete=models.CASCADE,
+		primary_key=True
+	)
 	СREDIT_TYPE_CHOISES = [
 		('1', 'готовое жилье'),
 		('2', 'рефинансирование'),

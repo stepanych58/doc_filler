@@ -7,40 +7,6 @@ class UploadTemplateForm(forms.Form):
     template = forms.FileField(label = 'Choose template');
 
 #todo try to use inlineformset_factory instead form class for each object type
-class ClientForm(forms.ModelForm):
-     class Meta:
-         model = Client
-         labels = {
-             'last_name': 'Фамилия',
-             'first_name':'Имя',
-             'part_name':'Отчество',
-             'position':'Должность',
-         }
-         fields = [
-             'last_name',
-             'first_name',
-             'part_name',
-             'position',
-         ]
-
-class PassportForm(forms.ModelForm):
-    class Meta:
-        model = Passport
-        labels = {
-            'serial': 'Серия',
-            'number': 'Номер',
-            '_from': 'Кем выдан',
-            'gender': 'пол',
-            'bith_day': 'Дата рождения',
-            'bith_place': 'Место рождения',
-        }
-        fields = ['serial',
-                  'number',
-                  '_from',
-                  'gender',
-                  'bith_day',
-                  'bith_place',
-                  ]
 
 class SNILSForm(forms.ModelForm):
     class Meta:

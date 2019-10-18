@@ -77,13 +77,21 @@ def addClient(request):
 																								   fields='__all__'),
 												  })
 	elif sbm == 'Add':
-		print('stbe addd!!!!')
-		formset = client_form_set(data=request.POST)
-		print('formset.is_valid()')
-		print(formset.is_valid())
+		clientForm = client_form_set(data=request.POST)
+		# snilsForm = snils_factory(data=request.POST,)
+		# addressForm = address_factory(data=request.POST)
+		# post_addressForm = post_address_factory(data=request.POST)
+		# organizationForm = organization_factory(data=request.POST)
+		# bank_detailForm = bank_detail_factory(data=request.POST)
 
-		if formset.is_valid():
-			formset.save()
+		if clientForm.is_valid():
+			clientForm.save()
+			# snilsForm.save()
+			# addressForm.save()
+			# post_addressForm.save()
+			# organizationForm.save()
+			# bank_detailForm.save()
+
 	return HttpResponseRedirect('/clients/');
 
 
