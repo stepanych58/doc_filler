@@ -1,7 +1,7 @@
 import os
 
 from django.core.files.storage import FileSystemStorage
-from django.forms import inlineformset_factory, modelformset_factory
+from django.forms import inlineformset_factory, modelformset_factory, modelform_factory
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
@@ -52,12 +52,12 @@ def addClient(request):
 	sbm = post['sbm']
 	print(sbm)
 	client_form_set = modelformset_factory(Client, fields='__all__',
-										   labels={'last_name': 'Фамилия', 'first_name': 'Имя', 'part_name': 'Отчество',
-												   'position': 'Должность', 'phone_number': 'Телефонный номер',
-												   'family_status': 'Семейное положение',
-												   'education_status': 'Образование',
-												   'work_expireance': 'Опыт работы',
-												   'position_category': 'Категория должности', })
+										   labels={'last_name': 'Фамилия',
+												   'first_name': 'Имя',
+												   'part_name': 'Отчество',
+												   'position': 'Должность',
+												   'phone_number': 'Телефонный номер',
+												   'email': 'Email', })
 	passport_factory = modelformset_factory(Passport, fields='__all__')
 	snils_factory = modelformset_factory(SNILS, fields='__all__')
 	address_factory = modelformset_factory(Address, fields='__all__')
