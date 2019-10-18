@@ -40,7 +40,7 @@ class Client(models.Model):
 	part_name = models.CharField(max_length=30, default='Иванович')
 	last_name = models.CharField(max_length=30, default='Иванов')
 	position = models.CharField(max_length=300, default='Инженер')
-	phone_number = models.CharField(max_length=10, default='89276976453')
+	phone_number = models.CharField(max_length=12, default='89276976453')
 	email = models.EmailField(max_length=100, default='ivan@gmail.com')
 
 
