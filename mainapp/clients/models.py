@@ -74,8 +74,10 @@ class Passport(models.Model):
 	number = models.CharField(max_length=6, default="000000")
 	_from = models.CharField(max_length=200, default="отделом ФМС")
 	gender = models.CharField(max_length=5, default="м")
-	date_of = models.DateField(default="1999-01-01")
+	birthday = models.DateField(default="1999-01-01")
 	place_of = models.CharField(max_length=200, default="", blank=True)
+	# date_of = models.DateFiled()
+	# code_of #podrazdelenie
 
 	class Meta:
 		unique_together = ('client', 'serial', 'number',)
@@ -107,7 +109,8 @@ class Address(models.Model):
 	housing = models.CharField(max_length=6, default="", blank=True)
 	structure = models.CharField(max_length=6, default="", blank=True)
 	flat = models.CharField(max_length=6, default="25", blank=True)
-
+	# oblast
+	# rayon
 
 class PostAddress(models.Model):
 	index = models.CharField(max_length=6, default="446100")
