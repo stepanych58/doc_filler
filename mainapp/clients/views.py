@@ -46,59 +46,44 @@ def allTemplates(request):
 	view_params['page_title'] = 'Templates page'
 	return render(request, 'index.html', view_params);
 
+
 def addClient(request):
 	post = request.POST
 	sbm = post['sbm']
 	print(sbm)
+	client_form_set = modelformset_factory(Client, fields='__all__',
+										   labels={'last_name': 'Фамилия', 'first_name': 'Имя', 'part_name': 'Отчество',
+												   'position': 'Должность', 'phone_number': 'Телефонный номер',
+												   'family_status': 'Семейное положение',
+												   'education_status': 'Образование',
+												   'work_expireance': 'Опыт работы',
+												   'position_category': 'Категория должности', })
+	passport_factory = modelformset_factory(Passport, fields='__all__')
+	snils_factory = modelformset_factory(SNILS, fields='__all__')
+	address_factory = modelformset_factory(Address, fields='__all__')
+	post_address_factory = modelformset_factory(PostAddress, fields='__all__')
+	organization_factory = modelformset_factory(BankDetail, fields='__all__')
+	bank_detail_factory = modelformset_factory(OrganizationInfo, fields='__all__')
 	if sbm == 'Add Client':
 		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
-												  'passport_f': PassportForm(),
-												  'snils_f': SNILSForm(),
-												  'client_f': modelformset_factory(Client, fields='__all__',
-																				   labels={
-																					   'last_name': 'Фамилия',
-																					   'first_name': 'Имя',
-																					   'part_name': 'Отчество',
-																					   'position': 'Должность',
-																					   'phone_number': 'Телефонный номер',
-																					   'family_status': 'Семейное положение',
-																					   'education_status': 'Образование',
-																					   'work_expireance': 'Опыт работы',
-																					   'position_category': 'Категория должности',
-																				   }
-																				   ),
-												  'address_f': AddressForm(),
-												  'postaddress_f': PostAddressForm(),
-												  'bankdetail_f': BankDetailForm(),
-												  'orginfo_f': OrganizationInfoForm(),
-												  'additional_client_info_f': modelformset_factory(AdditionalClientInfo, fields='__all__'),
+												  'passport_f': passport_factory,
+												  'snils_f': snils_factory,
+												  'client_f': client_form_set,
+												  'address_f': address_factory,
+												  'postaddress_f': post_address_factory,
+												  'bankdetail_f': bank_detail_factory,
+												  'orginfo_f': organization_factory,
+												  'additional_client_info_f': modelformset_factory(AdditionalClientInfo,
+																								   fields='__all__'),
 												  })
 	elif sbm == 'Add':
-		client = ClientForm(post)
-		passport = PassportForm(post)
-		snils = SNILSForm(post)
-		address = AddressForm(post)
-		post_address = PostAddressForm(post)
-		bank_detail = BankDetailForm(post)
-		organization = OrganizationInfoForm(request.POST)
-		if (client.is_valid() and passport.is_valid() and address.is_valid() and bank_detail.is_valid() and
-				snils.is_valid() and organization.is_valid() and post_address.is_valid()):
-			client = client.save()
-			passport.instance.client = client
-			passport.save()
-			snils.instance.client = client
-			# todo dont add existing addresses in table
-			address = address.save()
-			post_address = post_address.save()
-			bank_detail = bank_detail.save()
-			organization.instance.client = client
-			organization.instance.address = address
-			organization.instance.bank_detail = bank_detail
-			organization.instance.post_address = post_address
-			organization.save()
-		else:
-			for errorform in (client, passport, snils, address, bank_detail, organization):
-				print(errorform.errors)
+		print('stbe addd!!!!')
+		formset = client_form_set(data=request.POST)
+		print('formset.is_valid()')
+		print(formset.is_valid())
+
+		if formset.is_valid():
+			formset.save()
 	return HttpResponseRedirect('/clients/');
 
 

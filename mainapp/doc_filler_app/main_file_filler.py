@@ -143,10 +143,10 @@ class AlfaAnketa:
         read['str13'] = 'снилс'
         read['str14'] = 'инн'
         read['str15'] = 'фио при изменении'
-        read['str16'] = 'серия номер паспорта'
-        read['str17'] = 'дата выдачи'
+        read['str16'] = client.passport.serial + ' ' + client.passport.number #'серия номер паспорта'
+        read['str17'] = client.passport.date_of #'дата выдачи'
         read['str18'] = 'код подразделения'
-        read['str19'] = 'кем выдан'
+        read['str19'] = client.passport._from #'кем выдан'
         read['str20'] = 'адрес регистрации'
         read['str21'] = 'адрес проживания'  #lj,bnm
         read['str22'] = 'мобильный'
@@ -224,7 +224,7 @@ class VTBAnketa:
         checkboxes['Check Box 107'] = '/Yes' #в разводе
         checkboxes['Check Box 108'] = '/Yes' #вдовец\вдова
         checkboxes['Check Box 109'] = '/Yes' #гражданский брак
-        checkboxes['Check Box 110'] = '/Yes' #ъолост\не замужем
+        checkboxes['Check Box 110'] = '/Yes' #холост\не замужем
 
 ##        Брачный договор
         checkboxes['Check Box 111'] = '/Yes' # есть
