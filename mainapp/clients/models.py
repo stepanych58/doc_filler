@@ -74,8 +74,10 @@ class Passport(models.Model):
 	number = models.CharField(max_length=6, default="000000")
 	_from = models.CharField(max_length=200, default="отделом ФМС")
 	gender = models.CharField(max_length=5, default="м")
-	bith_day = models.DateField(default="1999-01-01")
-	bith_place = models.CharField(max_length=200, default="", blank=True)
+	birthday = models.DateField(default="1999-01-01")
+	place_of = models.CharField(max_length=200, default="", blank=True)
+	# date_of = models.DateFiled()
+	# code_of #podrazdelenie
 
 	class Meta:
 		unique_together = ('client', 'serial', 'number',)
@@ -107,7 +109,8 @@ class Address(models.Model):
 	housing = models.CharField(max_length=6, default="", blank=True)
 	structure = models.CharField(max_length=6, default="", blank=True)
 	flat = models.CharField(max_length=6, default="25", blank=True)
-
+	# oblast
+	# rayon
 
 class PostAddress(models.Model):
 	index = models.CharField(max_length=6, default="446100")
@@ -205,7 +208,7 @@ class AdditionalClientInfo(models.Model):
 		('not maried', 'не женат/не замужем'),
 		('maried', 'женат/замужем'),
 		('divorced', 'в разводе'),
-		('single/widow', 'вдовец/вдова'),
+		('single/widow', 'вдовец/вдова')
 	]
 	family_status = models.CharField(choices=FAMILY_STATUS_CHOISES, max_length=13, default=FAMILY_STATUS_CHOISES[0])
 	EDUCATION_STATUS_CHOISES = [

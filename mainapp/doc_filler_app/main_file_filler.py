@@ -140,13 +140,13 @@ class AlfaAnketa:
         read['str10'] = 'дата рождения'
         read['str11'] = 'гражданство'
         read['str12'] = 'место рождения'
-        read['str13'] = 'снилс'
-        read['str14'] = 'инн'
+        read['str13'] = client.snils #'снилс'
+        read['str14'] = client.inn #inn
         read['str15'] = 'фио при изменении'
-        read['str16'] = 'серия номер паспорта'
+        read['str16'] = client.passport.serial + ' ' + client.passport.number #'серия номер паспорта'
         read['str17'] = 'дата выдачи'
         read['str18'] = 'код подразделения'
-        read['str19'] = 'кем выдан'
+        read['str19'] = client.passport._from #'кем выдан'
         read['str20'] = 'адрес регистрации'
         read['str21'] = 'адрес проживания'  #lj,bnm
         read['str22'] = 'мобильный'
@@ -184,7 +184,6 @@ class VTBAnketa:
         read = reads.getFormTextFields()
         checkboxes = reads.getFields()
 
-        
 
 ##        дефолтные значения ne menyat
         read['Text Field 490'] = ' '        #fio esli menyalos
@@ -224,7 +223,7 @@ class VTBAnketa:
         checkboxes['Check Box 107'] = '/Yes' #в разводе
         checkboxes['Check Box 108'] = '/Yes' #вдовец\вдова
         checkboxes['Check Box 109'] = '/Yes' #гражданский брак
-        checkboxes['Check Box 110'] = '/Yes' #ъолост\не замужем
+        checkboxes['Check Box 110'] = '/Yes' #холост\не замужем
 
 ##        Брачный договор
         checkboxes['Check Box 111'] = '/Yes' # есть
@@ -336,18 +335,18 @@ class VTBAnketa:
         read['Text Field 470'] = 'stepen rodstva s zaemschikom'
         read['Text Field 471'] = client.last_name + ' ' + client.first_name + \
                                  ' ' + client.part_name
-        read['Text Field 472'] = 'дата рождения'
-        read['Text Field 474'] = 'snils'
-        read['Text Field 476'] = 'INN'
+        read['Text Field 472'] = client.passport.gender #male/female
+        read['Text Field 474'] = client.snils #'snils'
+        read['Text Field 476'] = client.inn #'INN'
         read['Text Field 477'] = 'index'
-        read['Text Field 478'] = 'strana'
+        read['Text Field 478'] = 'РФ'
         read['Text Field 479'] = 'oblast'
         read['Text Field 480'] = 'rayon'
-        read['Text Field 481'] = 'naselenny punkt'
-        read['Text Field 482'] = 'street'
-        read['Text Field 483'] = 'number of home'
+        read['Text Field 481'] = client.address.city #'naselenny punkt'
+        read['Text Field 482'] = client.address.street #'street'
+        read['Text Field 483'] = client.address.buildingNumber #'number of home'
         read['Text Field 484'] = 'korpus'
-        read['Text Field 485'] = 'flat'
+        read['Text Field 485'] = client.address.flat #'flat'
         read['Text Field 486'] = 'phone'
         read['Text Field 487'] = 'home phone reg'
         read['Text Field 488'] = 'home phone prozhivanie'
