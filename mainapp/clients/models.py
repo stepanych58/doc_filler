@@ -75,9 +75,8 @@ class Passport(models.Model):
 	_from = models.CharField(max_length=200, default="отделом ФМС")
 	gender = models.CharField(max_length=5, default="м")
 	birthday = models.DateField(default="1999-01-01")
-	place_of = models.CharField(max_length=200, default="", blank=True)
-	# date_of = models.DateFiled()
-	# code_of #podrazdelenie
+	# date_of = models.DateFiled(default="1999-01-01")
+	code_of = models.CharField(max_length=8, default="344-222")
 
 	class Meta:
 		unique_together = ('client', 'serial', 'number',)
@@ -109,8 +108,8 @@ class Address(models.Model):
 	housing = models.CharField(max_length=6, default="", blank=True)
 	structure = models.CharField(max_length=6, default="", blank=True)
 	flat = models.CharField(max_length=6, default="25", blank=True)
-	# oblast
-	# rayon
+	oblast = models.CharField(max_length=200, default="Самарская обл.", blank=True)
+	rayon = models.CharField(max_length=200, default="Волжский р-он.", blank=True)
 
 class PostAddress(models.Model):
 	index = models.CharField(max_length=6, default="446100")
@@ -120,6 +119,8 @@ class PostAddress(models.Model):
 	housing = models.CharField(max_length=6, default="", blank=True)
 	structure = models.CharField(max_length=6, default="", blank=True)
 	flat = models.CharField(max_length=6, default="25", blank=True)
+	oblast = models.CharField(max_length=200, default="Самарская обл.", blank=True)
+	rayon = models.CharField(max_length=200, default="Волжский р-он.", blank=True)
 
 
 class BankDetail(models.Model):

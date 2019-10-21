@@ -50,7 +50,6 @@ def allTemplates(request):
 def addClient(request):
 	post = request.POST
 	sbm = post['sbm']
-	print(sbm)
 	client_form_set = modelformset_factory(Client, fields='__all__',
 										   labels={'last_name': 'Фамилия',
 												   'first_name': 'Имя',
@@ -58,12 +57,86 @@ def addClient(request):
 												   'position': 'Должность',
 												   'phone_number': 'Телефонный номер',
 												   'email': 'Email', })
-	passport_factory = modelformset_factory(Passport, fields='__all__')
-	snils_factory = modelformset_factory(SNILS, fields='__all__')
-	address_factory = modelformset_factory(Address, fields='__all__')
-	post_address_factory = modelformset_factory(PostAddress, fields='__all__')
-	organization_factory = modelformset_factory(BankDetail, fields='__all__')
-	bank_detail_factory = modelformset_factory(OrganizationInfo, fields='__all__')
+	passport_factory = modelform_factory(Passport, fields=['serial', 'number', '_from', 'gender', 'birthday',
+														   'code_of', ],
+										 labels={'serial': 'Серия',
+												 'number': 'Номер',
+												 '_from': 'Кем выдан',
+												 'gender': 'пол',
+												 'birthday': 'Дата рождения',
+												 # 'date_of': 'Дата выдачи',
+												 'code_of': 'Код подразделения',
+												 }
+										 )
+	snils_factory = modelform_factory(SNILS, fields=['snils_number'], labels={'snils_number': 'Номер №'})
+	address_factory = modelform_factory(Address, fields=['index',
+														 'city',
+														 'street',
+														 'buildingNumber',
+														 'housing',
+														 'structure',
+														 'flat',
+														 'oblast',
+														 'rayon', ],
+										labels={
+											'index': 'Индекс',
+											'city': 'Город',
+											'street': 'Улица',
+											'buildingNumber': 'номер дома',
+											'housing': 'корпус',
+											'structure': 'строение',
+											'flat': 'квартира',
+											'oblast': 'Область',
+											'rayon': 'район',
+										}
+										)
+	post_address_factory = modelform_factory(PostAddress, fields=['index',
+																  'city',
+																  'street',
+																  'buildingNumber',
+																  'housing',
+																  'structure',
+																  'flat',
+																  'oblast',
+																  'rayon', ],
+											 labels={
+												 'index': 'Индекс',
+												 'city': 'Город',
+												 'street': 'Улица',
+												 'buildingNumber': 'номер дома',
+												 'housing': 'корпус',
+												 'structure': 'строение',
+												 'flat': 'квартира',
+												 'oblast': 'Область',
+												 'rayon': 'район',
+											 })
+	bank_detail_factory = modelform_factory(BankDetail, fields=['account_number',
+																 'correspondent_account_number',
+																 'bic',
+																 'bank_name', ],
+											 labels={
+												 'account_number': 'Номер счета',
+												 'correspondent_account_number': 'Номер Корреспондентского счета',
+												 'bic': 'БИК',
+												 'bank_name': 'Название банка',
+											 })
+	organization_factory = modelform_factory(OrganizationInfo, fields=['full_name',
+																	  'accountent_number',
+																	  'hr_number',
+																	  'inn_number',
+																	  'field_of_activity',
+																	  'incorparation_form',
+																	  'number_of_staff',
+																	  'work_experience', ],
+											labels={'full_name': 'Полное имя организации',
+													'accountent_number': 'Номер счета',
+													'hr_number': 'Номер отдела кадров',
+													'inn_number': 'ИНН',
+													'field_of_activity': 'Должность',
+													'incorparation_form': 'Сфера деятельности организации',
+													'number_of_staff': 'Количество сотрудников',
+													'work_experience': 'Опыт работы', }
+											)
 	if sbm == 'Add Client':
 		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 												  'passport_f': passport_factory,
@@ -77,21 +150,35 @@ def addClient(request):
 																								   fields='__all__'),
 												  })
 	elif sbm == 'Add':
-		clientForm = client_form_set(data=request.POST)
-		# snilsForm = snils_factory(data=request.POST,)
-		# addressForm = address_factory(data=request.POST)
-		# post_addressForm = post_address_factory(data=request.POST)
-		# organizationForm = organization_factory(data=request.POST)
-		# bank_detailForm = bank_detail_factory(data=request.POST)
+		client = client_form_set(data=request.POST)
+		passport = passport_factory(data=request.POST)
+		snils = snils_factory(data=request.POST)
+		address = address_factory(data=request.POST)
+		post_address = post_address_factory(data=request.POST)
+		organization = organization_factory(data=request.POST)
+		bank_detail = bank_detail_factory(data=request.POST)
 
-		if clientForm.is_valid():
-			clientForm.save()
-			# snilsForm.save()
-			# addressForm.save()
-			# post_addressForm.save()
-			# organizationForm.save()
-			# bank_detailForm.save()
+		if (client.is_valid() and passport.is_valid() and address.is_valid() and bank_detail.is_valid() and
+				snils.is_valid() and organization.is_valid() and post_address.is_valid()):
+			client = client.save().__getitem__(0)
+			passport.instance.client = client
+			passport.save()
+			snils.instance.client = client
+			# todo dont add existing addresses in table
+			address = address.save()
+			post_address = post_address.save()
 
+			print("post_address: " + str(post_address))
+			bank_detail = bank_detail.save()
+			organization.instance.client = client
+			organization.instance.address = address
+			organization.instance.bank_detail = bank_detail
+			organization.instance.post_address = post_address
+			print("organization.is_valid(): " + str(organization))
+			organization.save()
+		else:
+			for errorform in (client, passport, snils, address, bank_detail, organization):
+				print(errorform.errors)
 	return HttpResponseRedirect('/clients/');
 
 
