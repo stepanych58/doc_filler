@@ -504,5 +504,79 @@ class DomRF_Ipoteca:
         inpt.close()
         outpt.close()
 
+class GazpromAnket:
+    
+    def write(client, doc):
 
+        path_in_file = os.path.join(PDF_TEMPLATE_DIR, doc.file_name)
+        inpt = open(path_in_file, 'rb')
+        clients_file_name = str(client.first_name) + ' ' + str(client.last_name) + \
+                            '_' + str(doc.file_name)  # date or time
+        p_file_path = os.path.join(PDF_GENERATED_RESULT_DIR, clients_file_name)
+
+
+        
+        reads = PdfFileReader(inpt)
+        read = reads.getFormTextFields()
+        checkboxes = reads.getFields()
+##        checkboxes['chk0'] = '/Yes'
+        read['gText1'] = 'Наименование компании-партнёра'
+        read['gText2'] = 'ФИО сотрудника компании-партнёра'
+        read['gText3'] = 'email@email.com'
+        read['Text1'] = read['Text28'] = 'Фамилия'#client.last_name
+        read['Text2'] = 'Имя' #client.first_name
+        read['Text3'] = 'Отчество' #client.part_name
+##        read['Text28'] = client.first_name + client.part_name
+        read['gNum1'] = 9379373737 #телефон партнера
+        read['Num1'] = 99999 #запрашиваемая сумма кредита
+        read['Num2'] = 122 #количество месяцев срок кредита
+        read['Num3'] = 99999 #Предваритаельная стоимость жилья
+        read['Text32'] = 'РФ'
+        read['Text7'] = 'РФ'
+        read['Text8'] = 'oblast'
+        read['Text9'] = 'rayon'
+        read['Num33'] = 'номер квартиры' #client.address.flat
+        read['Text33'] = 'ulitsa'#client.address.street
+        read['Num32'] = 123#client.address.buildingNumber
+        read['Text44'] = 44 #client.address korpus ??
+        read['Text35'] = 'gorod' #client.address.city
+        read['Num6'] = 433 #client.address.flat
+        read['Num4'] = 443531 #client.address.index ??
+        read['Num7'] = 9061264537 #stacion telefon
+        read['email'] = 'email@email.com' #client.email
+        read['Num14'] = 9061264536 #client.phone_number
+        read['Text20'] = 'nameOfOrganiz' #client.OrganizationInfo.full_name
+        read['Text21'] = 'address_of_jobs' #client.OrganizationInfo.address
+        read['Num17'] = 'inn' #client.OrganizationInfo.inn_number
+        read['Num18'] = 45523455549 #client.OrganizationInfo.hr_number
+        read['Num19'] = 45523455548 #client.OrganizationInfo.phoneJob ??
+        # рабочий телефон
+        read['Num20'] = 99 # stazh v godah in organization
+        read['Num21'] = 11 #stazh v month in organization
+        read['Num22'] = 24 #full stazh in years
+        read['Num23'] = 11 #full stazh in months
+        read['Num24'] = 555555 #client.AdditionalClientInfo.average_income
+        read['Num25'] = 12222 #client.AdditionalClinetInfo.aliment
+        read['Num26'] = 222222 #client.AdditionalClinetInfo.monetary_obligations
+        read['Num27'] = 3608 #client.passport.serial
+        read['Num28'] = 128333 #client.passport.number
+        read['Num29'] = 640 #str(clent.passport.code_of)[:3]
+        read['Num30'] = 128 #str(client.passport.code_of)[4:]
+        read['Text31'] = '' #пока так дальше видно будет
+        
+        
+        
+
+        
+        outpt = open(out, 'wb')
+        write = PdfFileWriter()
+        set_need_appearances_writer(write)
+        for i in range(reads.getNumPages() - 1):   #пока хз почему
+            write.addPage(reads.getPage(i))
+            updateCheckboxValues(reads.getPage(i), checkboxes)
+            write.updatePageFormFieldValues(reads.getPage(i),read)
+        
+        write.write(outpt)
+        inpt.close()
+        outpt.close()
 
