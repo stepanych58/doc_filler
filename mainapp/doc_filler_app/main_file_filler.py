@@ -426,3 +426,83 @@ class VTBAnketa:
         write.write(outpt)
         inpt.close()
         outpt.close()
+
+class DomRF_Ipoteca:
+    def write(client, doc):
+        p_client = client
+        p_doc = doc
+        organization = p_client.organizationinfo
+        organization_address = organization.address
+        organization_postaddress = organization.post_address
+        organization_bank_detail = organization.bank_detail
+        clients_file_name = str(p_client.first_name) + ' ' + \
+                            str(p_client.last_name) + '_' + str(
+            p_doc.file_name)  # date or time
+        p_file_path = ''
+        if p_doc.file_type == 'pdf':
+            p_file_path = os.path.join(PDF_GENERATED_RESULT_DIR, clients_file_name)
+        client_file = ClientsFile(client=p_client, file_path=p_file_path)
+        client_file.save()
+        path_in_file = os.path.join(PDF_TEMPLATE_DIR, p_doc.file_name)
+        path_out_file = p_file_path
+        inpt = open(path_in_file, 'rb')
+        reads = PdfFileReader(inpt)
+        read = reads.getFormTextFields()
+        Page = reads.getPage(0)
+        for i, value in Page.items():
+            #1Роль Заявителя в предполагаемой сделке
+
+            #2Параметры запрашиваемого кредита
+            #сумма кредита
+            #срок кредита
+            #read['Text Field 5424']
+            read['Text Field 5427'] = p_client.last_name
+            read['Text Field 5428'] = p_client.first_name
+            read['Text Field 5429'] = p_client.part_name
+            #Личные Данные заявителя
+            read['Text Field 5569'] = p_client.last_name
+            read['Text Field 5570'] = p_client.first_name
+            read['Text Field 5571'] = p_client.part_name
+            read['Text Field 5572'] = p_client.part_name#дата рождения
+            #Предыдущие Ф.И.О.
+            read['Text Field 5572'] = p_client.last_name
+            read['Text Field 5573'] = p_client.first_name
+            read['Text Field 5574'] = p_client.part_name
+
+            #Паспортные данные
+
+            # Организация
+            read['1_2'] = organization.full_name
+            read['fill_11'] = organization_address.index
+            read['fill_12'] = organization_address.city
+            read['undefined_6'] = organization_address.street
+            read['fill_14'] = organization_address.buildingNumber
+            read['fill_15'] = organization_address.housing
+            read['fill_16'] = organization_address.structure
+            read['fill_17'] = organization_address.flat
+            read['fill_25'] = organization.accountent_number
+            read['undefined_8'] = organization.hr_number
+            read['undefined_9'] = organization.inn_number
+            read['fill_28'] = organization_bank_detail.account_number
+            read['fill_29'] = organization_bank_detail.correspondent_account_number
+            read['fill_30'] = organization_bank_detail.bic
+            read['fill_31'] = organization_bank_detail.bank_name
+            # почтовый адрес
+            read['fill_18'] = organization_postaddress.index
+            read['fill_19'] = organization_postaddress.city
+            read['undefined_7'] = organization_postaddress.street
+            read['fill_21'] = organization_postaddress.buildingNumber
+            read['fill_22'] = organization_postaddress.housing
+            read['fill_23'] = organization_postaddress.structure
+            read['fill_24'] = organization_postaddress.flat
+        outpt = open(path_out_file, 'wb')
+        write = PdfFileWriter()
+        set_need_appearances_writer(write)
+        write.addPage(Page)
+        write.updatePageFormFieldValues(Page, read)
+        write.write(outpt)
+        inpt.close()
+        outpt.close()
+
+
+

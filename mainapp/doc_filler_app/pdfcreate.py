@@ -1,6 +1,8 @@
 from PyPDF2 import PdfFileWriter, PdfFileReader  #Необходимо докачать pip'oм
 from PyPDF2.generic import BooleanObject, NameObject, IndirectObject
-
+import os
+file_name = "out_ids.txt"
+sfile = open(file_name,"a") 
 l1st = ["Саленый Дмитрий Алексеевич, близкий",'999999999', "3", "0", "2500000",
         "ну тут хз", "Бали", "Берендяев", "Степан", "Владимирович",
         "23011996", "РФ", "Лос-Анджелес", "11223442222", "212121211212"
@@ -35,9 +37,16 @@ def writeAlfa(l1st, ankteta, out):
     inpt = open(anketa, 'rb')
     reads = PdfFileReader(inpt)
     read = reads.getFormTextFields()
-    for i in range(len(l1st)):
-        read['str' + str(i)] = l1st[i]
-        
+    iterator = 0
+    sfile.write(str(read))
+    for i in read:
+        #read[i] = str(iterator)
+        read[i] = str(i)
+        iterator +=1
+        #print(read[str(i)])
+        #read['str' + str(i)] = l1st[i]
+    #read['Text Field 5424'] = '4'
+    print(iterator)
     outpt = open(out, 'wb')
     write = PdfFileWriter()
     set_need_appearances_writer(write)
@@ -51,7 +60,7 @@ def writeAlfa(l1st, ankteta, out):
 
 
 if __name__ == "__main__":
-    anketa = 'Анкета + СОПД новая.pdf'
+    anketa = 'dom_rf_ipoteca.pdf'
     out = '2.pdf'
 
     writeAlfa(l1st, anketa,out)

@@ -319,7 +319,6 @@ def testPage(request):
 	return render(request, 'test_page.html', {'client_form': modelformset_factory(Client, fields='__all__'),
 											  'page_text_param': '', })
 
-
 def generateReport(request):
 	print(request)
 	client_view_params = request.body.decode('utf-8')
