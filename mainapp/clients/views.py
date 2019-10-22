@@ -50,7 +50,7 @@ def allTemplates(request):
 def addClient(request):
 	post = request.POST
 	sbm = post['sbm']
-	client_form_set = modelformset_factory(Client, fields='__all__',
+	client_form_set = modelform_factory(Client, fields='__all__',
 										   labels={'last_name': 'Фамилия',
 												   'first_name': 'Имя',
 												   'part_name': 'Отчество',
@@ -111,32 +111,87 @@ def addClient(request):
 												 'rayon': 'район',
 											 })
 	bank_detail_factory = modelform_factory(BankDetail, fields=['account_number',
-																 'correspondent_account_number',
-																 'bic',
-																 'bank_name', ],
-											 labels={
-												 'account_number': 'Номер счета',
-												 'correspondent_account_number': 'Номер Корреспондентского счета',
-												 'bic': 'БИК',
-												 'bank_name': 'Название банка',
-											 })
+																'correspondent_account_number',
+																'bic',
+																'bank_name', ],
+											labels={
+												'account_number': 'Номер счета',
+												'correspondent_account_number': 'Номер Корреспондентского счета',
+												'bic': 'БИК',
+												'bank_name': 'Название банка',
+											})
 	organization_factory = modelform_factory(OrganizationInfo, fields=['full_name',
-																	  'accountent_number',
-																	  'hr_number',
-																	  'inn_number',
-																	  'field_of_activity',
-																	  'incorparation_form',
-																	  'number_of_staff',
-																	  'work_experience', ],
-											labels={'full_name': 'Полное имя организации',
-													'accountent_number': 'Номер счета',
-													'hr_number': 'Номер отдела кадров',
-													'inn_number': 'ИНН',
-													'field_of_activity': 'Должность',
-													'incorparation_form': 'Сфера деятельности организации',
-													'number_of_staff': 'Количество сотрудников',
-													'work_experience': 'Опыт работы', }
-											)
+																	   'accountent_number',
+																	   'hr_number',
+																	   'inn_number',
+																	   'field_of_activity',
+																	   'incorparation_form',
+																	   'number_of_staff',
+																	   'work_experience', ],
+											 labels={'full_name': 'Полное имя организации',
+													 'accountent_number': 'Номер счета',
+													 'hr_number': 'Номер отдела кадров',
+													 'inn_number': 'ИНН',
+													 'field_of_activity': 'Должность',
+													 'incorparation_form': 'Сфера деятельности организации',
+													 'number_of_staff': 'Количество сотрудников',
+													 'work_experience': 'Опыт работы', }
+											 )
+	additional_client_info_factory = modelform_factory(AdditionalClientInfo, fields=['product',
+																					 'property',
+																					 'full_insurance',
+																					 'registration',
+																					 'address_of_registration',
+																					 'actual_address',
+																					 'count_of_children',
+																					 'family_status',
+																					 'education_status',
+																					 'work_expireance',
+																					 'position_category',
+																					 'work_type',
+																					 'marriage_contract',
+																					 'immovable_property',
+																					 'rezident_of_usa',
+																					 'rezident_of_other_goverment',
+																					 'foreign_citizen',
+																					 'additional_work',
+																					 'additional_work_expireance',
+																					 'additional_work_category',
+																					 'income_of_main_work',
+																					 'income_of_additional_work',
+																					 'mark_of_car',
+																					 'year_of_manufacture_of_car',
+																					 'car_valuation',
+																					 'car_valuation',
+																					 'market_value_of_real_estate', ],
+													   labels={'product': 'Тип кредита',
+															   'property': 'Тип имущества',
+															   'full_insurance': 'Полное страхование',
+															   'registration': 'Регистрация',
+															   'address_of_registration': 'Адрес фактического проживания',
+															   'actual_address': 'Адрес проживания',
+															   'count_of_children': 'Кол-во детей',
+															   'family_status': 'Семейное положение',
+															   'education_status': 'образование',
+															   'work_expireance': 'Стаж работы на текущем месте работы',
+															   'position_category': 'Категория должности',
+															   'work_type': 'Тип занятости',
+															   'marriage_contract': 'Наличие брачного договора',
+															   'immovable_property': 'Неджимиое имущество в собственности',
+															   'rezident_of_usa': 'Являетесь ли вы налоговым резидентом США',
+															   'rezident_of_other_goverment': 'Являетесь ли вы налоговым резидентом другого государства за исключением США',
+															   'foreign_citizen': 'Является ли клиент иностранным гражданином',
+															   'additional_work': 'Работа по совместительству',
+															   'additional_work_expireance': 'Стаж работы по совместительству',
+															   'additional_work_category': 'Категория должности работы по совместительству',
+															   'income_of_main_work': 'Доход от основной деятельности',
+															   'income_of_additional_work': 'Доход от работы по совместительству',
+															   'mark_of_car': 'марка автомобиля',
+															   'year_of_manufacture_of_car': 'год выпуска автомобиля',
+															   'car_valuation': 'оценка стоимости автомобиля',
+															   'market_value_of_real_estate': 'Рыночная стоимость недвижимости',
+
+															   })
 	if sbm == 'Add Client':
 		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 												  'passport_f': passport_factory,
@@ -146,38 +201,37 @@ def addClient(request):
 												  'postaddress_f': post_address_factory,
 												  'bankdetail_f': bank_detail_factory,
 												  'orginfo_f': organization_factory,
-												  'additional_client_info_f': modelformset_factory(AdditionalClientInfo,
-																								   fields='__all__'),
+												  'additional_client_info_f': additional_client_info_factory,
 												  })
 	elif sbm == 'Add':
-		client = client_form_set(data=request.POST)
-		passport = passport_factory(data=request.POST)
-		snils = snils_factory(data=request.POST)
-		address = address_factory(data=request.POST)
-		post_address = post_address_factory(data=request.POST)
-		organization = organization_factory(data=request.POST)
-		bank_detail = bank_detail_factory(data=request.POST)
+		client = client_form_set(post)
+		passport = passport_factory(post)
+		snils = snils_factory(post)
+		address = address_factory(post)
+		post_address = post_address_factory(post)
+		organization = organization_factory(post)
+		bank_detail = bank_detail_factory(post)
+		additional_client_info = additional_client_info_factory(post)
 
 		if (client.is_valid() and passport.is_valid() and address.is_valid() and bank_detail.is_valid() and
 				snils.is_valid() and organization.is_valid() and post_address.is_valid()):
-			client = client.save().__getitem__(0)
+			client = client.save()
 			passport.instance.client = client
 			passport.save()
 			snils.instance.client = client
 			# todo dont add existing addresses in table
 			address = address.save()
 			post_address = post_address.save()
-
-			print("post_address: " + str(post_address))
 			bank_detail = bank_detail.save()
 			organization.instance.client = client
 			organization.instance.address = address
 			organization.instance.bank_detail = bank_detail
 			organization.instance.post_address = post_address
-			print("organization.is_valid(): " + str(organization))
 			organization.save()
+			additional_client_info.instance.client = client
+			additional_client_info.save()
 		else:
-			for errorform in (client, passport, snils, address, bank_detail, organization):
+			for errorform in (client, passport, snils, address, bank_detail, organization, post_address, additional_client_info):
 				print(errorform.errors)
 	return HttpResponseRedirect('/clients/');
 
