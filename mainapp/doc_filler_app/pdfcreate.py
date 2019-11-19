@@ -3,18 +3,6 @@ from PyPDF2.generic import BooleanObject, NameObject, IndirectObject
 import os
 file_name = "out_ids.txt"
 sfile = open(file_name,"a") 
-l1st = ["Саленый Дмитрий Алексеевич, близкий",'999999999', "3", "0", "2500000",
-        "ну тут хз", "Бали", "Берендяев", "Степан", "Владимирович",
-        "23011996", "РФ", "Лос-Анджелес", "11223442222", "212121211212"
-        " 1284578944","", "3636 221122", "11052010",
-        "630", "ОУФМС", "LA", "", "9997772211", "", "", "thebest@ofthe.best", "0",
-        "", "11223344", "ООО ППП", "услуги", "8463478721", "самый главный", "очень много",
-        "ещё больше", "ауди", "2019", "8499000", "", "", "", "", "560000000000",
-        "лос-анджелес", "", "", "", "", "", "", "", "", "", "", "", "", "",
-        "2313131", "ПАО ВВВ", "ВСЁ", "3213442317", "Генеральный директор", "0"
-
-        ]
-
 
 def set_need_appearances_writer(writer: PdfFileWriter):
     try:
@@ -33,17 +21,18 @@ def set_need_appearances_writer(writer: PdfFileWriter):
 
 
 
-def writeAlfa(l1st, ankteta, out):
+def writeAlfa(ankteta, out):
     inpt = open(anketa, 'rb')
     reads = PdfFileReader(inpt)
     read = reads.getFormTextFields()
     iterator = 0
     sfile.write(str(read))
     for i in read:
-        #read[i] = str(iterator)
-        read[i] = str(i)
+        read[i] = str(iterator)
+        #read[i] = str(i)
         iterator +=1
-        #print(read[str(i)])
+        sfile.write(str(i) +'-' +str(iterator) + '\n')
+        print(str(i) +'-' +str(iterator))
         #read['str' + str(i)] = l1st[i]
     #read['Text Field 5424'] = '4'
     print(iterator)
@@ -56,11 +45,16 @@ def writeAlfa(l1st, ankteta, out):
     write.write(outpt)
     inpt.close()
     outpt.close()
-
+    sfile.close()
 
 
 if __name__ == "__main__":
     anketa = 'dom_rf_ipoteca.pdf'
     out = '2.pdf'
-
-    writeAlfa(l1st, anketa,out)
+    writeAlfa(anketa,out)
+#    dict1 = {}
+#    print('stbe start')
+#    dict1 = {'23':'123'}
+#    dict1.update({'234':'123'})
+#    print('stbe end')
+#    print(dict1)
