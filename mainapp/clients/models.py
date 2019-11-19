@@ -111,6 +111,7 @@ class Address(models.Model):
 	oblast = models.CharField(max_length=200, default="Самарская обл.", blank=True)
 	rayon = models.CharField(max_length=200, default="Волжский р-он.", blank=True)
 
+
 class PostAddress(models.Model):
 	index = models.CharField(max_length=6, default="446100")
 	city = models.CharField(max_length=200, default="Самара")
@@ -283,7 +284,8 @@ class AdditionalClientInfo(models.Model):
 	market_value_of_real_estate = models.CharField(max_length=200, default="Рыночная стоимость недвижимости")
 	average_income = models.CharField(max_length=200, default="средний доход до вычета налогов")  # Это я воткнул
 	aliment = models.CharField(max_length=200, default="Алименты")  # Это я воткнул
-	monetary_obligations = models.CharField(max_length=200, default="Совокупные ежемесячные обязательства (за исключением алиментов)")  # Это я воткнул
+	monetary_obligations = models.CharField(max_length=200,
+											default="Совокупные ежемесячные обязательства (за исключением алиментов)")  # Это я воткнул
 
 # WORK_TYPES = [ #тип занятости: по найму, ИП, адвокат, нотариус, собственник бизнеса (в этом случае указать размеро доли(строка)), не работаю
 # 	('1',''),

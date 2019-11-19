@@ -24,6 +24,148 @@ view_params = {'all_clients': Client.objects.all(),
 			   'p_table': 'clients',
 			   'all_clients_files': ClientsFile.objects.all(), }
 
+client_form_set = modelform_factory(Client, fields='__all__',
+									labels={'last_name': 'Фамилия',
+											'first_name': 'Имя',
+											'part_name': 'Отчество',
+											'position': 'Должность',
+											'phone_number': 'Телефонный номер',
+											'email': 'Email', })
+passport_factory = modelform_factory(Passport, fields=['serial', 'number', '_from', 'gender', 'birthday',
+													   'code_of', ],
+									 labels={'serial': 'Серия',
+											 'number': 'Номер',
+											 '_from': 'Кем выдан',
+											 'gender': 'пол',
+											 'birthday': 'Дата рождения',
+											 # 'date_of': 'Дата выдачи',
+											 'code_of': 'Код подразделения',
+											 }
+									 )
+snils_factory = modelform_factory(SNILS, fields=['snils_number'], labels={'snils_number': 'Номер №'})
+address_factory = modelform_factory(Address, fields=['index',
+													 'city',
+													 'street',
+													 'buildingNumber',
+													 'housing',
+													 'structure',
+													 'flat',
+													 'oblast',
+													 'rayon', ],
+									labels={
+										'index': 'Индекс',
+										'city': 'Город',
+										'street': 'Улица',
+										'buildingNumber': 'номер дома',
+										'housing': 'корпус',
+										'structure': 'строение',
+										'flat': 'квартира',
+										'oblast': 'Область',
+										'rayon': 'район',
+									}
+									)
+post_address_factory = modelform_factory(PostAddress, fields=['index',
+															  'city',
+															  'street',
+															  'buildingNumber',
+															  'housing',
+															  'structure',
+															  'flat',
+															  'oblast',
+															  'rayon', ],
+										 labels={
+											 'index': 'Индекс',
+											 'city': 'Город',
+											 'street': 'Улица',
+											 'buildingNumber': 'номер дома',
+											 'housing': 'корпус',
+											 'structure': 'строение',
+											 'flat': 'квартира',
+											 'oblast': 'Область',
+											 'rayon': 'район',
+										 })
+bank_detail_factory = modelform_factory(BankDetail, fields=['account_number',
+															'correspondent_account_number',
+															'bic',
+															'bank_name', ],
+										labels={
+											'account_number': 'Номер счета',
+											'correspondent_account_number': 'Номер Корреспондентского счета',
+											'bic': 'БИК',
+											'bank_name': 'Название банка',
+										})
+organization_factory = modelform_factory(OrganizationInfo, fields=['full_name',
+																   'accountent_number',
+																   'hr_number',
+																   'inn_number',
+																   'field_of_activity',
+																   'incorparation_form',
+																   'number_of_staff',
+																   'work_experience', ],
+										 labels={'full_name': 'Полное имя организации',
+												 'accountent_number': 'Номер счета',
+												 'hr_number': 'Номер отдела кадров',
+												 'inn_number': 'ИНН',
+												 'field_of_activity': 'Должность',
+												 'incorparation_form': 'Сфера деятельности организации',
+												 'number_of_staff': 'Количество сотрудников',
+												 'work_experience': 'Опыт работы', }
+										 )
+additional_client_info_factory = modelform_factory(AdditionalClientInfo, fields=['product',
+																				 'property',
+																				 'full_insurance',
+																				 'registration',
+																				 'address_of_registration',
+																				 'actual_address',
+																				 'count_of_children',
+																				 'family_status',
+																				 'education_status',
+																				 'work_expireance',
+																				 'position_category',
+																				 'work_type',
+																				 'marriage_contract',
+																				 'immovable_property',
+																				 'rezident_of_usa',
+																				 'rezident_of_other_goverment',
+																				 'foreign_citizen',
+																				 'additional_work',
+																				 'additional_work_expireance',
+																				 'additional_work_category',
+																				 'income_of_main_work',
+																				 'income_of_additional_work',
+																				 'mark_of_car',
+																				 'year_of_manufacture_of_car',
+																				 'car_valuation',
+																				 'car_valuation',
+																				 'market_value_of_real_estate', ],
+												   labels={'product': 'Тип кредита',
+														   'property': 'Тип имущества',
+														   'full_insurance': 'Полное страхование',
+														   'registration': 'Регистрация',
+														   'address_of_registration': 'Адрес фактического проживания',
+														   'actual_address': 'Адрес проживания',
+														   'count_of_children': 'Кол-во детей',
+														   'family_status': 'Семейное положение',
+														   'education_status': 'образование',
+														   'work_expireance': 'Стаж работы на текущем месте работы',
+														   'position_category': 'Категория должности',
+														   'work_type': 'Тип занятости',
+														   'marriage_contract': 'Наличие брачного договора',
+														   'immovable_property': 'Неджимиое имущество в собственности',
+														   'rezident_of_usa': 'Являетесь ли вы налоговым резидентом США',
+														   'rezident_of_other_goverment': 'Являетесь ли вы налоговым резидентом другого государства за исключением США',
+														   'foreign_citizen': 'Является ли клиент иностранным гражданином',
+														   'additional_work': 'Работа по совместительству',
+														   'additional_work_expireance': 'Стаж работы по совместительству',
+														   'additional_work_category': 'Категория должности работы по совместительству',
+														   'income_of_main_work': 'Доход от основной деятельности',
+														   'income_of_additional_work': 'Доход от работы по совместительству',
+														   'mark_of_car': 'марка автомобиля',
+														   'year_of_manufacture_of_car': 'год выпуска автомобиля',
+														   'car_valuation': 'оценка стоимости автомобиля',
+														   'market_value_of_real_estate': 'Рыночная стоимость недвижимости',
+														   })
+
 
 def welcomePage(request):
 	return render(request, 'welcome.html')
@@ -50,148 +192,6 @@ def allTemplates(request):
 def addClient(request):
 	post = request.POST
 	sbm = post['sbm']
-	client_form_set = modelform_factory(Client, fields='__all__',
-										   labels={'last_name': 'Фамилия',
-												   'first_name': 'Имя',
-												   'part_name': 'Отчество',
-												   'position': 'Должность',
-												   'phone_number': 'Телефонный номер',
-												   'email': 'Email', })
-	passport_factory = modelform_factory(Passport, fields=['serial', 'number', '_from', 'gender', 'birthday',
-														   'code_of', ],
-										 labels={'serial': 'Серия',
-												 'number': 'Номер',
-												 '_from': 'Кем выдан',
-												 'gender': 'пол',
-												 'birthday': 'Дата рождения',
-												 # 'date_of': 'Дата выдачи',
-												 'code_of': 'Код подразделения',
-												 }
-										 )
-	snils_factory = modelform_factory(SNILS, fields=['snils_number'], labels={'snils_number': 'Номер №'})
-	address_factory = modelform_factory(Address, fields=['index',
-														 'city',
-														 'street',
-														 'buildingNumber',
-														 'housing',
-														 'structure',
-														 'flat',
-														 'oblast',
-														 'rayon', ],
-										labels={
-											'index': 'Индекс',
-											'city': 'Город',
-											'street': 'Улица',
-											'buildingNumber': 'номер дома',
-											'housing': 'корпус',
-											'structure': 'строение',
-											'flat': 'квартира',
-											'oblast': 'Область',
-											'rayon': 'район',
-										}
-										)
-	post_address_factory = modelform_factory(PostAddress, fields=['index',
-																  'city',
-																  'street',
-																  'buildingNumber',
-																  'housing',
-																  'structure',
-																  'flat',
-																  'oblast',
-																  'rayon', ],
-											 labels={
-												 'index': 'Индекс',
-												 'city': 'Город',
-												 'street': 'Улица',
-												 'buildingNumber': 'номер дома',
-												 'housing': 'корпус',
-												 'structure': 'строение',
-												 'flat': 'квартира',
-												 'oblast': 'Область',
-												 'rayon': 'район',
-											 })
-	bank_detail_factory = modelform_factory(BankDetail, fields=['account_number',
-																'correspondent_account_number',
-																'bic',
-																'bank_name', ],
-											labels={
-												'account_number': 'Номер счета',
-												'correspondent_account_number': 'Номер Корреспондентского счета',
-												'bic': 'БИК',
-												'bank_name': 'Название банка',
-											})
-	organization_factory = modelform_factory(OrganizationInfo, fields=['full_name',
-																	   'accountent_number',
-																	   'hr_number',
-																	   'inn_number',
-																	   'field_of_activity',
-																	   'incorparation_form',
-																	   'number_of_staff',
-																	   'work_experience', ],
-											 labels={'full_name': 'Полное имя организации',
-													 'accountent_number': 'Номер счета',
-													 'hr_number': 'Номер отдела кадров',
-													 'inn_number': 'ИНН',
-													 'field_of_activity': 'Должность',
-													 'incorparation_form': 'Сфера деятельности организации',
-													 'number_of_staff': 'Количество сотрудников',
-													 'work_experience': 'Опыт работы', }
-											 )
-	additional_client_info_factory = modelform_factory(AdditionalClientInfo, fields=['product',
-																					 'property',
-																					 'full_insurance',
-																					 'registration',
-																					 'address_of_registration',
-																					 'actual_address',
-																					 'count_of_children',
-																					 'family_status',
-																					 'education_status',
-																					 'work_expireance',
-																					 'position_category',
-																					 'work_type',
-																					 'marriage_contract',
-																					 'immovable_property',
-																					 'rezident_of_usa',
-																					 'rezident_of_other_goverment',
-																					 'foreign_citizen',
-																					 'additional_work',
-																					 'additional_work_expireance',
-																					 'additional_work_category',
-																					 'income_of_main_work',
-																					 'income_of_additional_work',
-																					 'mark_of_car',
-																					 'year_of_manufacture_of_car',
-																					 'car_valuation',
-																					 'car_valuation',
-																					 'market_value_of_real_estate', ],
-													   labels={'product': 'Тип кредита',
-															   'property': 'Тип имущества',
-															   'full_insurance': 'Полное страхование',
-															   'registration': 'Регистрация',
-															   'address_of_registration': 'Адрес фактического проживания',
-															   'actual_address': 'Адрес проживания',
-															   'count_of_children': 'Кол-во детей',
-															   'family_status': 'Семейное положение',
-															   'education_status': 'образование',
-															   'work_expireance': 'Стаж работы на текущем месте работы',
-															   'position_category': 'Категория должности',
-															   'work_type': 'Тип занятости',
-															   'marriage_contract': 'Наличие брачного договора',
-															   'immovable_property': 'Неджимиое имущество в собственности',
-															   'rezident_of_usa': 'Являетесь ли вы налоговым резидентом США',
-															   'rezident_of_other_goverment': 'Являетесь ли вы налоговым резидентом другого государства за исключением США',
-															   'foreign_citizen': 'Является ли клиент иностранным гражданином',
-															   'additional_work': 'Работа по совместительству',
-															   'additional_work_expireance': 'Стаж работы по совместительству',
-															   'additional_work_category': 'Категория должности работы по совместительству',
-															   'income_of_main_work': 'Доход от основной деятельности',
-															   'income_of_additional_work': 'Доход от работы по совместительству',
-															   'mark_of_car': 'марка автомобиля',
-															   'year_of_manufacture_of_car': 'год выпуска автомобиля',
-															   'car_valuation': 'оценка стоимости автомобиля',
-															   'market_value_of_real_estate': 'Рыночная стоимость недвижимости',
-
-															   })
 	if sbm == 'Add Client':
 		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 												  'passport_f': passport_factory,
@@ -231,17 +231,20 @@ def addClient(request):
 			additional_client_info.instance.client = client
 			additional_client_info.save()
 		else:
-			for errorform in (client, passport, snils, address, bank_detail, organization, post_address, additional_client_info):
+			for errorform in (
+					client, passport, snils, address, bank_detail, organization, post_address, additional_client_info):
 				print(errorform.errors)
 	return HttpResponseRedirect('/clients/');
 
 
 def clientInfo(request, client_id):
-	return render(request, 'client.html', {'client': Client.objects.get(id=client_id), })
+	client = Client.objects.get(id=client_id)
+	return render(request, 'client.html', {'resulthtml': ClientHTML.printHTML(client), })
 
 
 def deleteClient(client_id):
-	Client.objects.get(id=client_id).delete();
+	client = Client.objects.get(id=client_id)
+	client.delete();
 
 
 def deleteTemplate(template_id):
@@ -318,6 +321,7 @@ def testPage(request):
 		clientForm = ClientForm()
 	return render(request, 'test_page.html', {'client_form': modelformset_factory(Client, fields='__all__'),
 											  'page_text_param': '', })
+
 
 def generateReport(request):
 	print(request)
