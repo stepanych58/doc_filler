@@ -1,12 +1,13 @@
+import json
 import os
 
 from django.core.files.storage import FileSystemStorage
-from django.forms import inlineformset_factory, modelformset_factory, modelform_factory
-from django.http import HttpResponseRedirect, HttpResponse
+from django.forms import modelformset_factory, modelform_factory
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
 from mainapp.settings import *
-import json
+
 from .forms import *
 from .utils import *
 
