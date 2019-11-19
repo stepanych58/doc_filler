@@ -281,10 +281,10 @@ class AdditionalClientInfo(models.Model):
 	car_valuation = models.CharField(max_length=200, default="оценка стоимости авто")
 	car_valuation = models.CharField(max_length=200, default="оценка стоимости авто")
 	market_value_of_real_estate = models.CharField(max_length=200, default="Рыночная стоимость недвижимости")
-    average_income = models.CharField(max_length=200, default="средний доход до вычета налогов")  # Это я воткнул
-    aliment = models.CharField(max_length=200, default="Алименты")  # Это я воткнул
-    monetary_obligations = models.CharField(max_length=200, default="Совокупные ежемесячные обязательства (за исключением алиментов)")  # Это я воткнул
-    
+	average_income = models.CharField(max_length=200, default="средний доход до вычета налогов")  # Это я воткнул
+	aliment = models.CharField(max_length=200, default="Алименты")  # Это я воткнул
+	monetary_obligations = models.CharField(max_length=200, default="Совокупные ежемесячные обязательства (за исключением алиментов)")  # Это я воткнул
+
 # WORK_TYPES = [ #тип занятости: по найму, ИП, адвокат, нотариус, собственник бизнеса (в этом случае указать размеро доли(строка)), не работаю
 # 	('1',''),
 # 	('2',''),
