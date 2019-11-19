@@ -179,12 +179,31 @@ class OrganizationInfo(models.Model):
 									   default=WORK_EXPERIENCE_CHOISES[0])
 
 
+class ClientRelative(models.Model):
+	client = models.OneToOneField(
+		Client,
+		on_delete=models.CASCADE,
+		primary_key=True
+	)
+	first_name = models.CharField(max_length=30, default='Гена')
+	part_name = models.CharField(max_length=30, default='Иванович')
+	last_name = models.CharField(max_length=30, default='Иванов')
+	position = models.CharField(max_length=300, default='Рыбак')
+	relation_degree = models.CharField(max_length=300, default='Брат')
+	phone_number = models.CharField(max_length=12, default='89276976443')
+	email = models.EmailField(max_length=100, default='genaiv@gmail.com')
+
 class AdditionalClientInfo(models.Model):
 	client = models.OneToOneField(
 		Client,
 		on_delete=models.CASCADE,
 		primary_key=True
 	)
+	home_phone_number = models.CharField(max_length=12, default='89276976453') #домашний телефон
+	сont_phone_number = models.CharField(max_length=12, default='89276976453') #контактный телефон
+	work_phone_number = models.CharField(max_length=12, default='89276976453') #рабочий телефон
+	relations_phone_number = models.CharField(max_length=12, default='89276976453') # телефон близкого родственника
+
 	СREDIT_TYPE_CHOISES = [
 		('1', 'готовое жилье'),
 		('2', 'рефинансирование'),

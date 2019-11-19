@@ -470,6 +470,33 @@ class DomRF_Ipoteca:
             read['Text Field 5574'] = p_client.part_name
 
             #Паспортные данные
+            read['Text Field 5574'] = p_client.passport.serial #серия
+            read['Text Field 5575'] = p_client.passport.number #номер пасспорта
+            read['Text Field 5576'] = p_client.passport.date_of.day #день выдачи
+            read['Text Field 5577'] = p_client.passport.date_of.month #месяц выдачи
+            read['Text Field 5578'] = p_client.passport.year #год выдачи
+            read['Text Field 5579'] = p_client.passport._from #кем выдан 23 символа
+            read['Text Field 5584'] = p_client.passport._from #кем выдан 23 символа
+            read['Text Field 5582'] = p_client.passport._from #кем выдан 10 символов
+            read['Text Field 5580'] = p_client.passport.code_of #код подразделения 3 символа
+            read['Text Field 5581'] = p_client.passport.code_of #код подразделения 3 символа
+            read['Text Field 5583'] = p_client.snils.snils_number #cнилс
+            read['Text Field 5583'] = p_client.snils.snils_number
+
+            #адрес регистрации
+            # адрес проживания
+            #контакты
+            read['Text Field 5498'] = p_client.phone_number #мобильный
+            read['Text Field 5499'] = p_client.additionalclientinfo.home_phone_number #домашний
+            read['Text Field 5500'] = p_client.additionalclientinfo.сont_phone_number #контактный
+            read['Text Field 5501'] = p_client.additionalclientinfo.work_phone_number #рабочий
+            read['Text Field 5503'] = p_client.email #email
+            read['Text Field 5502'] = p_client.additionalclientinfo.relations_phone_number #телефон близкого родственника
+            #Фио близкого родственника
+            read['Text Field 5505'] = p_client.clientrelative.first_name #имя
+            read['Text Field 5506'] = p_client.clientrelative.part_name #отчество
+            read['Text Field 5507'] = p_client.clientrelative.last_name #фамилия
+            read['Text Field 5504'] = p_client.clientrelative.relation_degree #степень родства
 
             # Организация
             read['1_2'] = organization.full_name

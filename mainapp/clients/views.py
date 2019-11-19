@@ -240,7 +240,8 @@ def addClient(request):
 
 def clientInfo(request, client_id):
 	client = Client.objects.get(id=client_id)
-	return render(request, 'client.html', {'resulthtml': ClientHTML.printHTML(client), })
+	passport = client.passport
+	return render(request, 'client.html', {'resulthtml': ClientHTML.printHTML(client, passport), })
 
 
 def deleteClient(client_id):
