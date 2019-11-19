@@ -32,14 +32,14 @@ client_form_set = modelform_factory(Client, fields='__all__',
 											'position': 'Должность',
 											'phone_number': 'Телефонный номер',
 											'email': 'Email', })
-passport_factory = modelform_factory(Passport, fields=['serial', 'number', '_from', 'gender', 'birthday',
+passport_factory = modelform_factory(Passport, fields=['serial', 'number', '_from', 'date_of', 'gender', 'birthday',
 													   'code_of', ],
 									 labels={'serial': 'Серия',
 											 'number': 'Номер',
 											 '_from': 'Кем выдан',
 											 'gender': 'пол',
 											 'birthday': 'Дата рождения',
-											 # 'date_of': 'Дата выдачи',
+											 'date_of': 'Дата выдачи',
 											 'code_of': 'Код подразделения',
 											 }
 									 )

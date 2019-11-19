@@ -75,7 +75,7 @@ class Passport(models.Model):
 	_from = models.CharField(max_length=200, default="отделом ФМС")
 	gender = models.CharField(max_length=5, default="м")
 	birthday = models.DateField(default="1999-01-01")
-	# date_of = models.DateFiled(default="1999-01-01")
+	date_of = models.DateField(default="1999-01-01") #дата выдачи
 	code_of = models.CharField(max_length=8, default="344-222")
 
 	class Meta:

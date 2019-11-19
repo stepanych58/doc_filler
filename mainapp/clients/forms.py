@@ -13,10 +13,12 @@ class ClientHTML:
         return fied.__str__()
     def printHTML(self):
         client = Client(self)
+        passport = client.passport
         return  \
                '<br>Name: ' + ClientHTML.printField(fied=client.first_name) + ' ' + ClientHTML.printField(client.part_name) + ' ' +  ClientHTML.printField(client.last_name)  + \
                '<br>Position: ' + client.position.__str__() + \
-               '<br>Email: ' + client.email.__str__();
+               '<br>Email: ' + client.email.__str__()+\
+			   '<br>Passport' ;
 
 
 class SNILSForm(forms.ModelForm):
