@@ -98,7 +98,7 @@ bank_detail_factory = modelform_factory(BankDetail, fields=['account_number',
 organization_factory = modelform_factory(OrganizationInfo, fields=['full_name',
 																   'accountent_number',
 																   'hr_number',
-																   'site'
+																   'site',
 																   'inn_number',
 																   'field_of_activity',
 																   'incorparation_form',
