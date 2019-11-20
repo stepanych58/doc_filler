@@ -157,6 +157,7 @@ class OrganizationInfo(models.Model):
 	accountent_number = models.CharField(max_length=10, default='1345678911')
 	hr_number = models.CharField(max_length=10, default='1345678911')
 	inn_number = models.CharField(max_length=100, default='1345678911')
+	site = models.CharField(max_length=100, default='1345678911')
 	field_of_activity = models.CharField(max_length=100, default='IT')
 	INCORPARATION_FORM_CHOISES = [
 		('1', 'ООО'),
@@ -234,8 +235,14 @@ class AdditionalClientInfo(models.Model):
 		('3', '2 - 5 лет'),
 		('4', 'более 5 лет'),
 	]
+	#todo сделать поля стаж как ввод количества лет и месяцев, остальное рассчитывать исходя из этой информации
 	work_expireance = models.CharField(choices=ALL_WORK_EXPIREANCE_CHOISES, max_length=50,
 									   default=ALL_WORK_EXPIREANCE_CHOISES[0])
+	work_expireance_years = models.CharField(max_length=2, default="00") #трудовой стаж за последние пять лет (лет)
+	work_expireance_month = models.CharField(max_length=2, default="00") #трудовой стаж за последние пять лет (месяцев)
+	work_expireance_lw_years = models.CharField(max_length=2, default="00") #трудовой стаж на последнем месте работы (лет)
+	work_expireance_lw_month = models.CharField(max_length=2, default="00") #трудовой стаж на последнем месте работы (месяцев)
+
 	position_category = models.CharField(choices=POSITION_CATEGORY_CHOISES, max_length=50,
 										 default=POSITION_CATEGORY_CHOISES[0])
 	WORK_TYPES = [
@@ -247,6 +254,7 @@ class AdditionalClientInfo(models.Model):
 		('5', 'не работаю'),
 	]
 	work_type = models.CharField(choices=WORK_TYPES, max_length=50, default=WORK_TYPES[0])
+	work_type_other = models.CharField(max_length=2000, default="")
 	marriage_contract = models.CharField(choices=YES_NO_CHOISES, max_length=50,
 										 default=YES_NO_CHOISES[0])  # наличие брачного договора
 
