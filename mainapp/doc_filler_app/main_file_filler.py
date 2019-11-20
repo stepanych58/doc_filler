@@ -498,30 +498,43 @@ class DomRF_Ipoteca:
             read['Text Field 5507'] = p_client.clientrelative.last_name #фамилия
             read['Text Field 5504'] = p_client.clientrelative.relation_degree #степень родства
 
+            #Сведения о занятости и доходах Заявителя
+            read['Text Field 5480'] = p_client.additionalclientinfo.work_expireance_years #(год) стаж за последние 5 лет (2 цифры)
+            read['Text Field 5482'] = p_client.additionalclientinfo.work_expireance_month #(месяцев) стаж за последние 5 лет (2 цифры)
+            read['Text Field 5483'] = p_client.additionalclientinfo.work_type_other #тип занятости иное
+            #Основная работа (заполняется при наличии)
+            read['Text Field 5484'] = p_client.additionalclientinfo.work_expireance_lw_years  # (год) стаж за последние 5 лет (2 цифры)
+            read['Text Field 5485'] = p_client.additionalclientinfo.work_expireance_lw_month  # (месяцев) стаж за последние 5 лет (2 цифры)
+
             # Организация
-            read['1_2'] = organization.full_name
-            read['fill_11'] = organization_address.index
-            read['fill_12'] = organization_address.city
-            read['undefined_6'] = organization_address.street
-            read['fill_14'] = organization_address.buildingNumber
-            read['fill_15'] = organization_address.housing
-            read['fill_16'] = organization_address.structure
-            read['fill_17'] = organization_address.flat
-            read['fill_25'] = organization.accountent_number
-            read['undefined_8'] = organization.hr_number
-            read['undefined_9'] = organization.inn_number
-            read['fill_28'] = organization_bank_detail.account_number
-            read['fill_29'] = organization_bank_detail.correspondent_account_number
-            read['fill_30'] = organization_bank_detail.bic
-            read['fill_31'] = organization_bank_detail.bank_name
-            # почтовый адрес
-            read['fill_18'] = organization_postaddress.index
-            read['fill_19'] = organization_postaddress.city
-            read['undefined_7'] = organization_postaddress.street
-            read['fill_21'] = organization_postaddress.buildingNumber
-            read['fill_22'] = organization_postaddress.housing
-            read['fill_23'] = organization_postaddress.structure
-            read['fill_24'] = organization_postaddress.flat
+            read['Text Field 5495'] = organization.full_name
+            read['Text Field 5486'] = organization_address.index
+            read['Text Field 5487'] = organization_address.oblast
+            read['Text Field 5488'] = organization_address.rayon
+            read['Text Field 5489'] = organization_address.city
+            read['Text Field 5490'] = organization_address.street
+            read['Text Field 5491'] = organization_address.buildingNumber
+            read['Text Field 5492'] = organization_address.housing
+            read['Text Field 5493'] = organization_address.structure
+            read['Text Field 5494'] = organization_address.flat
+            read['Text Field 5497'] = organization.hr_number
+            read['Text Field 5496'] = organization.site #адрес сайта
+            read['Text Field 5524'] = organization.inn_number #вид деятельности иное
+            read['Text Field 5522'] = p_client.position #вид деятельности иное
+            read['Text Field 5523'] = p_client.additionalclientinfo.average_income #среднемесячный доход
+
+            #Работа по совместительству (заполняется при наличии) - пока не заполняем
+            #Иные доходы Заявителя - пока не заполняем
+            #Дополнительная информация о занятости Заявителя (заполняется в случае применения опции «Легкая ипотека») - пока не заполняем
+
+            #Дополнительная информация о доходах от сдачи недвижимости в аренду (заполняется в случае применения опции
+                #«Легкая ипотека» и при наличии доходов от сдачи недвижимости в аренду) - пока не заполняем
+
+            #Сведения о расходах Заявителя
+
+            #Информация о кредите/займе
+            #Сведения об имуществе Заявителя
+
         outpt = open(path_out_file, 'wb')
         write = PdfFileWriter()
         set_need_appearances_writer(write)

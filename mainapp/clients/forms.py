@@ -8,20 +8,16 @@ class UploadTemplateForm(forms.Form):
 
 
 class ClientHTML:
-	def printField(fied=''):
-		# add possible to edit each field
-		return fied.__str__()
-
-	def printHTML(self, passport=None):
-		client = Client(self)
-		passport = passport
-		return \
-			'<br>Name: ' + ClientHTML.printField(fied=client.first_name) + ' ' + ClientHTML.printField(
-				client.part_name) + ' ' + ClientHTML.printField(client.last_name) + \
-			'<br>Position: ' + client.position.__str__() + \
-			'<br>Email: ' + client.email.__str__() + \
-			'<br>Passport: day:' + passport.date_of.day.__str__() + ' month: ' + \
-			passport.date_of.month.__str__() + ' year: ' + passport.date_of.year.__str__();
+    def printField(fied=''):
+        #add possible to edit each field
+        return fied.__str__()
+    def printHTML(self):
+        client = Client(self)
+        return  \
+               '<br>Name: ' + ClientHTML.printField(fied=client.first_name) + ' ' + ClientHTML.printField(client.part_name) + ' ' +  ClientHTML.printField(client.last_name)  + \
+               '<br>Position: ' + client.position.__str__() + \
+               '<br>Email: ' + client.email.__str__()+\
+			   '<br>Passport' ;
 
 
 class SNILSForm(forms.ModelForm):
