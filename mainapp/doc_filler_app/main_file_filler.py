@@ -531,10 +531,31 @@ class DomRF_Ipoteca:
                 #«Легкая ипотека» и при наличии доходов от сдачи недвижимости в аренду) - пока не заполняем
 
             #Сведения о расходах Заявителя
-
+            read['Text Field 5704'] = p_client.additionalclientinfo.aliment  # алименты
             #Информация о кредите/займе
+            read['Text Field 5611'] = p_client.clientcredit.type  # типкредита
+            read['Text Field 5612'] = p_client.clientcredit.creditor_name  # Наименование кредитора
+            read['Text Field 5613'] = p_client.clientcredit.date_start.day  # срок кредита с день
+            read['Text Field 5614'] = p_client.clientcredit.date_start.month  # месяц
+            read['Text Field 5615'] = p_client.clientcredit.date_start.year  # год
+            read['Text Field 5616'] = p_client.clientcredit.date_end.day  # день
+            read['Text Field 5617'] = p_client.clientcredit.date_end.month  # месяц
+            read['Text Field 5618'] = p_client.clientcredit.date_end.year  # год
+            read['Text Field 5620'] = p_client.clientcredit.currency  # валюта
+            read['Text Field 5619'] = p_client.clientcredit.value  # сумма
+            read['Text Field 5621'] = p_client.clientcredit.month_pay  # платеж в месяц
+            read['Text Field 5622'] = p_client.clientcredit.leftover  # остаток
             #Сведения об имуществе Заявителя
-
+            read['Text Field 5456'] = p_client.additionalclientinfo.immovable_property  # вид недвижимости
+            read['Text Field 5457'] = '100'  # доля в собственности
+            read['Text Field 5458'] = ''  # регион местонахождения
+            read['Text Field 5459'] = ''  # населенный пункт
+            read['Text Field 5460'] = p_client.additionalclientinfo.market_value_of_real_estate  # стоимость
+            #авто заявителя
+            read['Text Field 5461'] = p_client.additionalclientinfo.mark_of_car  # марка
+            read['Text Field 5462'] = p_client.additionalclientinfo.model_of_car  # модель
+            read['Text Field 5464'] = p_client.additionalclientinfo.year_of_manufacture_of_car  # год выпуска
+            read['Text Field 5463'] = p_client.additionalclientinfo.car_valuation  # стоимость
         outpt = open(path_out_file, 'wb')
         write = PdfFileWriter()
         set_need_appearances_writer(write)

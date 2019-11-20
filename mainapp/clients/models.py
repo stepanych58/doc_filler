@@ -325,8 +325,8 @@ class AdditionalClientInfo(models.Model):
 	income_of_main_work = models.CharField(max_length=200, default="доход от основной работы")
 	income_of_additional_work = models.CharField(max_length=200, default="доход от работы по совместительству")
 	mark_of_car = models.CharField(max_length=200, default="марка авто ")
+	model_of_car = models.CharField(max_length=200, default="модель авто ")
 	year_of_manufacture_of_car = models.CharField(max_length=200, default="год выпуска авто")
-	car_valuation = models.CharField(max_length=200, default="оценка стоимости авто")
 	car_valuation = models.CharField(max_length=200, default="оценка стоимости авто")
 	market_value_of_real_estate = models.CharField(max_length=200, default="Рыночная стоимость недвижимости")
 	average_income = models.CharField(max_length=200, default="средний доход до вычета налогов")  # Это я воткнул
