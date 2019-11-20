@@ -13,6 +13,12 @@ YES_NO_CHOISES = [
 	('no', 'нет'),
 ]
 
+CURRANCY_CHOISES = [
+	('1','RUB'),#select resource from db example
+	('2','$'),
+	('2','Э'),
+]
+
 WORK_EXPERIENCE_CHOISES = [
 	('1', 'до 4 мес'),
 	('2', '4 - 6 мес'),
@@ -123,6 +129,20 @@ class PostAddress(models.Model):
 	oblast = models.CharField(max_length=200, default="Самарская обл.", blank=True)
 	rayon = models.CharField(max_length=200, default="Волжский р-он.", blank=True)
 
+class ClientCredit(models.Model):
+	client = models.OneToOneField(
+		Client,
+		on_delete=models.CASCADE,
+		primary_key=True
+	)
+	type = models.CharField(max_length=100, default="Потребительский", blank=True)
+	creditor_name = models.CharField(max_length=100, default="Сбербанки", blank=True)
+	date_start = models.DateField(default="2000-01-01")
+	date_end = models.DateField(default="2005-01-01")
+	currency = models.CharField(max_length=100, default="Руб", blank=True)
+	value = models.CharField(max_length=100, default="100000", blank=True)#сумма кредита
+	month_pay = models.CharField(max_length=100, default="1000", blank=True)#месячный платеж
+	leftover = models.CharField(max_length=100, default="1000", blank=True)#остаток
 
 class BankDetail(models.Model):
 	account_number = models.CharField(max_length=24, default='0000 0000 0000 0000 0000', blank=True)
