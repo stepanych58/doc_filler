@@ -31,9 +31,9 @@
                     </button>
                 </td>
             </form>
-            <td rowspan="0">
+            <td rowspan="0"  max-width="40%">
                 {% for doc in all_docs %}
-                    <a href="{% static doc.get_path %}">{{ doc.name }}</a>
+                    <br><a href="{% static doc.get_path %}">{{ doc.name }}</a>
                     <button class="btn" name="sbm" id="genRep" doc_id="{{ doc.id }}" value="Generete Doc"
                             onclick="generateReport('{{ doc.id }}')"
                     >{% csrf_token %}<img
