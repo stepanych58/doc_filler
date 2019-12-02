@@ -4,3 +4,9 @@ id,name,file_name,file_type,class_name
 3,ВТБ Банк Анкета,VTB.pdf,pdf,VTBAnketa
 4,ГазпромБанк Анкета,gazprom.pdf,pdf,GazpromAnket
 5,Альфа Банк Анкета,alfaanket.pdf,pdf,AlfaAnketa
+
+insert into clients_document(id, name, file_name, file_type, class_name) values (1,'Сбер по форме банка','sberbank.pdf','pdf','SberPoFormeBanka');
+insert into clients_document(id, name, file_name, file_type, class_name) values (2,'ДОМ РФ Ипотека Анкета','dom_rf_ipoteca.pdf','pdf','DomRF_Ipoteca');
+insert into clients_document(id, name, file_name, file_type, class_name) values (3,'ВТБ Банк Анкета'		,'VTB.pdf','pdf','VTBAnketa');
+insert into clients_document(id, name, file_name, file_type, class_name) values (4,'ГазпромБанк Анкета'	,'gazprom.pdf','pdf','GazpromAnket');
+insert into clients_document(id, name, file_name, file_type, class_name) values (5,'Альфа Банк Анкета'	,'alfaanket.pdf','pdf','AlfaAnketa');
