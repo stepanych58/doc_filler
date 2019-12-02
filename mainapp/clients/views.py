@@ -11,8 +11,6 @@ from mainapp.settings import *
 from .forms import *
 from .utils import *
 
-# ALL_CLIENTS = Client.objects.all()
-# ALL_DOCS = Document.objects.all()
 
 DELETE = 'Delete'
 GENERATE = 'Generete Doc'

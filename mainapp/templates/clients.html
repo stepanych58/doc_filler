@@ -2,7 +2,7 @@
     <thead>
     <tr>
         <th></th>
-        <th colspan="2"><span> Client </span></th>
+        <th colspan="2" width="150px"><span> Client </span></th>
         <th rowspan="{{ all_clients.count }}"><span> Document to fill</span></th>
         {#        <th><span> Generate document button </span></th>#}
         <th><span> Links to generated files </span></th>
@@ -33,7 +33,7 @@
             </form>
             <td rowspan="0">
                 {% for doc in all_docs %}
-                    <a href="{% static doc.get_path %}">{{ doc.name }}</a>
+                    <br><a href="{% static doc.get_path %}">{{ doc.name }}</a>
                     <button class="btn" name="sbm" id="genRep" doc_id="{{ doc.id }}" value="Generete Doc"
                             onclick="generateReport('{{ doc.id }}')"
                     >{% csrf_token %}<img
