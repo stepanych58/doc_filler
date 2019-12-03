@@ -2,7 +2,8 @@ import json
 import os
 
 from django.core.files.storage import FileSystemStorage
-from django.forms import modelformset_factory, modelform_factory
+from django.forms import modelformset_factory, modelform_factory, Textarea, Widget
+from django.forms.widgets import Input
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
@@ -29,7 +30,9 @@ client_form_set = modelform_factory(Client, fields='__all__',
 											'part_name': 'Отчество',
 											'position': 'Должность',
 											'phone_number': 'Телефонный номер',
-											'email': 'Email', })
+											'email': 'Email', },
+									# field_classes={'last_name':HTMLFormField},
+									widgets={'last_name': Input(attrs={'class': 'form-control', })})
 passport_factory = modelform_factory(Passport, fields=['serial', 'number', '_from', 'date_of', 'gender', 'birthday',
 													   'code_of', ],
 									 labels={'serial': 'Серия',

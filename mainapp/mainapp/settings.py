@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-
+import django
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -21,6 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '9lvu(w2w0udfw&bj%!j*%7q)1!-y2lzty2+nrbrb=#@g6hz^#a'
+# django.setup()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,7 +43,8 @@ INSTALLED_APPS = [
     'clients',
     'psycopg2',
     'jsonfield',
-#    'json_field',
+    # 'django.contrib.sites.models',
+    #    'json_field',
 ]
 
 MIDDLEWARE = [

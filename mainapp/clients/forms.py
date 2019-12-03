@@ -1,4 +1,6 @@
 from django import forms
+from django.forms import CharField
+
 from .models import *
 
 
@@ -7,17 +9,34 @@ class UploadTemplateForm(forms.Form):
 	template = forms.FileField(label='Choose template');
 
 
+# class ClientForm(forms.Form, label_class=''):
+# 	class Meta:
+# 		fields = '__all__'
+#
+# 	def as_p(self):
+# 		"Return this form rendered as HTML <p>s."
+# 		return self._html_output(
+# 			normal_row='<p%(html_class_attr)s>%(label)s %(field)s%(help_text)s</p>',
+# 			error_row='%s',
+# 			row_ender='</p>',
+# 			help_text_html=' <span class="helptext">%s</span>',
+# 			errors_on_separate_row=True,
+# 		)
+
+
 class ClientHTML:
-    def printField(fied=''):
-        #add possible to edit each field
-        return fied.__str__()
-    def printHTML(self):
-        client = Client(self)
-        return  \
-               '<br>Name: ' + ClientHTML.printField(fied=client.first_name) + ' ' + ClientHTML.printField(client.part_name) + ' ' +  ClientHTML.printField(client.last_name)  + \
-               '<br>Position: ' + client.position.__str__() + \
-               '<br>Email: ' + client.email.__str__()+\
-			   '<br>Passport' ;
+	def printField(fied=''):
+		# add possible to edit each field
+		return fied.__str__()
+
+	def printHTML(self):
+		client = Client(self)
+		return \
+			'<br>Name: ' + ClientHTML.printField(fied=client.first_name) + ' ' + ClientHTML.printField(
+				client.part_name) + ' ' + ClientHTML.printField(client.last_name) + \
+			'<br>Position: ' + client.position.__str__() + \
+			'<br>Email: ' + client.email.__str__() + \
+			'<br>Passport';
 
 
 class SNILSForm(forms.ModelForm):
