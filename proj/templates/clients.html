@@ -1,0 +1,98 @@
+<table id="keywords" cellspacing="0" cellpadding="0">
+    <thead>
+    <tr>
+        <th></th>
+        <th colspan="2" width="150px"><span> Client </span></th>
+        <th rowspan="{{ all_clients.count }}"><span> Document to fill</span></th>
+        {#        <th><span> Generate document button </span></th>#}
+        <th><span> Links to generated files </span></th>
+    </tr>
+    </thead>
+
+    {% for p_client in all_clients %}
+        {% if forloop.first %}
+            <form action="/clientForm/{{ p_client.id }}" method="POST" style="display:inline;" id="clientForm">
+                    {% csrf_token %}
+                <input type="hidden" name="page" value="clients">
+                <td>
+                    <input type="checkbox" name="cl_checked" value="{{ p_client.id }}">
+                </td>
+                <td>
+
+                    <a href="/clientInfo/{{ p_client.id }}">
+                        {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
+                    </a>
+                </td>
+                <td style="display: inherit;">
+                    {% load staticfiles %}
+                    <button class="btn" name="sbm" value="Delete"><img src="{% static 'img/x-button.png' %}"/>
+                    </button>
+                    <button class="btn" name="sbm" value="Edit"><img src="{% static 'img/edit_icon.png' %}"/>
+                    </button>
+                </td>
+            </form>
+            <td rowspan="0"  max-width="40%">
+                {% for doc in all_docs %}
+                    <br><a href="{% static doc.get_path %}">{{ doc.name }}</a>
+                    <button class="btn" name="sbm" id="genRep" doc_id="{{ doc.id }}" value="Generete Doc"
+                            onclick="generateReport('{{ doc.id }}')"
+                    >{% csrf_token %}<img
+                            src="{% static 'img/fill_file.png' %}"/></button>
+                {% endfor %}
+            </td>
+            <td>
+                {% for client_file in all_clients_files %}
+                    {% if client_file.client.id == p_client.id %}
+                        <form action="/clientForm/{{ p_client.id }}" method="POST">{% csrf_token %}
+                            <input type="hidden" name="page" value="clients">
+                            {% load static %}
+                            <input type="hidden" name="clientf_id" value="{{ client_file.id }}"><a
+                                    href="{% static client_file.file_path %}"> {{ client_file.file_name }}</a>
+                            <button class="btn" name="sbm" value="Delete generated doc"><img
+                                    src="{% static 'img/x-button.png' %}"/></button>
+                        </form>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            </td>
+            </tr>
+        {% else %}
+            <form action="/clientForm/{{ p_client.id }}" method="POST" style="display:inline;">
+                <input type="hidden" name="page" value="clients">
+                <td>
+                    {% csrf_token %}
+                    <input type="checkbox" name="cl_checked" value="{{ p_client.id }}">
+                </td>
+                <td>
+
+                    <a href="/clientInfo/{{ p_client.id }}">
+                        {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
+                    </a>
+                </td>
+                <td style="display: inherit;">
+                    {% load staticfiles %}
+                    <button class="btn" name="sbm" value="Delete"><img src="{% static 'img/x-button.png' %}"/>
+                    </button>
+                    <button class="btn" name="sbm" value="Edit"><img src="{% static 'img/edit_icon.png' %}"/>
+                    </button>
+                </td>
+            </form>
+            <td>
+                {% for client_file in all_clients_files %}
+                    {% if client_file.client.id == p_client.id %}
+                        <form action="/clientForm/{{ p_client.id }}" method="POST">{% csrf_token %}
+                            <input type="hidden" name="page" value="clients">
+                            {% load static %}
+                            <input type="hidden" name="clientf_id" value="{{ client_file.id }}"><a
+                                    href="{% static client_file.file_path %}"> {{ client_file.file_name }}</a>
+                            <button class="btn" name="sbm" value="Delete generated doc"><img
+                                    src="{% static 'img/x-button.png' %}"/></button>
+                        </form>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            </td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+</table>
