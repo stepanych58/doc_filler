@@ -44,9 +44,9 @@ class SberPoFormeBanka:
 		p_client = client
 		p_doc = doc
 		organization = p_client.organizationinfo
-		organization_address = organization.address
-		organization_postaddress = organization.post_address
-		organization_bank_detail = organization.bank_detail
+##		organization_address = organization.address
+##		organization_postaddress = organization.post_address
+##		organization_bank_detail = organization.bank_detail
 		clients_file_name = str(p_client.first_name) + ' ' + \
                                     str(p_client.last_name) + '_' + str(
 			p_doc.file_name)  # date or time
