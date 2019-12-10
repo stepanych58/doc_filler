@@ -12,7 +12,6 @@ from mainapp.settings import *
 from .forms import *
 from .utils import *
 
-
 DELETE = 'Delete'
 GENERATE = 'Generete Doc'
 DELETE_GEN_DOC = 'Delete generated doc'
@@ -32,7 +31,18 @@ client_form_set = modelform_factory(Client, fields='__all__',
 											'phone_number': 'Телефонный номер',
 											'email': 'Email', },
 									# field_classes={'last_name':HTMLFormField},
-									widgets={'last_name': Input(attrs={'class': 'form-control', })})
+									widgets={
+										'last_name': Input(attrs={'class': 'form-control', }),
+										'part_name': Input(attrs={'class': 'form-control', }),
+										'position': Input(attrs={'class': 'form-control', }),
+										'phone_number': Input(attrs={'class': 'form-control', }),
+										'email': Input(attrs={'class': 'form-control', }),
+										'first_name': Input(attrs={
+											'class': 'form-control',
+											'type': 'text',
+											'placeholder': '',
+										}),
+									})
 passport_factory = modelform_factory(Passport, fields=['serial', 'number', '_from', 'date_of', 'gender', 'birthday',
 													   'code_of', ],
 									 labels={'serial': 'Серия',
@@ -108,7 +118,7 @@ organization_factory = modelform_factory(OrganizationInfo, fields=['full_name',
 										 labels={'full_name': 'Полное имя организации',
 												 'accountent_number': 'Номер счета',
 												 'hr_number': 'Номер отдела кадров',
-												 'site':'Адрес сайта',
+												 'site': 'Адрес сайта',
 												 'inn_number': 'ИНН',
 												 'field_of_activity': 'Должность',
 												 'incorparation_form': 'Сфера деятельности организации',
