@@ -59,7 +59,152 @@
                         {{ client_f.position }}
                     </div>
                 </div>
+                <br>
+                <h4 class="mb-3">Пасспортные данные</h4>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="id_serial">{{ passport_f.serial.label }}</label>
+                        {{ passport_f.serial }}
+                        <div class="invalid-feedback">
+                            Valid part name is required.
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="id_number">{{ passport_f.number.label }}</label>
+                        {{ passport_f.number }}
+                    </div>
+                    <div class="col-md-8">
+                        <label for="id_v_from">{{ passport_f.v_from.label }}</label>
+                        {{ passport_f.v_from }}
+                    </div>
+                </div>
+                <div class="row">
 
+                    <div class="col-md-2">
+                        <label for="id_gender">{{ passport_f.gender.label }}</label>
+                        {{ passport_f.gender }}
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_birthday">{{ passport_f.birthday.label }}</label>
+                        {{ passport_f.birthday }}
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_date_of">{{ passport_f.date_of.label }}</label>
+                        {{ passport_f.date_of }}
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_code_of">{{ passport_f.code_of.label }}</label>
+                        {{ passport_f.code_of }}
+                    </div>
+                </div>
+                <br>
+                <h4 class="mb-3">СНИЛС</h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ snils_f.snils_number }}
+                    </div>
+                </div>
+                <br>
+                <h4 class="mb-3">Информация для кредитования</h4>
+                <div class="row">
+                    <div class="col-md-5">
+                        <label for="id_product">{{ additional_client_info_f.product.label }}</label>
+                        {{ additional_client_info_f.product }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_property">{{ additional_client_info_f.property.label }}</label>
+                        {{ additional_client_info_f.property }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_full_insurance">{{ additional_client_info_f.full_insurance.label }}</label>
+                        {{ additional_client_info_f.full_insurance }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_registration">{{ additional_client_info_f.registration.label }}</label>
+                        {{ additional_client_info_f.registration }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_address_of_registration">{{ additional_client_info_f.address_of_registration.label }}</label>
+                        {{ additional_client_info_f.address_of_registration }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_actual_address">{{ additional_client_info_f.actual_address.label }}</label>
+                        {{ additional_client_info_f.actual_address }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_count_of_children">{{ additional_client_info_f.count_of_children.label }}</label>
+                        {{ additional_client_info_f.count_of_children }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_family_status">{{ additional_client_info_f.family_status.label }}</label>
+                        {{ additional_client_info_f.family_status }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_education_status">{{ additional_client_info_f.education_status.label }}</label>
+                        {{ additional_client_info_f.education_status }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_work_expireance">{{ additional_client_info_f.work_expireance.label }}</label>
+                        {{ additional_client_info_f.work_expireance }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_work_type">{{ additional_client_info_f.work_type.label }}</label>
+                        {{ additional_client_info_f.work_type }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_marriage_contract">{{ additional_client_info_f.marriage_contract.label }}</label>
+                        {{ additional_client_info_f.marriage_contract }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_immovable_property">{{ additional_client_info_f.immovable_property.label }}</label>
+                        {{ additional_client_info_f.immovable_property }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_rezident_of_usa">{{ additional_client_info_f.rezident_of_usa.label }}</label>
+                        {{ additional_client_info_f.rezident_of_usa }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_rezident_of_other_goverment">{{ additional_client_info_f.rezident_of_other_goverment.label }}</label>
+                        {{ additional_client_info_f.rezident_of_other_goverment }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_additional_work">{{ additional_client_info_f.additional_work.label }}</label>
+                        {{ additional_client_info_f.additional_work }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_additional_work">{{ additional_client_info_f.additional_work_expireance.label }}</label>
+                        {{ additional_client_info_f.additional_work_expireance }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_additional_work_category">{{ additional_client_info_f.additional_work_category.label }}</label>
+                        {{ additional_client_info_f.additional_work_category }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_income_of_main_work">{{ additional_client_info_f.income_of_main_work.label }}</label>
+                        {{ additional_client_info_f.income_of_main_work }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_income_of_additional_work">{{ additional_client_info_f.income_of_additional_work.label }}</label>
+                        {{ additional_client_info_f.income_of_additional_work }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_mark_of_car">{{ additional_client_info_f.mark_of_car.label }}</label>
+                        {{ additional_client_info_f.mark_of_car }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_year_of_manufacture_of_car">{{ additional_client_info_f.year_of_manufacture_of_car.label }}</label>
+                        {{ additional_client_info_f.year_of_manufacture_of_car }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_car_valuation">{{ additional_client_info_f.car_valuation.label }}</label>
+                        {{ additional_client_info_f.car_valuation }}
+                    </div>
+                    <div class="col-md-5">
+                        <label for="id_market_value_of_real_estate">{{ additional_client_info_f.market_value_of_real_estate.label }}</label>
+                        {{ additional_client_info_f.market_value_of_real_estate }}
+                    </div>
+
+                </div>
                 {#        {{ client_f.as_p }}#}
                 {#        {{ client }}#}
                 {#        {{ additional_client_info_f.as_p }}#}

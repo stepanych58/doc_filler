@@ -78,7 +78,7 @@ class Passport(models.Model):
 	)
 	serial = models.CharField(max_length=4, default="0000")
 	number = models.CharField(max_length=6, default="000000")
-	_from = models.CharField(max_length=200, default="отделом ФМС")
+	v_from = models.CharField(max_length=200, default="отделом ФМС")
 	gender = models.CharField(max_length=5, default="м")
 	birthday = models.DateField(default="1999-01-01")
 	date_of = models.DateField(default="1999-01-01") #дата выдачи
