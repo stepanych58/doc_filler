@@ -1,7 +1,6 @@
 # from django.contrib.postgres.fields import JSONField
 from django.db import models
 from mainapp.settings import *
-import jsonfield
 
 # PDF TEMPLATE DIR
 PDF_TEMPLATE_DIR = STATICFILES_DIRS[8]
