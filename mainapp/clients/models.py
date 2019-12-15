@@ -13,10 +13,46 @@ YES_NO_CHOISES = [
 	('no', 'нет'),
 ]
 
+IMMOVABLE_PROPERTY_CHOISES = [
+	('1', 'Квартира'),
+	('2', 'апартаменты'),
+	('3', 'таунхаус'),
+	('4', 'дом с участком'),
+	('5', 'иное'),
+]
+
+СREDIT_TYPE_CHOISES = [
+	('1', 'готовое жилье'),
+	('2', 'рефинансирование'),
+	('3', 'строящееся жилье'),
+	('4', 'под залог недвижимости'),
+]
+PROPERTY_TYPE = [  # тип имущества квартира, апартаменты, таунхаус, жилой дом с участком
+	('1', 'квартира'),
+	('2', 'апартаменты'),
+	('3', 'таунхаус'),
+	('4', 'жилой дом с участком'),
+]
+REGISTRATION_TYPES = [
+	('1', 'постоянная'),
+	('2', 'временная'),
+]
+
+GENDER_CHOISES = [
+	('1', 'M'),
+	('2', 'Ж'),
+]
 CURRANCY_CHOISES = [
-	('1','RUB'),#select resource from db example
-	('2','$'),
-	('2','Э'),
+	('1', 'RUB'),  # select resource from db example
+	('2', '$'),
+	('2', 'Э'),
+]
+
+ALL_WORK_EXPIREANCE_CHOISES = [
+	('1', 'менее 1 года'),
+	('2', '1 - 2 года'),
+	('3', '2 - 5 лет'),
+	('4', 'более 5 лет'),
 ]
 
 WORK_EXPERIENCE_CHOISES = [
@@ -40,7 +76,29 @@ POSITION_CATEGORY_CHOISES = [
 	('обслуживающий персонал', 'обслуживающий персонал'),
 ]
 
+FAMILY_STATUS_CHOISES = [
+	('not maried', 'не женат/не замужем'),
+	('maried', 'женат/замужем'),
+	('divorced', 'в разводе'),
+	('single/widow', 'вдовец/вдова')
+]
 
+WORK_TYPES = [
+	# тип занятости: по найму, ИП, адвокат, нотариус, собственник бизнеса (в этом случае указать размеро доли(строка)), не работаю
+	('1', 'по найму'),
+	('2', 'ИП'),
+	('3', 'адвокат'),
+	('4', 'собственник бизнеса'),
+	('5', 'не работаю'),
+]
+EDUCATION_STATUS_CHOISES = [
+	('below the average', 'ниже среднего'),
+	('the average', 'среднее'),
+	('specialized secondary', 'второе высшее'),
+	('incomplete higher education', 'незаконченное высшее образование'),
+	('higher', 'высшее'),
+	('academic degree', 'академическая степень'),
+]
 class Client(models.Model):
 	first_name = models.CharField(max_length=30, default='Иван')
 	part_name = models.CharField(max_length=30, default='Иванович')
@@ -79,9 +137,9 @@ class Passport(models.Model):
 	serial = models.CharField(max_length=4, default="0000")
 	number = models.CharField(max_length=6, default="000000")
 	v_from = models.CharField(max_length=200, default="отделом ФМС")
-	gender = models.CharField(max_length=5, default="м")
+	gender = models.CharField(GENDER_CHOISES, max_length=3, default=GENDER_CHOISES[0])
 	birthday = models.DateField(default="1999-01-01")
-	date_of = models.DateField(default="1999-01-01") #дата выдачи
+	date_of = models.DateField(default="1999-01-01")  # дата выдачи
 	code_of = models.CharField(max_length=8, default="344-222")
 
 	class Meta:
@@ -129,6 +187,7 @@ class PostAddress(models.Model):
 	oblast = models.CharField(max_length=200, default="Самарская обл.", blank=True)
 	rayon = models.CharField(max_length=200, default="Волжский р-он.", blank=True)
 
+
 class ClientCredit(models.Model):
 	client = models.OneToOneField(
 		Client,
@@ -140,9 +199,10 @@ class ClientCredit(models.Model):
 	date_start = models.DateField(default="2000-01-01")
 	date_end = models.DateField(default="2005-01-01")
 	currency = models.CharField(max_length=100, default="Руб", blank=True)
-	value = models.CharField(max_length=100, default="100000", blank=True)#сумма кредита
-	month_pay = models.CharField(max_length=100, default="1000", blank=True)#месячный платеж
-	leftover = models.CharField(max_length=100, default="1000", blank=True)#остаток
+	value = models.CharField(max_length=100, default="100000", blank=True)  # сумма кредита
+	month_pay = models.CharField(max_length=100, default="1000", blank=True)  # месячный платеж
+	leftover = models.CharField(max_length=100, default="1000", blank=True)  # остаток
+
 
 class BankDetail(models.Model):
 	account_number = models.CharField(max_length=24, default='0000 0000 0000 0000 0000', blank=True)
@@ -214,33 +274,19 @@ class ClientRelative(models.Model):
 	phone_number = models.CharField(max_length=12, default='89276976443')
 	email = models.EmailField(max_length=100, default='genaiv@gmail.com')
 
+
 class AdditionalClientInfo(models.Model):
 	client = models.OneToOneField(
 		Client,
 		on_delete=models.CASCADE,
 		primary_key=True
 	)
-	home_phone_number = models.CharField(max_length=12, default='89276976453') #домашний телефон
-	сont_phone_number = models.CharField(max_length=12, default='89276976453') #контактный телефон
-	work_phone_number = models.CharField(max_length=12, default='89276976453') #рабочий телефон
-	relations_phone_number = models.CharField(max_length=12, default='89276976453') # телефон близкого родственника
+	home_phone_number = models.CharField(max_length=12, default='89276976453')  # домашний телефон
+	сont_phone_number = models.CharField(max_length=12, default='89276976453')  # контактный телефон
+	work_phone_number = models.CharField(max_length=12, default='89276976453')  # рабочий телефон
+	relations_phone_number = models.CharField(max_length=12, default='89276976453')  # телефон близкого родственника
 
-	СREDIT_TYPE_CHOISES = [
-		('1', 'готовое жилье'),
-		('2', 'рефинансирование'),
-		('3', 'строящееся жилье'),
-		('4', 'под залог недвижимости'),
-	]
-	PROPERTY_TYPE = [  # тип имущества квартира, апартаменты, таунхаус, жилой дом с участком
-		('1', 'квартира'),
-		('2', 'апартаменты'),
-		('3', 'таунхаус'),
-		('4', 'жилой дом с участком'),
-	]
-	REGISTRATION_TYPES = [
-		('1', 'постоянная'),
-		('2', 'временная'),
-	]
+
 	product = models.CharField(choices=СREDIT_TYPE_CHOISES, max_length=50, default=СREDIT_TYPE_CHOISES[0])
 	property = models.CharField(choices=PROPERTY_TYPE, max_length=50, default=PROPERTY_TYPE[0])
 	full_insurance = models.CharField(choices=YES_NO_CHOISES, max_length=50,
@@ -251,60 +297,32 @@ class AdditionalClientInfo(models.Model):
 	actual_address = models.CharField(max_length=10000, default='Адрес фактического проживания')
 	count_of_children = models.CharField(max_length=2, default="0")  # количество детей
 	# class Meta:
-	FAMILY_STATUS_CHOISES = [
-		('not maried', 'не женат/не замужем'),
-		('maried', 'женат/замужем'),
-		('divorced', 'в разводе'),
-		('single/widow', 'вдовец/вдова')
-	]
 	family_status = models.CharField(choices=FAMILY_STATUS_CHOISES, max_length=13, default=FAMILY_STATUS_CHOISES[0])
-	EDUCATION_STATUS_CHOISES = [
-		('below the average', 'ниже среднего'),
-		('the average', 'среднее'),
-		('specialized secondary', 'второе высшее'),
-		('incomplete higher education', 'незаконченное высшее образование'),
-		('higher', 'высшее'),
-		('academic degree', 'академическая степень'),
-	]
+
 	education_status = models.CharField(choices=EDUCATION_STATUS_CHOISES, max_length=50,
 										default=EDUCATION_STATUS_CHOISES[0])
-	ALL_WORK_EXPIREANCE_CHOISES = [
-		('1', 'менее 1 года'),
-		('2', '1 - 2 года'),
-		('3', '2 - 5 лет'),
-		('4', 'более 5 лет'),
-	]
-	#todo сделать поля стаж как ввод количества лет и месяцев, остальное рассчитывать исходя из этой информации
+
+	# todo сделать поля стаж как ввод количества лет и месяцев, остальное рассчитывать исходя из этой информации
 	work_expireance = models.CharField(choices=ALL_WORK_EXPIREANCE_CHOISES, max_length=50,
 									   default=ALL_WORK_EXPIREANCE_CHOISES[0])
-	work_expireance_years = models.CharField(max_length=2, default="00") #трудовой стаж за последние пять лет (лет)
-	work_expireance_month = models.CharField(max_length=2, default="00") #трудовой стаж за последние пять лет (месяцев)
-	work_expireance_lw_years = models.CharField(max_length=2, default="00") #трудовой стаж на последнем месте работы (лет)
-	work_expireance_lw_month = models.CharField(max_length=2, default="00") #трудовой стаж на последнем месте работы (месяцев)
+	work_expireance_years = models.CharField(max_length=2, default="00")  # трудовой стаж за последние пять лет (лет)
+	work_expireance_month = models.CharField(max_length=2,
+											 default="00")  # трудовой стаж за последние пять лет (месяцев)
+	work_expireance_lw_years = models.CharField(max_length=2,
+												default="00")  # трудовой стаж на последнем месте работы (лет)
+	work_expireance_lw_month = models.CharField(max_length=2,
+												default="00")  # трудовой стаж на последнем месте работы (месяцев)
 
 	position_category = models.CharField(choices=POSITION_CATEGORY_CHOISES, max_length=50,
 										 default=POSITION_CATEGORY_CHOISES[0])
-	WORK_TYPES = [
-		# тип занятости: по найму, ИП, адвокат, нотариус, собственник бизнеса (в этом случае указать размеро доли(строка)), не работаю
-		('1', 'по найму'),
-		('2', 'ИП'),
-		('3', 'адвокат'),
-		('4', 'собственник бизнеса'),
-		('5', 'не работаю'),
-	]
+
 	work_type = models.CharField(choices=WORK_TYPES, max_length=50, default=WORK_TYPES[0])
 	work_type_other = models.CharField(max_length=2000, default="")
 	marriage_contract = models.CharField(choices=YES_NO_CHOISES, max_length=50,
 										 default=YES_NO_CHOISES[0])  # наличие брачного договора
 
 	# Неджимиое имущество в собственности Квартира\апартаменты, таунхаус, дом с участком, иное (здесь строка). В анкете есть 2 места. Если будет 2 заполнено, то ок, если нет - оставлю пустым
-	IMMOVABLE_PROPERTY_CHOISES = [
-		('1', 'Квартира'),
-		('2', 'апартаменты'),
-		('3', 'таунхаус'),
-		('4', 'дом с участком'),
-		('5', 'иное'),
-	]
+
 	immovable_property = models.CharField(choices=IMMOVABLE_PROPERTY_CHOISES, max_length=50,
 										  default=IMMOVABLE_PROPERTY_CHOISES[0])
 
