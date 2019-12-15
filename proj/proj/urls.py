@@ -13,15 +13,29 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+from cms.sitemaps import CMSSitemap
+from django.conf.urls import include, url
+from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import path
 from clients.views import *
+from django.contrib.sitemaps.views import sitemap
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.static import serve
 
+
+admin.autodiscover()
 
 urlpatterns = [
+
+    url(r'^sitemap\.xml$', sitemap,
+        {'sitemaps': {'cmspages': CMSSitemap}}),
+
+    path('1',testPage ),
     path('', welcomePage),
     path('admin/', admin.site.urls),
     path('clients/', allClients),
@@ -30,14 +44,17 @@ urlpatterns = [
     path('deleteClient/<int:client_id>', deleteClient),
     path('clientForm/<int:client_id>', clientForm),
     path('createTestData/', createTestData),
-	path('clearData/', clearData),
+    path('clearData/', clearData),
     path('uploadTemplate/', uploadTemplate),
     path('templates/', allTemplates),
     path('test_page/', testPage),
     path('clientInfo/<int:client_id>', clientInfo),
     path('generateReport/', generateReport),
 ]
-
+urlpatterns += i18n_patterns(
+    url(r'^admin/', admin.site.urls),  # NOQA
+    url(r'^', include('cms.urls')),
+)
 
 # urlpatterns = [
 #     path('', login_required(welcomePage)),
@@ -57,3 +74,9 @@ urlpatterns = [
 # ]
 #if settings.DEBUG:
 #    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns = [
+        url(r'^media/(?P<path>.*)$', serve,
+            {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+        ] + staticfiles_urlpatterns() + urlpatterns
