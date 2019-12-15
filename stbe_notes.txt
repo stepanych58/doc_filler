@@ -8,6 +8,7 @@ $ django-admin --version
 $ python -V
 Python 3.7.2
 
+DGANGO VERSION 2.2.8!!!!!
 #to work with pdf files
 pip install pypdf2 
 Install from PyPI:
