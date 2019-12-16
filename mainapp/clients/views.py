@@ -2,8 +2,8 @@ import json
 import os
 
 from django.core.files.storage import FileSystemStorage
-from django.forms import modelformset_factory, modelform_factory, Textarea, Widget
-from django.forms.widgets import Input, ChoiceWidget, Select
+from django.forms import modelformset_factory, modelform_factory, Textarea, Widget, DateTimeInput
+from django.forms.widgets import Input, ChoiceWidget, Select, DateInput
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
@@ -58,8 +58,8 @@ passport_factory = modelform_factory(Passport, fields=['serial', 'number', 'v_fr
 										 'number': Input(attrs={'class': 'form-control', }),
 										 'v_from': Textarea(attrs={'class': 'form-control', }),
 										 'gender': Select(attrs={'class': 'form-control', }, choices=GENDER_CHOISES),
-										 'birthday': Input(attrs={'class': 'form-control', }),
-										 'date_of': Input(attrs={'class': 'form-control', }),
+										 'birthday': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+										 'date_of': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 										 'code_of': Input(attrs={'class': 'form-control', }),
 
 									 }
@@ -168,9 +168,12 @@ organization_factory = modelform_factory(OrganizationInfo, fields=['full_name',
 												  'site': Input(attrs={'class': 'form-control', }),
 												  'inn_number': Input(attrs={'class': 'form-control', }),
 												  'field_of_activity': Input(attrs={'class': 'form-control', }),
-												  'incorparation_form': Input(attrs={'class': 'form-control', }),
-												  'number_of_staff': Input(attrs={'class': 'form-control', }),
-												  'work_experience': Input(attrs={'class': 'form-control', }), }
+												  'incorparation_form': Select(attrs={'class': 'form-control', },
+																			   choices=INCORPARATION_FORM_CHOISES),
+												  'number_of_staff': Select(attrs={'class': 'form-control', },
+																			choices=NUMBER_OF_STAFF_CHOISES),
+												  'work_experience': Select(attrs={'class': 'form-control', },
+																			choices=WORK_EXPERIENCE_CHOISES), }
 										 )
 additional_client_info_factory = modelform_factory(AdditionalClientInfo, fields=['product',
 																				 'property',
@@ -343,6 +346,10 @@ def addClient(request):
 			organization.save()
 			additional_client_info.instance.client = client
 			additional_client_info.save()
+		# if additional_client_info.is_valid():
+		# 	additional_client_info.save()
+		# else:
+		# 	print(additional_client_info.errors)
 		else:
 			for errorform in (
 					client, passport, snils, address, bank_detail, organization, post_address, additional_client_info):

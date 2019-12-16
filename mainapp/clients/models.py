@@ -81,7 +81,19 @@ FAMILY_STATUS_CHOISES = [
 	('divorced', 'в разводе'),
 	('single/widow', 'вдовец/вдова')
 ]
-
+INCORPARATION_FORM_CHOISES = [
+	('1', 'ООО'),
+	('2', 'ПАО'),
+	('3', 'ЗАО\АО'),
+	('4', 'гос.учреждение'),
+	('5', 'иное(здесь строка)'),
+]
+NUMBER_OF_STAFF_CHOISES = [  # числеенность сотрудников
+	('1', 'до 10'),
+	('2', '10-100'),
+	('3', '101-500'),
+	('4', 'более 500'),
+]
 WORK_TYPES = [
 	# тип занятости: по найму, ИП, адвокат, нотариус, собственник бизнеса (в этом случае указать размеро доли(строка)), не работаю
 	('1', 'по найму'),
@@ -238,21 +250,10 @@ class OrganizationInfo(models.Model):
 	inn_number = models.CharField(max_length=100, default='1345678911')
 	site = models.CharField(max_length=100, default='1345678911')
 	field_of_activity = models.CharField(max_length=100, default='IT')
-	INCORPARATION_FORM_CHOISES = [
-		('1', 'ООО'),
-		('2', 'ПАО'),
-		('3', 'ЗАО\АО'),
-		('4', 'гос.учреждение'),
-		('5', 'иное(здесь строка)'),
-	]
+
 	incorparation_form = models.CharField(choices=INCORPARATION_FORM_CHOISES, max_length=13,
 										  default=INCORPARATION_FORM_CHOISES[0])
-	NUMBER_OF_STAFF_CHOISES = [  # числеенность сотрудников
-		('1', 'до 10'),
-		('2', '10-100'),
-		('3', '101-500'),
-		('4', 'более 500'),
-	]
+
 	number_of_staff = models.CharField(choices=NUMBER_OF_STAFF_CHOISES, max_length=13,
 									   default=NUMBER_OF_STAFF_CHOISES[0])
 	work_experience = models.CharField(choices=WORK_EXPERIENCE_CHOISES, max_length=13,
