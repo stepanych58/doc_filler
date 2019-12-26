@@ -1,21 +1,165 @@
-{% load staticfiles %}
-<h1>Hi all</h1>
-<h2>Please choose option</h2>
-<style>
-    body {
-        background-image: url("{% static 'img/6597.jpg' %} ");
-    }
-    .btn {
-        border: none;
-        cursor: pointer;
-        display: block;
-        display: inline;
-        background: transparent;
-    }
-</style>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>megaCool</title>
+  <meta name="keywords" /static/content/="HTML5 Template">
+  <meta name="description" /static/content/="">
+  <meta name="author" /static/content/="itembridge.com">
+  <meta class="viewport" name="viewport" /static/content/="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" /static/content/="IE=edge">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="img/favicon.ico">
+  
+
+
+  <!-- Plugins CSS -->
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
+  <link rel="stylesheet" href="/static/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/static/css/animate.css">
+  <link rel="stylesheet" href="/static/css/owl.carousel.css">
+  <link rel="stylesheet" href="/static/css/jquery.mCustomScrollbar.min.css">
+  
+  <!-- Theme CSS -->
+  <link rel="stylesheet" href="/static/css/style.css">
+
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond./static/js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
 <body>
-<form action="/clients/" method="POST">{% csrf_token %}
-    <button class="btn" name="sbm" value="clients"><img src="{% static 'img/team.png' %}"/>
-        <p>Clients</p></button>
-</form>
+
+<div class="preloader"><span></span></div><!-- .preloader -->
+
+<div class="background">
+  <div class="layer background-image underconstruction"></div>
+  
+  <div class="layer clouds">
+		<div class="cloud cloud-1">
+			<img src="/static/content/img/cloud-1.png" width="1600" height="850" alt="#">
+		</div>
+		
+		<div class="cloud cloud-2">
+			<img src="/static/content/img/cloud-2.png" width="1600" height="850" alt="#">
+		</div>
+		
+		<div class="cloud cloud-3">
+			<img src="/static/content/img/cloud-1.png" width="1600" height="850" alt="#">
+		</div>
+  </div>
+
+  <div class="layer background-overlay page-overlay-6"></div>
+</div><!-- .background -->
+
+<header class="site-header">
+  <div class="row header-wrap">
+		<div class="col-sm-5 header-box"><div class="main-menu"></div></div>
+		
+		<div class="col-sm-2 header-box logo-box text-center">
+			<a href="admin"><img src="/static/img/stepan.svg" width="108" height="78" alt="#"></a>
+		</div><!-- .header-box -->
+		
+		<div class="col-sm-5 header-box"></div>
+  </div>
+</header><!-- .site-header -->
+
+<div class="main">
+  <section class="section active">
+		<div class="section-wrap">
+			<div class="section-/static/content/">
+				<div class="container">
+					<div class="contact-wrap relative">
+						<h1 class="h2-section-title text-center"
+							data-animation="fadeInDown"
+							data-animation-delay="900"
+							data-out-animation="fadeOutUp"
+							data-out-animation-delay="100">ВСё будет круто</h1>
+						
+						<div class="row section-description text-center">
+							<div class="col-sm-8 col-sm-offset-2">
+								<p class="lead"
+									data-animation="fadeInDown"
+									data-animation-delay="800"
+									data-out-animation="fadeOutUp"
+									data-out-animation-delay="100">Скоро всё заработает;)</p>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-xs-offset-0 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+
+								
+								<form action="/clients/" class="contact-form" method="post">{% csrf_token %}																		
+									<div class="button-box text-center">
+										<button class="btn"
+											data-hover="Clients"
+											class="btn btn-default progress-button btn-submit"
+											value="clients"
+											data-animation="fadeInDown"
+											data-animation-delay="900"
+											data-out-animation="fadeOutUp"
+											data-out-animation-delay="100">
+											<span class="button-label">Clients</span>
+
+											<span class="error"></span>
+											<span class="progress"></span>
+										</button>
+										
+									</div>
+									
+								</form>
+								
+							
+							</div>
+						</div>
+			
+						<div class="clearfix"></div>
+						
+						<div id="map" class="map-box">
+							<div class="map-wrap">
+								<a href="#" class="close">&times;</a>
+								
+								<div
+									class="map-canvas"
+									data-zoom="6"
+									data-lat="40.748441"
+									data-lng="-73.985664"
+									data-title="Bryant Park"
+									data-/static/content/="New York, NY">
+								</div>
+							</div>
+						</div>
+					</div><!-- .contact-wrap -->
+				</div>
+			</div><!-- .section-/static/content/ -->
+		</div><!-- .section-wrap -->
+  </section><!-- .section -->
+</div><!-- .main -->
+
+
+
+<!--[if (!IE)|(gt IE 8)]><!-->
+  <script src="/static/js/jquery-2.1.3.min.js"></script>
+<!--<![endif]-->
+
+<!--[if lte IE 8]>
+  <script src="/static/js/jquery-1.9.1.min.js"></script>
+<![endif]-->
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/bootstrap-select.min.js"></script>
+<script src="/static/js/owl.carousel.min.js"></script>
+<script src="/static/js/jquery.ajaxchimp.min.js"></script>
+<script src="/static/js/jquery.plugin.min.js"></script> 
+<script src="/static/js/jquery.countdown.min.js"></script>
+<script src="/static/js/jquery.mCustomScrollbar.min.js"></script>
+<script src="/static/js/jquery.touchwipe.min.js"></script>
+<script src="/static/js/included-plagins.js"></script>
+<script src="/static/js/froogaloop2.min.js"></script>
+<script src="/static/js/main.js"></script>
+
 </body>
+</html>
