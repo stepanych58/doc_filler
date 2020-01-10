@@ -404,3 +404,7 @@ def generateReport(request):
 
 def addTemplate(request):
     return render(request, 'addTemplate.html', {'doc_f': modelformset_factory(Client, fields='__all__')})
+
+
+def login(request):
+    return render(request, 'accounts/login.html')
