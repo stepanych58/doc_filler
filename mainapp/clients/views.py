@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
 from mainapp.settings import *
+from django.contrib import auth
 
 from .forms import *
 from .utils import *
@@ -235,7 +236,9 @@ additional_client_info_factory = modelform_factory(AdditionalClientInfo, fields=
 
 
 def welcomePage(request):
-    return render(request, 'welcome.html')
+    username = auth.get_user(request).username
+    context = {'username':username}
+    return render(request, 'welcome.html',context)
 
 
 def allClients(request, test_param="tp"):

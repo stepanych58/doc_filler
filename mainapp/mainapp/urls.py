@@ -20,10 +20,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required, permission_required
 from django.conf.urls import include
+import login_auth
 
 urlpatterns = [
     path(r'accounts/login/', login),
-   # path(r'accounts/login/', include('allauth.urls')),
+    path(r'auth/', include('login_auth.urls')),
     path('', welcomePage),
     path('admin/', admin.site.urls),
     path('clients/', allClients),

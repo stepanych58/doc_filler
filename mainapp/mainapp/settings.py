@@ -25,7 +25,7 @@ SECRET_KEY = '9lvu(w2w0udfw&bj%!j*%7q)1!-y2lzty2+nrbrb=#@g6hz^#a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-# DEBUG = False
+#DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'jsonfield',
     'allauth',
     'allauth.account',
+    'login_auth'
 ##    'allauth.socialaccount',
     # 'django.contrib.sites.models',
     #    'json_field',
@@ -68,7 +69,7 @@ ROOT_URLCONF = 'mainapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates', '/login_auth/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

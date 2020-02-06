@@ -73,23 +73,13 @@
 									data-out-animation-delay="100">Скоро всё заработает;)<br><BR></p>
 							</div>
 						</div>
-{% block login_auth %}
 
-<div class='login'>
-<form action='/auth/login/' method='POST'>
-{% csrf_token %}
-<form id="slick-login">
-<form action='/auth/login/' method='POST'><label for="login"></label>
-<input type='text' name='username' id='username' class="placeholder" placeholder="Логин">
-<label for="pass"></label>
-<input type='password' name='password' id='password' class = 'placeholder' placeholder = 'Пароль'>
-
-{% if login_error %}
-<label class='error'>{{ login_error }}</label>
-{% endif %}
-
-<div class="button-box text-center">
-<button class="btn"
+	<form id="slick-login">
+		<br><label for="login">Логин:</label><input type="text" name="login" class="placeholder" placeholder="Логин">
+		<label for="pass">Пароль:</label><input type="password" name="pass" class="placeholder" placeholder="Пароль">
+		<div class="button-box text-center">
+			<p><br>
+				<button class="btn"
 					data-hover="Войти"
 					class="btn btn-default progress-button btn-submit"
 					value="clients"
@@ -99,14 +89,8 @@
 					data-out-animation-delay="100">
 						<span class="button-label">Войти</span>
 				</button>
-</div>
-</form>
-</form>
-</div>
-    </div>
-    </div>
-    </div>
-{% endblock login_auth %}
+			</p>
 
+	</form>
 </body>
 </html>
