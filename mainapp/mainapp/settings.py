@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'login_auth'
+
 ##    'allauth.socialaccount',
     # 'django.contrib.sites.models',
     #    'json_field',

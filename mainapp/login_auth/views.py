@@ -17,7 +17,7 @@ def login(request):
             context = {'login_error': login_error}
             return render(request, '/accounts/login.html', context)
     else:
-        return render(request, '/accounts/login.hmtl', context)
+        return render(request, '/accounts/login.html', context)
 
 def logout(request):
     auth.logout(request)

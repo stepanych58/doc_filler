@@ -1,0 +1,7 @@
+django-json-field
+python-dateutil six
+psycopg2
+jsonfield
+django-allauth
+pypdf2 
+#django-ckeditor

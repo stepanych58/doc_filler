@@ -5,9 +5,7 @@
     <!-- Favicon -->
   <link rel="shortcut icon" href="/static/images/icons/favicon.ico">
 
-
-
-  <!-- Plugins CSS -->
+<!-- Plugins CSS -->
   <link rel="stylesheet" href="/static/css/bootstrap.css">
   <link rel="stylesheet" href="/static/css/bootstrap-select.min.css">
   <link rel="stylesheet" href="/static/css/font-awesome.min.css">
@@ -18,7 +16,6 @@
   <!-- Theme CSS -->
   <link rel="stylesheet" href="/static/css/style.css">
 
-
 </head>
 
 
@@ -26,6 +23,11 @@
 
 
 
+
+
+
+
+<body>
 
 {% load staticfiles %}
     <link href="{% static 'css/clients_table.css' %}" rel="stylesheet" type="text/css" >
@@ -35,17 +37,13 @@
 <script src="{% static 'js/clients.js' %}"></script>
 
 
-<body>
     {% if username %}
     <div align="right"><a href='/auth/logout/'>Выйти ({{ username }})</a></div>
     {% endif %}
 <style>
 
 </style>
-<header class="site-header">
 
-
-</header>
 
 <h1>{{page_title}}</h1>
  <div id="wrapper">
@@ -57,6 +55,7 @@
      {% endif %}
 {% include 'clients_button.html' %}
 </div>
+
 </body>
 
 
@@ -72,4 +71,5 @@
 <script src="/static/js/included-plagins.js"></script>
 <script src="/static/js/froogaloop2.min.js"></script>
 <script src="/static/js/main.js"></script>
+
 </html>

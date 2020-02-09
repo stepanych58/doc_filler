@@ -81,6 +81,19 @@
 
 						<div class="row">
 							<div class="col-xs-offset-0 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                                {% if username %}
+                                    <form action="/clients/" class="contact-form" method="post">{% csrf_token %}
+									<div class="button-box text-center">
+										<button class="btn"
+											data-hover="Войти"
+											class="btn btn-default progress-button btn-submit"
+											value="clients"
+											data-animation="fadeInDown"
+											data-animation-delay="900"
+											data-out-animation="fadeOutUp"
+											data-out-animation-delay="100">
+											<span class="button-label">Войти</span>
+                                {% else %}
 								<form action="/accounts/login/" class="contact-form" method="post">{% csrf_token %}																		
 									<div class="button-box text-center">
 										<button class="btn"
@@ -94,7 +107,7 @@
 											<span class="button-label">Войти</span>
 
 										</button>
-										
+										{% endif %}
 									</div>
 									
 								</form>
