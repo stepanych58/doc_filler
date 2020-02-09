@@ -11,13 +11,13 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/clients/')
         else:
             login_error = 'User not exist'
             context = {'login_error': login_error}
             return render(request, '/accounts/login.html', context)
     else:
-        return render(request, '/accounts/login.html', context)
+        return render(request, '/accounts/login.hmtl', context)
 
 def logout(request):
     auth.logout(request)

@@ -39,22 +39,24 @@
 			<img src="/static/content/img/cloud-1.png" width="1600" height="850" alt="#">
 		</div>
   </div>
+</div>
 <body>
 
 <header class="site-header">
-  <div class="row header-wrap">
-		<div class="col-sm-5 header-box"><div class="main-menu"></div></div>
-		
-		<div class="col-sm-2 header-box logo-box text-center">
-			<a href="/"><img src="/static/img/stepan.svg" width="108" height="78" alt="#"></a>
-		</div><!-- .header-box -->
-		
-		<div class="col-sm-5 header-box"></div>
-  </div>
+    {% if username %}
+    <div align="right"><a href='/auth/logout/'>Выйти ({{ username }})</a></div>
+    {% endif %}
+
 </header>
 
 
 	<div class="main">
+
+    <p align="center">
+    <a href="/"><img src="/static/img/stepan.svg" width="108" height="78" alt="#"></a>
+</p>
+
+
   <section class="section active">
 		<div class="section-wrap">
 			<div class="section-/static/content/">
@@ -63,8 +65,8 @@
 						<h1 class="h2	-section-title text-center"
 							data-animation="fadeInDown"
 							data-out-animation="fadeOutUp"
-							data-out-animation-delay="100">ВСё будет круто</h1>
-						
+							data-out-animation-delay="100">Вcё будет круто</h1>
+
 						<div class="row section-description text-center">
 							<div class="col-sm-8 col-sm-offset-2">
 								<p class="lead"

@@ -1,20 +1,51 @@
 <!DOCTYPE html>
 <html>
-<title>Doc filler test</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<title>Main page</title>
+<head>
+    <!-- Favicon -->
+  <link rel="shortcut icon" href="/static/images/icons/favicon.ico">
+
+
+
+  <!-- Plugins CSS -->
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
+  <link rel="stylesheet" href="/static/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/static/css/animate.css">
+  <link rel="stylesheet" href="/static/css/owl.carousel.css">
+  <link rel="stylesheet" href="/static/css/jquery.mCustomScrollbar.min.css">
+
+  <!-- Theme CSS -->
+  <link rel="stylesheet" href="/static/css/style.css">
+
+
+</head>
+
+
+
+
+
+
+
 {% load staticfiles %}
     <link href="{% static 'css/clients_table.css' %}" rel="stylesheet" type="text/css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 {% csrf_token %}
 <script src="{% static 'js/clients.js' %}"></script>
+
+
 <body>
+    {% if username %}
+    <div align="right"><a href='/auth/logout/'>Выйти ({{ username }})</a></div>
+    {% endif %}
 <style>
-body {
-        background-image: url("{% static 'img/6597.jpg' %} ");
-} 
+
 </style>
+<header class="site-header">
+
+
+</header>
 
 <h1>{{page_title}}</h1>
  <div id="wrapper">
@@ -28,4 +59,17 @@ body {
 </div>
 </body>
 
+
+
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/bootstrap-select.min.js"></script>
+<script src="/static/js/owl.carousel.min.js"></script>
+<script src="/static/js/jquery.ajaxchimp.min.js"></script>
+<script src="/static/js/jquery.plugin.min.js"></script>
+<script src="/static/js/jquery.countdown.min.js"></script>
+<script src="/static/js/jquery.mCustomScrollbar.min.js"></script>
+<script src="/static/js/jquery.touchwipe.min.js"></script>
+<script src="/static/js/included-plagins.js"></script>
+<script src="/static/js/froogaloop2.min.js"></script>
+<script src="/static/js/main.js"></script>
 </html>
