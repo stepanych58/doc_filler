@@ -8,12 +8,12 @@ def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = auth.authenticate(username=username, password=password)
+        user = auth.authenticate(username = username, password = password)
         if user is not None:
             auth.login(request, user)
             return HttpResponseRedirect('/clients/')
         else:
-            login_error = 'User not exist'
+            login_error = 'Пользователь не найден'
             context = {'login_error': login_error}
             return render(request, '/accounts/login.html', context)
     else:

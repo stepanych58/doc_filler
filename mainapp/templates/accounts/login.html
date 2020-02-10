@@ -1,7 +1,7 @@
 
 <head>
 	<meta charset="utf-8">
-    <title>megaCool Login</title>
+    <title>Авторизация</title>
     <link rel="shortcut icon" href="/static/images/icons/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="/static/css/styles.css" />
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -42,14 +42,6 @@
 </div>
 <body>
 
-<header class="site-header">
-    {% if username %}
-    <div align="right"><a href='/auth/logout/'>Выйти ({{ username }})</a></div>
-    {% endif %}
-
-</header>
-
-
 	<div class="main">
 
     <p align="center">
@@ -72,23 +64,41 @@
 								<p class="lead"
 									data-animation="fadeInDown"
 									data-out-animation="fadeOutUp"
-									data-out-animation-delay="100">Скоро всё заработает;)<br><BR></p>
+									data-out-animation-delay="100">Скоро всё заработает;)</p>
 							</div>
 						</div>
 {% block login_auth %}
 
-<div class='login'>
+
 <form action='/auth/login/' method='POST'>
 {% csrf_token %}
 <form id="slick-login">
-<form action='/auth/login/' method='POST'><label for="login"></label>
-<input type='text' name='username' id='username' class="placeholder" placeholder="Логин">
-<label for="pass"></label>
-<input type='password' name='password' id='password' class = 'placeholder' placeholder = 'Пароль'>
+<form action='/auth/login/' method='POST'>
+
+<label for="login"></label>
+ <input type='text' name='username' id='username' class="placeholder" placeholder="Логин">
+
+
+
+ <label for="pass"></label>
+   <input type='password' name='password' id='password' class = 'placeholder' placeholder = 'Пароль'>
+
+
+
+
+
+
+
+
+
+
 
 {% if login_error %}
 <label class='error'>{{ login_error }}</label>
 {% endif %}
+
+
+
 
 <div class="button-box text-center">
 <button class="btn"
@@ -104,7 +114,7 @@
 </div>
 </form>
 </form>
-</div>
+
     </div>
     </div>
     </div>

@@ -9,6 +9,8 @@ from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
 from mainapp.settings import *
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
+
 
 from .forms import *
 from .utils import *
@@ -240,25 +242,28 @@ def welcomePage(request):
     context = {'username':username}
     return render(request, 'welcome.html',context)
 
-
+@login_required()
 def allClients(request, test_param="tp"):
+    username = auth.get_user(request).username
     view_params['all_clients'] = Client.objects.all()
     view_params['all_docs'] = Document.objects.all()
     view_params['all_clients_files'] = ClientsFile.objects.all()
     view_params['p_table'] = 'clients'
-    view_params['page_title'] = 'Clientsdcds page'
+    view_params['page_title'] = 'Клиенты'
+    view_params['username'] = username
     return render(request, 'index.html', view_params);
 
 
+@login_required
 def allTemplates(request):
     view_params['all_clients'] = Client.objects.all()
     view_params['all_docs'] = Document.objects.all()
     view_params['all_clients_files'] = ClientsFile.objects.all()
     view_params['p_table'] = 'templates'
-    view_params['page_title'] = 'Templates page'
+    view_params['page_title'] = 'Анкеты'
     return render(request, 'index.html', view_params);
 
-
+@login_required
 def addClient(request):
     post = request.POST
     sbm = post['sbm']
@@ -306,22 +311,21 @@ def addClient(request):
                 print(errorform.errors)
     return HttpResponseRedirect('/clients/');
 
-
+@login_required
 def clientInfo(request, client_id):
     client = Client.objects.get(id=client_id)
     passport = client.passport
     return render(request, 'client.html', {'resulthtml': ClientHTML.printHTML(client, passport), })
 
-
 def deleteClient(client_id):
     client = Client.objects.get(id=client_id)
     client.delete();
 
-
+@login_required
 def deleteTemplate(template_id):
     Document.objects.get(id=template_id).delete();
 
-
+@login_required
 def deleteGenDoc(gen_doc_id):
     ClientsFile.objects.get(id=gen_doc_id).delete();
 
@@ -346,18 +350,18 @@ def clientForm(request, client_id):
         deleteGenDoc(gen_doc_id)
     return HttpResponseRedirect('/clients/');
 
-
+@login_required
 def createTestData(request):
     create_test_data()
     return HttpResponseRedirect('/clients/');
 
-
+@login_required
 def clearData(request):
     Client.objects.all().delete()
     Document.objects.all().delete()
     return HttpResponseRedirect('/clients/');
 
-
+@login_required
 def uploadTemplate(request):
     # add logic to save template in certain directory https://www.programcreek.com/python/example/59557/django.core.files.storage.FileSystemStorage
     if request.method == 'POST':
@@ -393,7 +397,7 @@ def testPage(request):
     return render(request, 'test_page.html', {'client_form': modelformset_factory(Client, fields='__all__'),
                                               'page_text_param': '', })
 
-
+@login_required
 def generateReport(request):
     print(request)
     client_view_params = request.body.decode('utf-8')
@@ -404,7 +408,7 @@ def generateReport(request):
         writeClientDoc(client_id, pdocs[0])
     return HttpResponseRedirect('/clients/');
 
-
+@login_required
 def addTemplate(request):
     return render(request, 'addTemplate.html', {'doc_f': modelformset_factory(Client, fields='__all__')})
 

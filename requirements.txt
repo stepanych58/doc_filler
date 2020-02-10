@@ -5,3 +5,4 @@ jsonfield
 django-allauth
 pypdf2 
 #django-ckeditor
+#cookiecutter

@@ -15,37 +15,21 @@
 
   <!-- Theme CSS -->
   <link rel="stylesheet" href="/static/css/style.css">
-
 </head>
-
-
-
-
-
-
-
-
-
 
 <body>
 
 {% load staticfiles %}
     <link href="{% static 'css/clients_table.css' %}" rel="stylesheet" type="text/css" >
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 {% csrf_token %}
 <script src="{% static 'js/clients.js' %}"></script>
 
 
-    {% if username %}
-    <div align="right"><a href='/auth/logout/'>Выйти ({{ username }})</a></div>
-    {% endif %}
-<style>
 
-</style>
+<div class="background">
+  <div class="layer background-image underconstruction"></div>
+<div class="layer clouds">
 
-
-<h1>{{page_title}}</h1>
  <div id="wrapper">
      {% if p_table == 'clients' %}
         {% include 'clients.html' %}
@@ -54,11 +38,20 @@
         {% include 'templates.html' %}
      {% endif %}
 {% include 'clients_button.html' %}
+
+  </div>
 </div>
 
+</div>
+
+<header class="site-header">
+    {% if username %}
+    <div align="right"><a href='/auth/logout/'>Выйти ({{ username }})</a></div>
+    {% endif %}
+
+</header>
+
 </body>
-
-
 
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/bootstrap-select.min.js"></script>
