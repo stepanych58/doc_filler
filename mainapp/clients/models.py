@@ -1,57 +1,28 @@
 # from django.contrib.postgres.fields import JSONField
 from django.db import models
 from mainapp.settings import *
-import jsonfield
 
 # PDF TEMPLATE DIR
+from clients.choises import *
+
 PDF_TEMPLATE_DIR = STATICFILES_DIRS[8]
 # PDF GENERETED RESULT DIR
 PDF_GENERATED_RESULT_DIR = STATICFILES_DIRS[3]
-
-YES_NO_CHOISES = [
-	('yes', 'да'),
-	('no', 'нет'),
-]
-
-CURRANCY_CHOISES = [
-	('1','RUB'),#select resource from db example
-	('2','$'),
-	('2','Э'),
-]
-
-WORK_EXPERIENCE_CHOISES = [
-	('1', 'до 4 мес'),
-	('2', '4 - 6 мес'),
-	('3', 'от 6 мес'),
-	('4', 'до 1 года'),
-	('5', '1 - 2 года'),
-	('6', '2 - 5 лет'),
-	('7', 'более 5 лет'),
-]
-
-POSITION_CATEGORY_CHOISES = [
-	('руководитель среднего сзвена', 'руководитель среднего сзвена'),
-	('Руководитель высшего звена', 'Руководитель высшего звена'),
-	('специалист', 'специалист'),
-	('рабочий', 'рабочий'),
-	('высококвалифицированный специалист', 'высококвалифицированный специалист'),
-	('руководитель низшего звена', 'руководитель низшего звена'),
-	('военносулжащий', 'военносулжащий'),
-	('обслуживающий персонал', 'обслуживающий персонал'),
-]
-
 
 class Client(models.Model):
 	first_name = models.CharField(max_length=30, default='Иван')
 	part_name = models.CharField(max_length=30, default='Иванович')
 	last_name = models.CharField(max_length=30, default='Иванов')
-	position = models.CharField(max_length=300, default='Инженер')
-	phone_number = models.CharField(max_length=12, default='89276976453')
-	email = models.EmailField(max_length=100, default='ivan@gmail.com')
 
 
-#
-# 	unique_together = ('first_name', 'part_name', 'last_name',)
+class Approver(models.Model):
+	first_name = models.CharField(max_length=30, default='Иван')
+	part_name = models.CharField(max_length=30, default='Иванович')
+	last_name = models.CharField(max_length=30, default='Иванов')
+	phone_number = models.CharField(max_length=12, default='89276976453')  # телефон
+	position = models.CharField(max_length=300, default='Инженер')  # должность
+	email_v = models.CharField(max_length=300, default='Инженер')  # должность
+
 
 class Document(models.Model):
 	name = models.CharField(max_length=500)
@@ -70,6 +41,24 @@ class ClientsFile(models.Model):
 	file_path = models.CharField(max_length=1000, default="/")
 
 
+class Address(models.Model):
+	client = models.ForeignKey(
+		Client,
+		on_delete=models.CASCADE
+	)
+	index = models.CharField(max_length=6, default="446100")  # индекс
+	country = models.CharField(max_length=200, default="Россия", blank=True)  # страна
+	oblast = models.CharField(max_length=200, default="Самарская обл.", blank=True)  # область/республика/край
+	rayon = models.CharField(max_length=200, default="Волжский р-он.", blank=True)  # район
+	city = models.CharField(max_length=200, default="Самара")  # город/поселок
+	street = models.CharField(max_length=200, default="Николая-Панова")  # улица
+	buildingNumber = models.CharField(max_length=6, default="144")  # номер дома
+	housing = models.CharField(max_length=6, default="", blank=True)  # корпус
+	structure = models.CharField(max_length=6, default="", blank=True)  # строение
+	flat = models.CharField(max_length=6, default="25", blank=True)  # квартира/офис
+	is_post_addr = models.CharField(choices=YES_NO_CHOISES, max_length=50, default=YES_NO_CHOISES[1])
+
+
 class Passport(models.Model):
 	client = models.OneToOneField(
 		Client,
@@ -78,71 +67,18 @@ class Passport(models.Model):
 	)
 	serial = models.CharField(max_length=4, default="0000")
 	number = models.CharField(max_length=6, default="000000")
-	v_from = models.CharField(max_length=200, default="отделом ФМС")
-	gender = models.CharField(max_length=5, default="м")
+	v_from = models.CharField(max_length=200, default="отделом ФМС")  # кем выдан
+	gender = models.CharField(GENDER_CHOISES, max_length=3, default=GENDER_CHOISES[0])  # пол
 	birthday = models.DateField(default="1999-01-01")
-	date_of = models.DateField(default="1999-01-01") #дата выдачи
+	date_of = models.DateField(default="1999-01-01")  # дата выдачи
 	code_of = models.CharField(max_length=8, default="344-222")
-
+	registration_address = models.ForeignKey(
+		Address,
+		on_delete=models.CASCADE
+	)
 	class Meta:
 		unique_together = ('client', 'serial', 'number',)
 
-
-class SNILS(models.Model):
-	client = models.OneToOneField(
-		Client,
-		on_delete=models.CASCADE,
-		primary_key=True,
-	)
-	snils_number = models.CharField(max_length=20, default="123-123-123 00")
-
-
-class INN(models.Model):
-	client = models.OneToOneField(
-		Client,
-		on_delete=models.CASCADE,
-		primary_key=True,
-	)
-	inn_number = models.CharField(max_length=20, default="123-123-123 00")
-
-
-class Address(models.Model):
-	index = models.CharField(max_length=6, default="446100")
-	city = models.CharField(max_length=200, default="Самара")
-	street = models.CharField(max_length=200, default="Николая-Панова")
-	buildingNumber = models.CharField(max_length=6, default="144")
-	housing = models.CharField(max_length=6, default="", blank=True)
-	structure = models.CharField(max_length=6, default="", blank=True)
-	flat = models.CharField(max_length=6, default="25", blank=True)
-	oblast = models.CharField(max_length=200, default="Самарская обл.", blank=True)
-	rayon = models.CharField(max_length=200, default="Волжский р-он.", blank=True)
-
-
-class PostAddress(models.Model):
-	index = models.CharField(max_length=6, default="446100")
-	city = models.CharField(max_length=200, default="Самара")
-	street = models.CharField(max_length=200, default="Николая-Панова")
-	buildingNumber = models.CharField(max_length=6, default="144")
-	housing = models.CharField(max_length=6, default="", blank=True)
-	structure = models.CharField(max_length=6, default="", blank=True)
-	flat = models.CharField(max_length=6, default="25", blank=True)
-	oblast = models.CharField(max_length=200, default="Самарская обл.", blank=True)
-	rayon = models.CharField(max_length=200, default="Волжский р-он.", blank=True)
-
-class ClientCredit(models.Model):
-	client = models.OneToOneField(
-		Client,
-		on_delete=models.CASCADE,
-		primary_key=True
-	)
-	type = models.CharField(max_length=100, default="Потребительский", blank=True)
-	creditor_name = models.CharField(max_length=100, default="Сбербанки", blank=True)
-	date_start = models.DateField(default="2000-01-01")
-	date_end = models.DateField(default="2005-01-01")
-	currency = models.CharField(max_length=100, default="Руб", blank=True)
-	value = models.CharField(max_length=100, default="100000", blank=True)#сумма кредита
-	month_pay = models.CharField(max_length=100, default="1000", blank=True)#месячный платеж
-	leftover = models.CharField(max_length=100, default="1000", blank=True)#остаток
 
 class BankDetail(models.Model):
 	account_number = models.CharField(max_length=24, default='0000 0000 0000 0000 0000', blank=True)
@@ -150,69 +86,163 @@ class BankDetail(models.Model):
 	bic = models.CharField(max_length=11, default='000 000 000', blank=True)
 	bank_name = models.CharField(max_length=1000, default='ОАО Сбербанк', blank=True)
 
-
-# Bank Account Number: (20 digits)
-# Correspondent account number: (20 digits) BIC: (9 digits)
-# Name of the bank in which the current account is open:
-
-class OrganizationInfo(models.Model):
-	client = models.OneToOneField(
+class JobInfo(models.Model):
+	client = models.ForeignKey(
 		Client,
 		on_delete=models.CASCADE,
-		primary_key=True
+		primary_key=False
+	)
+	is_general = models.CharField(choices=YES_NO_CHOISES, max_length=4,
+								  default=YES_NO_CHOISES[0])  # основное место работы(да, нет)
+	full_name = models.CharField(max_length=200, default="Пятёрочка")
+	address = models.ForeignKey(
+		Address,
+		on_delete=models.CASCADE
+	)
+	inn_number = models.CharField(max_length=100, default='1345678911')  # Инн
+	bank_detail = models.ForeignKey(
+		BankDetail,
+		on_delete=models.CASCADE
+	)
+	account_phone_number = models.CharField(max_length=12, default='89276976453')  # телефон бугалтерии
+	hr_phone_number = models.CharField(max_length=12, default='89276976453')  # телефон отдела кадров
+	work_phone_number = models.CharField(max_length=12, default='89276976453')  # рабочий телефон
+	age = models.CharField(max_length=3, default='10')  # возраст организации
+	number_of_staff = models.CharField(choices=NUMBER_OF_STAFF_CHOISES, max_length=13,
+									   default=NUMBER_OF_STAFF_CHOISES[0])  # количество сотрудников (сделать селект)
+	work_experience = models.CharField(choices=WORK_EXPERIENCE_CHOISES, max_length=13,
+									   default=WORK_EXPERIENCE_CHOISES[0])  # стаж в данной организации
+	site = models.CharField(max_length=100, default='google.com')  # сайт организации
+	position = models.CharField(max_length=300, default='Инженер')  # должность
+	position_category = models.CharField(choices=POSITION_CATEGORY_CHOISES, max_length=200,
+										 default=POSITION_CATEGORY_CHOISES[0])  # категория должности
+	salary = models.CharField(max_length=3, default='10')  # доход до налогооблажения
+	is_probation = models.CharField(choices=YES_NO_CHOISES, max_length=200,
+									default=YES_NO_CHOISES[0])  # испытательный срок(да, нет)
+	kind_of_contract = models.CharField(choices=KINDS_OF_CONTRACT, max_length=200,
+										default=KINDS_OF_CONTRACT[
+											0])  # Вид договора (Понайму, бессрочный, по найму срочный)
+	contract_start = models.DateField(default="2000-01-01")  # дата заключения договора
+	contract_end = models.DateField(default="2000-01-01")  # дата окончания договора
+	incorparation_form = models.CharField(choices=INCORPARATION_FORM_CHOISES, max_length=200,
+										  default=INCORPARATION_FORM_CHOISES[0])  # организационно правовая форма
+	approver = models.ForeignKey(
+		Approver,
+		on_delete=models.CASCADE
+	)
+	obligations = models.CharField(max_length=1000, default='Должностные обязанности')  # должностные обязаности
+
+
+class ManyValue(models.Model):  # сделать такую форму, которая будет суммироваться в другие поля
+	amount = models.CharField(max_length=15, default="1000", blank=True)
+	currency = models.CharField(max_length=20, choices=CURRANCY_CHOISES, default=CURRANCY_CHOISES[0])
+class MonthPayValue(models.Model):  # сделать такую форму, которая будет суммироваться в другие поля
+	amount = models.CharField(max_length=15, default="1000", blank=True)
+	currency = models.CharField(max_length=20, choices=CURRANCY_CHOISES, default=CURRANCY_CHOISES[0])
+class LeftoverValue(models.Model):  # сделать такую форму, которая будет суммироваться в другие поля
+	amount = models.CharField(max_length=15, default="1000", blank=True)
+	currency = models.CharField(max_length=20, choices=CURRANCY_CHOISES, default=CURRANCY_CHOISES[0])
+
+
+#
+class ClientCredit(models.Model):
+	client = models.ForeignKey(
+		Client,
+		on_delete=models.CASCADE,
+		primary_key=False
+	)
+	requested_field = models.CharField(choices=YES_NO_CHOISES, max_length=50,
+									   default=YES_NO_CHOISES[1])  # запрашиваемый или в наличии
+	type = models.CharField(choices=СREDIT_TYPES, max_length=50, default=СREDIT_TYPES[1])
+	credit_goal = models.CharField(max_length=100, default="на машину", blank=True)  # цель кредита
+	special_programms = models.CharField(max_length=100, default="", blank=True)  # специальные программы
+	desired_pay_period = models.CharField(max_length=100, default="2 года", blank=True)  # желаемый платежный период
+	insurance = models.CharField(max_length=100, default="полный пакет", blank=True)  # страхование рисков
+	creditor_name = models.CharField(max_length=100, default="Сбербанк", blank=True)  #
+	date_start = models.DateField(default="2000-01-01")
+	date_end = models.DateField(default="2005-01-01")
+	value = models.ForeignKey(
+		ManyValue,
+		on_delete=models.CASCADE,
+		primary_key=False
+	)  # сумма кредита
+	month_pay = models.ForeignKey(
+		MonthPayValue,
+		on_delete=models.CASCADE,
+		primary_key=False
+	)  # месячный платеж
+	leftover = models.ForeignKey(
+		LeftoverValue,
+		on_delete=models.CASCADE,
+		primary_key=False
+	)  # остаток
+
+
+class Ipoteka(ClientCredit):
+	property_value = models.CharField(max_length=100, default="1 000 000", blank=True)  # стоимость объекта недвижимости
+	immovables_region = models.CharField(max_length=100, default="Самарский регион",
+										 blank=True)  # регион объекта недвижимости
+	immovables_type = models.CharField(choices=IMMOVABLE_PROPERTY_CHOISES, max_length=50,
+									   default=IMMOVABLE_PROPERTY_CHOISES[0])  # регион объекта недвижимости
+	product_type = models.CharField(choices=IPOTEKA_TYPES, max_length=50,
+									default=IPOTEKA_TYPES[0])  # наименование ипотечного продукта
+	first_pay = models.CharField(max_length=100, default="1000", blank=True)  # размер первого платежа
+	source_for_first_pay = models.CharField(max_length=100, default="личные накопления",
+											blank=True)  # источник первоначального взноса
+
+# дом рф
+# наименование опции
+# источник информации об ипотечном продукте
+class Own(models.Model):
+	type = models.CharField(max_length=100, default="Собственность", blank=True)
+	value = models.CharField(max_length=100, default="1 000 000", blank=True)  # стоимость
+
+class Auto(Own):
+	client = models.ForeignKey(
+		Client,
+		on_delete=models.CASCADE
+	)
+	car_model = models.CharField(max_length=100, default="Лада")
+	year_of_manufacture_of_car = models.CharField(max_length=200, default="год выпуска авто")
+
+
+class ImmovableProp(Own):
+	client = models.ForeignKey(
+		Client,
+		on_delete=models.CASCADE
 	)
 	address = models.ForeignKey(
 		Address,
-		on_delete=models.CASCADE,
+		on_delete=models.CASCADE
 	)
-	post_address = models.ForeignKey(
-		PostAddress,
-		on_delete=models.CASCADE,
-	)
-	bank_detail = models.ForeignKey(
-		BankDetail,
-		on_delete=models.CASCADE,
-	)
-	full_name = models.CharField(max_length=10000, default='Сбербанк')
-	accountent_number = models.CharField(max_length=10, default='1345678911')
-	hr_number = models.CharField(max_length=10, default='1345678911')
-	inn_number = models.CharField(max_length=100, default='1345678911')
-	site = models.CharField(max_length=100, default='1345678911')
-	field_of_activity = models.CharField(max_length=100, default='IT')
-	INCORPARATION_FORM_CHOISES = [
-		('1', 'ООО'),
-		('2', 'ПАО'),
-		('3', 'ЗАО\АО'),
-		('4', 'гос.учреждение'),
-		('5', 'иное(здесь строка)'),
-	]
-	incorparation_form = models.CharField(choices=INCORPARATION_FORM_CHOISES, max_length=13,
-										  default=INCORPARATION_FORM_CHOISES[0])
-	NUMBER_OF_STAFF_CHOISES = [  # числеенность сотрудников
-		('1', 'до 10'),
-		('2', '10-100'),
-		('3', '101-500'),
-		('4', 'более 500'),
-	]
-	number_of_staff = models.CharField(choices=NUMBER_OF_STAFF_CHOISES, max_length=13,
-									   default=NUMBER_OF_STAFF_CHOISES[0])
-	work_experience = models.CharField(choices=WORK_EXPERIENCE_CHOISES, max_length=13,
-									   default=WORK_EXPERIENCE_CHOISES[0])
+	square = models.CharField(max_length=100, default="100 m2", blank=True)  # площадь
 
+###Доход от сдачи в аренду недвижимости может быть несколько объектов
+class RentalIncome(models.Model):
+	client = models.ForeignKey(
+		Client,
+		on_delete=models.CASCADE
+	)
+	address = models.ForeignKey(
+		Address,
+		on_delete=models.CASCADE
+	)
+	contract_start = models.DateField(default="1999-01-01")
+	contract_end = models.DateField(default="1999-01-01")
+	property_type = models.CharField(choices=IMMOVABLE_PROPERTY_CHOISES, max_length=50,
+									 default=IMMOVABLE_PROPERTY_CHOISES[0])
+	count_room = models.CharField(max_length=3, default="2", blank=True)
+	square = models.CharField(max_length=20, default="100", blank=True)  # m2
+	own_percent = models.CharField(max_length=3, default="100", blank=True)  # доля в собственности
 
-class ClientRelative(models.Model):
-	client = models.OneToOneField(
+class ClientRelative(Approver):
+	client = models.ForeignKey(
 		Client,
 		on_delete=models.CASCADE,
-		primary_key=True
+		primary_key=False
 	)
-	first_name = models.CharField(max_length=30, default='Гена')
-	part_name = models.CharField(max_length=30, default='Иванович')
-	last_name = models.CharField(max_length=30, default='Иванов')
-	position = models.CharField(max_length=300, default='Рыбак')
 	relation_degree = models.CharField(max_length=300, default='Брат')
-	phone_number = models.CharField(max_length=12, default='89276976443')
-	email = models.EmailField(max_length=100, default='genaiv@gmail.com')
+	birthday = models.DateField(default="1999-01-01")
 
 class AdditionalClientInfo(models.Model):
 	client = models.OneToOneField(
@@ -220,94 +250,21 @@ class AdditionalClientInfo(models.Model):
 		on_delete=models.CASCADE,
 		primary_key=True
 	)
-	home_phone_number = models.CharField(max_length=12, default='89276976453') #домашний телефон
-	сont_phone_number = models.CharField(max_length=12, default='89276976453') #контактный телефон
-	work_phone_number = models.CharField(max_length=12, default='89276976453') #рабочий телефон
-	relations_phone_number = models.CharField(max_length=12, default='89276976453') # телефон близкого родственника
+	home_phone_number = models.CharField(max_length=12, default='89276976453')  # домашний телефон
+	сont_phone_number = models.CharField(max_length=12, default='89276976453')  # контактный телефон
+	work_phone_number = models.CharField(max_length=12, default='89276976453')  # рабочий телефон
+	snils_number = models.CharField(max_length=20, default="123-123-123 00")
 
-	СREDIT_TYPE_CHOISES = [
-		('1', 'готовое жилье'),
-		('2', 'рефинансирование'),
-		('3', 'строящееся жилье'),
-		('4', 'под залог недвижимости'),
-	]
-	PROPERTY_TYPE = [  # тип имущества квартира, апартаменты, таунхаус, жилой дом с участком
-		('1', 'квартира'),
-		('2', 'апартаменты'),
-		('3', 'таунхаус'),
-		('4', 'жилой дом с участком'),
-	]
-	REGISTRATION_TYPES = [
-		('1', 'постоянная'),
-		('2', 'временная'),
-	]
-	product = models.CharField(choices=СREDIT_TYPE_CHOISES, max_length=50, default=СREDIT_TYPE_CHOISES[0])
-	property = models.CharField(choices=PROPERTY_TYPE, max_length=50, default=PROPERTY_TYPE[0])
-	full_insurance = models.CharField(choices=YES_NO_CHOISES, max_length=50,
-									  default=YES_NO_CHOISES[0])  # полное страхование
-	registration = models.CharField(choices=REGISTRATION_TYPES, max_length=50,
-									default=REGISTRATION_TYPES[0])  # полное страхование
-	address_of_registration = models.CharField(max_length=10000, default='Адрес регистрации (постоянная/временная)')
-	actual_address = models.CharField(max_length=10000, default='Адрес фактического проживания')
-	count_of_children = models.CharField(max_length=2, default="0")  # количество детей
-	# class Meta:
-	FAMILY_STATUS_CHOISES = [
-		('not maried', 'не женат/не замужем'),
-		('maried', 'женат/замужем'),
-		('divorced', 'в разводе'),
-		('single/widow', 'вдовец/вдова')
-	]
+	# 	count_of_children = models.CharField(max_length=2, default="0")  # количество детей
+	# 	class Meta:
 	family_status = models.CharField(choices=FAMILY_STATUS_CHOISES, max_length=13, default=FAMILY_STATUS_CHOISES[0])
-	EDUCATION_STATUS_CHOISES = [
-		('below the average', 'ниже среднего'),
-		('the average', 'среднее'),
-		('specialized secondary', 'второе высшее'),
-		('incomplete higher education', 'незаконченное высшее образование'),
-		('higher', 'высшее'),
-		('academic degree', 'академическая степень'),
-	]
 	education_status = models.CharField(choices=EDUCATION_STATUS_CHOISES, max_length=50,
 										default=EDUCATION_STATUS_CHOISES[0])
-	ALL_WORK_EXPIREANCE_CHOISES = [
-		('1', 'менее 1 года'),
-		('2', '1 - 2 года'),
-		('3', '2 - 5 лет'),
-		('4', 'более 5 лет'),
-	]
-	#todo сделать поля стаж как ввод количества лет и месяцев, остальное рассчитывать исходя из этой информации
-	work_expireance = models.CharField(choices=ALL_WORK_EXPIREANCE_CHOISES, max_length=50,
-									   default=ALL_WORK_EXPIREANCE_CHOISES[0])
-	work_expireance_years = models.CharField(max_length=2, default="00") #трудовой стаж за последние пять лет (лет)
-	work_expireance_month = models.CharField(max_length=2, default="00") #трудовой стаж за последние пять лет (месяцев)
-	work_expireance_lw_years = models.CharField(max_length=2, default="00") #трудовой стаж на последнем месте работы (лет)
-	work_expireance_lw_month = models.CharField(max_length=2, default="00") #трудовой стаж на последнем месте работы (месяцев)
 
-	position_category = models.CharField(choices=POSITION_CATEGORY_CHOISES, max_length=50,
-										 default=POSITION_CATEGORY_CHOISES[0])
-	WORK_TYPES = [
-		# тип занятости: по найму, ИП, адвокат, нотариус, собственник бизнеса (в этом случае указать размеро доли(строка)), не работаю
-		('1', 'по найму'),
-		('2', 'ИП'),
-		('3', 'адвокат'),
-		('4', 'собственник бизнеса'),
-		('5', 'не работаю'),
-	]
-	work_type = models.CharField(choices=WORK_TYPES, max_length=50, default=WORK_TYPES[0])
-	work_type_other = models.CharField(max_length=2000, default="")
+	# todo сделать поля стаж как ввод количества лет и месяцев, остальное рассчитывать исходя из этой информации
+
 	marriage_contract = models.CharField(choices=YES_NO_CHOISES, max_length=50,
 										 default=YES_NO_CHOISES[0])  # наличие брачного договора
-
-	# Неджимиое имущество в собственности Квартира\апартаменты, таунхаус, дом с участком, иное (здесь строка). В анкете есть 2 места. Если будет 2 заполнено, то ок, если нет - оставлю пустым
-	IMMOVABLE_PROPERTY_CHOISES = [
-		('1', 'Квартира'),
-		('2', 'апартаменты'),
-		('3', 'таунхаус'),
-		('4', 'дом с участком'),
-		('5', 'иное'),
-	]
-	immovable_property = models.CharField(choices=IMMOVABLE_PROPERTY_CHOISES, max_length=50,
-										  default=IMMOVABLE_PROPERTY_CHOISES[0])
-
 	rezident_of_usa = models.CharField(choices=YES_NO_CHOISES, max_length=50,
 									   default=YES_NO_CHOISES[0])  # Являетесь ли вы налоговым резидентом США
 	rezident_of_other_goverment = models.CharField(choices=YES_NO_CHOISES, max_length=50,
@@ -315,40 +272,3 @@ class AdditionalClientInfo(models.Model):
 													   0])  # Являетесь ли вы налоговым резидентом другого государства за исключением США
 	foreign_citizen = models.CharField(choices=YES_NO_CHOISES, max_length=50,
 									   default=YES_NO_CHOISES[0])  # Являетесь ли вы иностранным гражданином
-
-	additional_work = models.CharField(choices=WORK_TYPES, max_length=50,
-									   default=WORK_TYPES[0])  # работа по совместительству
-	additional_work_expireance = models.CharField(choices=WORK_EXPERIENCE_CHOISES, max_length=50,
-												  default=WORK_EXPERIENCE_CHOISES[0])
-	additional_work_category = models.CharField(choices=POSITION_CATEGORY_CHOISES, max_length=50,
-												default=POSITION_CATEGORY_CHOISES[0])
-	income_of_main_work = models.CharField(max_length=200, default="доход от основной работы")
-	income_of_additional_work = models.CharField(max_length=200, default="доход от работы по совместительству")
-	mark_of_car = models.CharField(max_length=200, default="марка авто ")
-	model_of_car = models.CharField(max_length=200, default="модель авто ")
-	year_of_manufacture_of_car = models.CharField(max_length=200, default="год выпуска авто")
-	car_valuation = models.CharField(max_length=200, default="оценка стоимости авто")
-	market_value_of_real_estate = models.CharField(max_length=200, default="Рыночная стоимость недвижимости")
-	average_income = models.CharField(max_length=200, default="средний доход до вычета налогов")  # Это я воткнул
-	aliment = models.CharField(max_length=200, default="Алименты")  # Это я воткнул
-	monetary_obligations = models.CharField(max_length=200,
-											default="Совокупные ежемесячные обязательства (за исключением алиментов)")  # Это я воткнул
-
-# WORK_TYPES = [ #тип занятости: по найму, ИП, адвокат, нотариус, собственник бизнеса (в этом случае указать размеро доли(строка)), не работаю
-# 	('1',''),
-# 	('2',''),
-# 	('3',''),
-# 	('4',''),
-# 	('5',''),
-# ]
-
-# class EmployeeIncomeInfo(models.Model):
-# СРЕДНЕМЕСЯЧНЫЙ ДОХОД ЗА ПОСЛЕДНИЕ МЕСЯЦЕВ2 (указывается 6 месяцев; если стаж работы меньше 6 месяцев, указывается
-# фактическое количество месяцев, за которые произведен расчет, и среднемесячный доход за фактически отработанные месяцы):
-# Цифрами Международный код валюты
-# Прописью
-# СРЕДНЕМЕСЯЧНЫЙ РАЗМЕР НАЛОГА НА ДОХОДЫ ФИЗИЧЕСКИХ ЛИЦ ЗА ПОСЛЕДНИЕ МЕСЯЦЕВ (указывается 6 месяцев; если
-# стаж работы меньше 6 месяцев, указывается фактическое количество месяцев, за которые произведен расчет, и среднемесячный размер налога
-# за фактически отработанные месяцы):
-# Цифрами Международный код валюты
-# Прописью
