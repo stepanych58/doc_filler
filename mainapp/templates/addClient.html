@@ -15,46 +15,9 @@
 <div class="row">
     <div class="col-md-10 order-md-1">
         <form action="/addClient/" method="POST">{% csrf_token %}
-
             {{ client_f.printForm |safe }}
-
             <h4 class="mb-3">Пасспортные данные</h4>
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="id_serial">{{ passport_f.serial.label }}</label>
-                    {{ passport_f.serial }}
-                    <div class="invalid-feedback">
-                        Valid part name is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_number">{{ passport_f.number.label }}</label>
-                    {{ passport_f.number }}
-                </div>
-                <div class="col-md-8">
-                    <label for="id_v_from">{{ passport_f.v_from.label }}</label>
-                    {{ passport_f.v_from }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <label for="id_gender">{{ passport_f.gender.label }}</label>
-                    {{ passport_f.gender }}
-                </div>
-                <div class="col-md-3">
-                    <label for="id_birthday">{{ passport_f.birthday.label }}</label>
-                    {{ passport_f.birthday }}
-                </div>
-                <div class="col-md-3">
-                    <label for="id_date_of">{{ passport_f.date_of.label }}</label>
-                    {{ passport_f.date_of }}
-                </div>
-                <div class="col-md-3">
-                    <label for="id_code_of">{{ passport_f.code_of.label }}</label>
-                    {{ passport_f.code_of }}
-                </div>
-            </div>
-            <br/>
+            {{ passport_f.printForm |safe }}
             <h6 class="mb-3">Aдрес регистрации</h6>
             <div class="row">
                 <div class="col-md-5">

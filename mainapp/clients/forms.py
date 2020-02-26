@@ -17,6 +17,8 @@ def printCol(self,
 			 label_id='', label='', input='',
 			 inputName='', inputValue='', inputId='' ):
 	attrs = {'id' : 'id_' + str(inputId)};
+	if isinstance(input, Select) and input.attrs.get('choices', None) == 'small':
+		div1_class='col-md-1'
 	return '<div class="' + div1_class + '">' + \
 		   '<label for="id_' + label_id + '">' + label + '</label>' + \
 		   input.render(name=inputName, value=inputValue , attrs =attrs) + \
@@ -95,12 +97,32 @@ class PassportForm(forms.ModelForm):
 			'serial': Input(attrs={'class': 'form-control', }),
 			'number': Input(attrs={'class': 'form-control', }),
 			'v_from': Textarea(attrs={'class': 'form-control', 'style': 'height: 95px;'}),
-			'gender': Select(attrs={'class': 'form-control', }, choices=GENDER_CHOISES),
+			'gender': Select(attrs={'class': 'form-control', 'choices':'small'}, choices=GENDER_CHOISES),
 			'birthday': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 			'date_of': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 			'code_of': Input(attrs={'class': 'form-control', }),
 		}
 
+	def printForm(self):
+		resStr = '<div class="row">'
+		v_fromLabel = self.Meta.fields[2]
+		for label in self.Meta.fields[:2]:
+			resStr += printCol(self, label_id=label, div1_class='col-md-4 mb-3', inputName = label,
+							   label=self.Meta.labels[label],
+							   input=self.Meta.widgets[label], inputId=label)
+		resStr += '</div>'
+		resStr += '<div class="row">'
+		resStr += printCol(self, label_id=v_fromLabel, div1_class='col-md-8', inputName=v_fromLabel,
+				 label=self.Meta.labels[v_fromLabel],
+				 input=self.Meta.widgets[v_fromLabel], inputId=v_fromLabel)
+		resStr += '</div>'
+		resStr += '<div class="row">'
+		for label in self.Meta.fields[3:7]:
+			resStr += printCol(self, label_id=label, div1_class='col-md-3 mb-3', inputName = label,
+							   label=self.Meta.labels[label],
+							   input=self.Meta.widgets[label], inputId=label)
+		resStr += '</div>'
+		return resStr;
 
 # def printF(obj):
 # 	resStr = ''
