@@ -28,17 +28,12 @@ def printCol(self,
 		   '</div>';
 
 
-class ClientForm(forms.ModelForm):
-	class Meta:
-		model = Client
-		fields = '__all__'
-		labels = {'last_name': 'Фамилия',
-				  'first_name': 'Имя',
-				  'part_name': 'Отчество', }
-		widgets = aplyForAll(labels.keys(), Input(attrs={'class': 'form-control', }))
+simpleInput = Input(attrs={'class': 'form-control', })
+
+class AbstractForm(forms.ModelForm):
 	def printForm(self):
 		resStr = '<div class="row">'
-		for label in self.Meta.labels:
+		for label in self.Meta.widgets:
 			resStr += printCol(self, label_id=label, div1_class='col-md-4 mb-3', inputName = label,
 							   label=self.Meta.labels[label],
 							   input=self.Meta.widgets[label], inputId=label)
@@ -46,7 +41,16 @@ class ClientForm(forms.ModelForm):
 		return resStr;
 
 
-class AddressForm(forms.ModelForm):
+class ClientForm(AbstractForm):
+	class Meta:
+		model = Client
+		fields = '__all__'
+		labels = {'last_name': 'Фамилия',
+				  'first_name': 'Имя',
+				  'part_name': 'Отчество', }
+		widgets = aplyForAll(labels.keys(), simpleInput)
+
+class AddressForm(AbstractForm):
 	class Meta:
 		model = Address
 		exclude = ('client',)
@@ -62,16 +66,7 @@ class AddressForm(forms.ModelForm):
 			'oblast': 'Область',
 			'rayon': 'Район',
 		}
-		widgets = aplyForAll(labels.keys(), Input(attrs={'class': 'form-control', }))
-
-	def printForm(self):
-		resStr = '<div class="row">'
-		for label in self.Meta.labels:
-			resStr += printCol(self, label_id=label, label=self.Meta.labels[label],
-							   input=self.Meta.widgets[label], )
-		resStr += '</div>'
-		return resStr;
-
+		widgets = aplyForAll(labels.keys(), simpleInput)
 
 class PassportForm(forms.ModelForm):
 	class Meta:
@@ -86,13 +81,13 @@ class PassportForm(forms.ModelForm):
 				  'code_of': 'Код подразделения',
 				  }
 		widgets = {
-			'serial': Input(attrs={'class': 'form-control', }),
-			'number': Input(attrs={'class': 'form-control', }),
+			'serial': simpleInput,
+			'number': simpleInput,
 			'v_from': Textarea(attrs={'class': 'form-control', 'style': 'height: 95px;'}),
 			'gender': Select(attrs={'class': 'form-control', 'choices':'small'}, choices=GENDER_CHOISES),
 			'birthday': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 			'date_of': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-			'code_of': Input(attrs={'class': 'form-control', }),
+			'code_of': simpleInput,
 		}
 
 	def printForm(self):
@@ -155,21 +150,9 @@ class ApproverForm(ClientForm):
 				  'position': 'Должность',
 				  'phone_number': 'Телефонный номер',
 				  'email_v': 'Email', }
-		widgets = {
-			'last_name': Input(attrs={'class': 'form-control', }),
-			'part_name': Input(attrs={'class': 'form-control', }),
-			'position': Input(attrs={'class': 'form-control', }),
-			'phone_number': Input(attrs={'class': 'form-control', }),
-			'email_v': EmailInput(attrs={'class': 'form-control', }),
-			'first_name': Input(attrs={
-				'class': 'form-control',
-				'type': 'text',
-				'placeholder': '',
-			}),
-		}
+		widgets = aplyForAll(labels.keys(), simpleInput)
 
-
-class JobInfoForm(forms.ModelForm):
+class JobInfoForm(AbstractForm):
 	class Meta:
 		model = JobInfo
 		exclude = ('client', 'address', 'bank_detail', 'approver')
@@ -212,19 +195,12 @@ class JobInfoForm(forms.ModelForm):
 			'contract_end': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 		}
 		allWidgets = {}
-		allWidgets.update(aplyForAll(textFields, widget=Input(attrs={'class': 'form-control', })))
+		allWidgets.update(aplyForAll(textFields, widget=simpleInput))
 		allWidgets.update(selectwidgets)
 		allWidgets.update(dateWidgets)
 		widgets = allWidgets
-	def printForm(self):
-		resStr = '<div class="row">'
-		for label in self.Meta.labels:
-			resStr += printCol(self, label_id=label, label=self.Meta.labels[label],
-							   input=self.Meta.widgets[label], )
-		resStr += '</div>'
-		return resStr;
 
-class BankDetailForm(forms.ModelForm):
+class BankDetailForm(AbstractForm):
 	class Meta:
 		model = BankDetail
 		fields = '__all__'
@@ -234,19 +210,16 @@ class BankDetailForm(forms.ModelForm):
 			'bic': 'BIC',
 			'bank_name': 'Имя банка'
 		}
-		widgets = aplyForAll(('account_number', 'correspondent_account_number', 'bic', 'bank_name',),
-							 widget=Input(attrs={'class': 'form-control', }))
+		widgets = aplyForAll(labels.keys(), simpleInput)
 
-
-class AdditionalClientInfoForm(forms.ModelForm):
+class AdditionalClientInfoForm(AbstractForm):
 	class Meta:
 		model = AdditionalClientInfo
 		fields = ['snils_number']
 		labels = {'snils_number': 'СНИЛС', }
-		widgets = {'snils_number': Input(attrs={'class': 'form-control', })}
+		widgets = {'snils_number': simpleInput}
 
-
-class CreditForm(forms.ModelForm):
+class CreditForm(AbstractForm):
 	class Meta:
 		model = ClientCredit
 		exclude = ('client',)
@@ -266,11 +239,11 @@ class CreditForm(forms.ModelForm):
 		widgets = {
 			'requested_field': Select(attrs={'class': 'form-control', }, choices=YES_NO_CHOISES),
 			'type': Select(attrs={'class': 'form-control', }, choices=СREDIT_TYPES),
-			'credit_goal': Input(attrs={'class': 'form-control', }),
-			'special_programms': Input(attrs={'class': 'form-control', }),
-			'desired_pay_period': Input(attrs={'class': 'form-control', }),
-			'insurance': Input(attrs={'class': 'form-control', }),
-			'creditor_name': Input(attrs={'class': 'form-control', }),
+			'credit_goal': simpleInput,
+			'special_programms': simpleInput,
+			'desired_pay_period': simpleInput,
+			'insurance': simpleInput,
+			'creditor_name': simpleInput,
 			'date_start': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 			'date_end': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 		}
@@ -293,10 +266,10 @@ class ClientRelativeForm(ApproverForm):
 				  'phone_number': 'Телефонный номер',
 				  'email_v': 'Email', }
 		widgets = {
-			'last_name': Input(attrs={'class': 'form-control', }),
-			'part_name': Input(attrs={'class': 'form-control', }),
-			'position': Input(attrs={'class': 'form-control', }),
-			'phone_number': Input(attrs={'class': 'form-control', }),
+			'last_name': simpleInput,
+			'part_name': simpleInput,
+			'position': simpleInput,
+			'phone_number': simpleInput,
 			'email_v': EmailInput(attrs={'class': 'form-control', }),
 			'first_name': Input(attrs={
 				'class': 'form-control',
