@@ -19,51 +19,10 @@
             <h4 class="mb-3">Пасспортные данные</h4>
             {{ passport_f.printForm |safe }}
             <h6 class="mb-3">Aдрес регистрации</h6>
-            <div class="row">
-                <div class="col-md-5">
-                    <label for="id_index">{{ registration_addr_f.index.label }}</label>
-                    {{ registration_addr_f.index }}
-                </div>
-                <div class="col-md-5">
-                    <label for="id_index">{{ registration_addr_f.country.label }}</label>
-                    {{ registration_addr_f.country }}
-                </div>
-                <div class="col-md-5">
-                    <label for="id_index">{{ registration_addr_f.city.label }}</label>
-                    {{ registration_addr_f.city }}
-                </div>
-                <div class="col-md-5">
-                    <label for="id_index">{{ registration_addr_f.street.label }}</label>
-                    {{ registration_addr_f.street }}
-                </div>
-                <div class="col-md-5">
-                    <label for="id_index">{{ registration_addr_f.buildingNumber.label }}</label>
-                    {{ registration_addr_f.buildingNumber }}
-                </div>
-                <div class="col-md-5">
-                    <label for="id_index">{{ registration_addr_f.housing.label }}</label>
-                    {{ registration_addr_f.housing }}
-                </div>
-                <div class="col-md-5">
-                    <label for="id_index">{{ registration_addr_f.structure.label }}</label>
-                    {{ registration_addr_f.structure }}
-                </div>
-                <div class="col-md-5">
-                    <label for="id_index">{{ registration_addr_f.flat.label }}</label>
-                    {{ registration_addr_f.flat }}
-                </div>
-                <div class="col-md-5">
-                    <label for="id_index">{{ registration_addr_f.oblast.label }}</label>
-                    {{ registration_addr_f.oblast }}
-                </div>
-                <div class="col-md-5">
-                    <label for="id_index">{{ registration_addr_f.rayon.label }}</label>
-                    {{ registration_addr_f.rayon }}
-                </div>
-            </div>
+            {{ registration_addr_f.printForm |safe }}
             <br>
             <h6> Адрес регистрации совпадает с адресом проживания?</h6>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <select id="select_id" class="form-control" maxlength="2" onChange="showFactAddressForm(this);">
                     <option value="1">Да</option>
                     <option value="2">Нет</option>
@@ -76,142 +35,10 @@
                     {{ additional_client_info_f.snils_number }}
                 </div>
             </div>
-            <br>
-            <h6>Информация о работе</h6>
-            <div class="row">
-                <div class="col-md-2">
-                    <label for="id_is_general">{{ job_f.is_general.label }} </label>
-                    {{ job_f.is_general }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="id_full_name">{{ job_f.full_name.label }}</label>
-                    {{ job_f.full_name }}
-                    <div class="invalid-feedback">
-                        Valid full name is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_inn_number">{{ job_f.inn_number.label }}</label>
-                    {{ job_f.inn_number }}
-                    <div class="invalid-feedback">
-                        Valid last name is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_account_phone_number">{{ job_f.account_phone_number.label }}</label>
-                    {{ job_f.account_phone_number }}
-                    <div class="invalid-feedback">
-                        Valid part name is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_work_phone_number">{{ job_f.work_phone_number.label }}</label>
-                    {{ job_f.work_phone_number }}
-                    <div class="invalid-feedback">
-                        Valid work_phone_number is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_hr_phone_number">{{ job_f.hr_phone_number.label }}</label>
-                    {{ job_f.hr_phone_number }}
-                    <div class="invalid-feedback">
-                        Valid hr_phone_number is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_age">{{ job_f.age.label }}</label>
-                    {{ job_f.age }}
-                    <div class="invalid-feedback">
-                        Valid part name is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_work_experience">{{ job_f.work_experience.label }}</label>
-                    {{ job_f.work_experience }}
-                    <div class="invalid-feedback">
-                        Valid work_experience is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_number_of_staff">{{ job_f.number_of_staff.label }}</label>
-                    {{ job_f.number_of_staff }}
-                    <div class="invalid-feedback">
-                        Valid work_phone_number is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_site">{{ job_f.site.label }}</label>
-                    {{ job_f.site }}
-                    <div class="invalid-feedback">
-                        Valid site is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_pomsition">{{ job_f.position.label }}</label>
-                    {{ job_f.position }}
-                    <div class="invalid-feedback">
-                        Valid pomsition is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_position_category">{{ job_f.position_category.label }}</label>
-                    {{ job_f.position_category }}
-                    <div class="invalid-feedback">
-                        Valid position_category is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_salary">{{ job_f.salary.label }}</label>
-                    {{ job_f.salary }}
-                    <div class="invalid-feedback">
-                        Valid salary is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_is_probation">{{ job_f.is_probation.label }}</label>
-                    {{ job_f.is_probation }}
-                    <div class="invalid-feedback">
-                        Valid is_probation is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_kind_of_contract">{{ job_f.kind_of_contract.label }}</label>
-                    {{ job_f.kind_of_contract }}
-                    <div class="invalid-feedback">
-                        Valid kind_of_contract is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_contract_start">{{ job_f.contract_start.label }}</label>
-                    {{ job_f.contract_start }}
-                    <div class="invalid-feedback">
-                        Valid contract_start is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_contract_end">{{ job_f.contract_end.label }}</label>
-                    {{ job_f.contract_end }}
-                    <div class="invalid-feedback">
-                        Valid contract_end is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_incorparation_form">{{ job_f.incorparation_form.label }}</label>
-                    {{ job_f.incorparation_form }}
-                    <div class="invalid-feedback">
-                        Valid incorparation_form is required.
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="id_obligations">{{ job_f.obligations.label }}</label>
-                    {{ job_f.obligations }}
-                    <div class="invalid-feedback">
-                        Valid obligations is required.
-                    </div>
-                </div>
-            </div>
+
+            <h4 class="mb-3">Информация о работе</h4>
+                        {{ job_f.printForm |safe }}
+           <br>
             <h6>Банковские реквизиты работодателя</h6>
             <div class="row">
                 <div class="col-md-4 mb-3">

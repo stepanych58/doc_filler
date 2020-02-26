@@ -35,16 +35,7 @@ class ClientForm(forms.ModelForm):
 		labels = {'last_name': 'Фамилия',
 				  'first_name': 'Имя',
 				  'part_name': 'Отчество', }
-		widgets = {
-			'last_name': Input(attrs={'class': 'form-control', }),
-			'part_name': Input(attrs={'class': 'form-control', }),
-			'first_name': Input(attrs={
-				'class': 'form-control',
-				'type': 'text',
-				'placeholder': '',
-			}),
-		}
-
+		widgets = aplyForAll(labels.keys(), Input(attrs={'class': 'form-control', }))
 	def printForm(self):
 		resStr = '<div class="row">'
 		for label in self.Meta.labels:
@@ -64,20 +55,21 @@ class AddressForm(forms.ModelForm):
 			'country': 'Страна',
 			'city': 'Город',
 			'street': 'Улица',
-			'buildingNumber': 'номер дома',
-			'housing': 'корпус',
-			'structure': 'строение',
-			'flat': 'квартира',
+			'buildingNumber': 'Номер дома',
+			'housing': 'Корпус',
+			'structure': 'Строение',
+			'flat': 'Квартира',
 			'oblast': 'Область',
-			'rayon': 'район',
+			'rayon': 'Район',
 		}
 		widgets = aplyForAll(labels.keys(), Input(attrs={'class': 'form-control', }))
 
 	def printForm(self):
-		resStr = ''
+		resStr = '<div class="row">'
 		for label in self.Meta.labels:
 			resStr += printCol(self, label_id=label, label=self.Meta.labels[label],
 							   input=self.Meta.widgets[label], )
+		resStr += '</div>'
 		return resStr;
 
 
@@ -224,7 +216,13 @@ class JobInfoForm(forms.ModelForm):
 		allWidgets.update(selectwidgets)
 		allWidgets.update(dateWidgets)
 		widgets = allWidgets
-
+	def printForm(self):
+		resStr = '<div class="row">'
+		for label in self.Meta.labels:
+			resStr += printCol(self, label_id=label, label=self.Meta.labels[label],
+							   input=self.Meta.widgets[label], )
+		resStr += '</div>'
+		return resStr;
 
 class BankDetailForm(forms.ModelForm):
 	class Meta:
