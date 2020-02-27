@@ -5,6 +5,9 @@ from clients.models import *
 
 
 # Util methods
+from clients.widgets import ManyValueInput
+
+
 def aplyForAll(field, widget):
 	resultDict = {}
 	for i in field:
@@ -17,8 +20,11 @@ def printCol(self,
 			 label_id='', label='', input='',
 			 inputName='', inputValue='', inputId='' ):
 	attrs = {'id' : 'id_' + str(inputId)};
-	if isinstance(input, Select) and input.attrs.get('choices', None) == 'small':
-		div1_class='col-md-1'
+	if isinstance(input, Select):
+		if input.attrs.get('choices', None) == 'small1':
+			div1_class='col-md-1'
+		elif input.attrs.get('choices', None) == 'small2':
+			div1_class='col-md-2'
 	return '<div class="' + div1_class + '">' + \
 		   '<label for="id_' + label_id + '">' + label + '</label>' + \
 		   input.render(name=inputName, value=inputValue , attrs =attrs) + \
@@ -29,6 +35,7 @@ def printCol(self,
 
 
 simpleInput = Input(attrs={'class': 'form-control', })
+simpleDate = DateInput(attrs={'class': 'form-control', 'type': 'date'})
 
 class AbstractForm(forms.ModelForm):
 	def printForm(self):
@@ -84,9 +91,9 @@ class PassportForm(forms.ModelForm):
 			'serial': simpleInput,
 			'number': simpleInput,
 			'v_from': Textarea(attrs={'class': 'form-control', 'style': 'height: 95px;'}),
-			'gender': Select(attrs={'class': 'form-control', 'choices':'small'}, choices=GENDER_CHOISES),
-			'birthday': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-			'date_of': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+			'gender': Select(attrs={'class': 'form-control', 'choices':'small1'}, choices=GENDER_CHOISES),
+			'birthday': simpleDate,
+			'date_of': simpleDate,
 			'code_of': simpleInput,
 		}
 
@@ -111,35 +118,6 @@ class PassportForm(forms.ModelForm):
 		resStr += '</div>'
 		return resStr;
 
-# def printF(obj):
-# 	resStr = ''
-# 	for label in obj.Meta.labels:
-# 		resStr += printCol(obj, label_id=label, label=obj.Meta.labels[label],
-# 						   input=obj.Meta.widgets[label], )
-# 	return resStr;
-
-
-class ManyValueForm(forms.ModelForm):
-	class Meta:
-		model = ManyValue
-		fields = '__all__'
-		labels = {
-			'amount': 'Количество',
-			'currency': 'Валюта',
-		}
-		widgets = {
-			'amount': NumberInput(attrs={'class': 'form-control', }),
-			'currency': Select(attrs={'class': 'form-control', }, choices=CURRANCY_CHOISES),
-		}
-
-	def printForm(self):
-		resStr = ''
-		for label in self.Meta.labels:
-			resStr += printCol(self, label_id=label, label=self.Meta.labels[label],
-							   input=self.Meta.widgets[label], )
-		return resStr;
-
-
 class ApproverForm(ClientForm):
 	class Meta:
 		model = Approver
@@ -163,7 +141,7 @@ class JobInfoForm(AbstractForm):
 			'account_phone_number': 'Телефон бугалтерии',
 			'hr_phone_number': 'Телефон отдела кадров',
 			'work_phone_number': 'Рабочий телефон',
-			'age': 'возраст организации',
+			'age': 'Возраст организации',
 			'number_of_staff': 'Количество сотрудников',
 			'work_experience': 'Cтаж в данной организации',
 			'site': 'Cайт организации',
@@ -191,8 +169,8 @@ class JobInfoForm(AbstractForm):
 			'work_experience': Select(attrs={'class': 'form-control', }, choices=WORK_EXPERIENCE_CHOISES),
 		}
 		dateWidgets = {
-			'contract_start': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-			'contract_end': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+			'contract_start': simpleDate,
+			'contract_end': simpleDate,
 		}
 		allWidgets = {}
 		allWidgets.update(aplyForAll(textFields, widget=simpleInput))
@@ -227,9 +205,9 @@ class CreditForm(AbstractForm):
 			'requested_field': 'Запрашиваемый?',
 			'type': 'Тип кредита',
 			'credit_goal': 'Цель кредита',
-			'special_programms': 'специальные программы',
-			'desired_pay_period': 'желаемый платежный период',
-			'insurance': 'страхование рисков',
+			'special_programms': 'Специальные программы',
+			'desired_pay_period': 'Желаемый платежный период',
+			'insurance': 'Страхование рисков',
 			'creditor_name': 'Банк кредитор',
 			'date_start': 'Дата начала кредитования',
 			'date_end': 'Дата окончания кредита',
@@ -237,15 +215,18 @@ class CreditForm(AbstractForm):
 			'month_pay': 'Месячный платеж',
 			'leftover': 'Остаток'}
 		widgets = {
-			'requested_field': Select(attrs={'class': 'form-control', }, choices=YES_NO_CHOISES),
+			'requested_field': Select(attrs={'class': 'form-control', 'choices':'small1'}, choices=YES_NO_CHOISES),
 			'type': Select(attrs={'class': 'form-control', }, choices=СREDIT_TYPES),
 			'credit_goal': simpleInput,
 			'special_programms': simpleInput,
 			'desired_pay_period': simpleInput,
 			'insurance': simpleInput,
 			'creditor_name': simpleInput,
-			'date_start': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-			'date_end': DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+			'date_start': simpleDate,
+			'date_end': simpleDate,
+			'value': ManyValueInput(),
+			'month_pay': ManyValueInput(),
+			'leftover': ManyValueInput(),
 		}
 
 

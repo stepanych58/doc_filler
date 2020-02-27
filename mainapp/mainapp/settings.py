@@ -46,14 +46,15 @@ INSTALLED_APPS = [
     'jsonfield',
     'allauth',
     'allauth.account',
-    'login_auth'
+    'login_auth',
+    'django.forms',
 
-##    'allauth.socialaccount',
+    ##    'allauth.socialaccount',
     # 'django.contrib.sites.models',
     #    'json_field',
 ]
 
-
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
