@@ -55,6 +55,26 @@ function generateReport(doc_id) {
     }
 }
 
+
+function showButton() {
+    var checkboxes = document.getElementsByClassName('ch');
+    var deleteButton = document.getElementById('delete');
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].onchange = function () {
+            var checked = false;
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    checked = true;
+                    break;
+                }
+            }
+            deleteButton.style.display = checked ? 'block' : 'none';
+        }
+    }
+
+
+}
+
 var counter = 0;
 
 function createChild() {

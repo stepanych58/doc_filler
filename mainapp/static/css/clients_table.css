@@ -73,11 +73,11 @@ h1 {
 
 /** page structure **/
 #wrapper {
-  display: block;
+  /*display: block;*/
   width: 850px;
-  background: #fff;
+ background: rgba(99,99,99,0.3);
   margin: 0 auto;
-  padding: 10px 17px;
+  padding: 210px 17px;
   -webkit-box-shadow: 2px 2px 3px -1px rgba(0,0,0,0.35);
 }
 

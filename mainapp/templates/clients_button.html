@@ -4,55 +4,24 @@
         <th>
     <span>
 	  <form action="/addClient/" method="POST">{% csrf_token %}
-          {#	    <input type="submit" name="sbm" value="Add Client"/>#}
-          <button class="btn" name="sbm" value="Add Client"><img src="{% static 'img/add_user.png' %}"/>
-          <p>New Client</p>
+          <button class="btn" name="sbm" value="Add Client">
+              <img src="/static/img/bw.png" width="90"  height="90" alt="Добавить клиента"
+                onmouseover="this.src='/static/img/color.png'; this.width=90;this.height=90;"
+                onmouseout="this.src='/static/img/bw.png'; this.width=90;this.height=90;">
           </button>
-          {#          add_user.png#}
+
+
       </form>
-	</span>
-        </th>
 
-        <th>
-    <span>
-    <form action="/uploadTemplate/" method="POST" enctype="multipart/form-data">{% csrf_token %}
-{#      <label for="id_tmp_name">Input template name: <label>#}
-        <input type="text" name="tmp_name" id="id_tmp_name"/>
-        <input type="file" name="template"/>
-        <button class="btn" name="sbm" value="Uplouad Template"><img src="{% static 'img/upload.png' %}"/><p>Uplouad Template</p></button>
-{#        <input type="submit" name="sbm" value="Uplouad Template"/>#}
-{#        upload.png#}
-      </form>
-  </span>
-        </th>
-
-
-    </tr>
-
-    <tr>
-        <th>
-    <span>
-	  <form action="/createTestData/" method="POST">{% csrf_token %}
-{#	    <input type="submit" name="sbm" value="Create test data"/>#}
-      <button class="btn" name="sbm" value="Create test data"><img src="{% static 'img/test.png' %}"/><p>Create test data</p></button>
-      </form>
 	</span>
         </th>
     </tr>
-    <tr>
+
+
+
+   <!--  <tr>
         <th>
-    <span>
-	  <form action="/clearData/" method="POST">{% csrf_token %}
-{#	    <input type="submit" name="sbm" value="Clear data"/>#}
-          <button class="btn" name="sbm" value="Clear data"><img src="{% static 'img/clean-database.png' %}"/><p>Clear data</p></button>
-{#          clean-database.png#}
-      </form>
-	</span>
-        </th>
-    </tr>
-    <tr>
-        <th>
-    <span>
+   <span>
         {% if p_table == 'templates' %}
             <form action="/clients/" method="POST">{% csrf_token %}
 {#	    <input type="submit" name="sbm" value="All Clients"/>#}
@@ -70,11 +39,8 @@
         {% endif %}
 	</span>
         </th>
-    </tr>
+    </tr> -->
 
-    <tr>
-        <button class="btn btn-default" name="test btn" type="button"> test button</button>
-        <th><span> test param: {{ test_param }}</span></th>
-    </tr>
+
 
 </table>

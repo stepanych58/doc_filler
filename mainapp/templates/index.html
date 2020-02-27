@@ -20,15 +20,14 @@
 <body>
 
 {% load staticfiles %}
-    <link href="{% static 'css/clients_table.css' %}" rel="stylesheet" type="text/css" >
 {% csrf_token %}
-<script src="{% static 'js/clients.js' %}"></script>
 
 
 
 <div class="background">
   <div class="layer background-image underconstruction"></div>
 <div class="layer clouds">
+
 
  <div id="wrapper">
      {% if p_table == 'clients' %}
@@ -39,30 +38,3 @@
      {% endif %}
 {% include 'clients_button.html' %}
 
-  </div>
-</div>
-
-</div>
-
-<header class="site-header">
-    {% if username %}
-    <div align="right"><a href='/auth/logout/'>Выйти ({{ username }})</a></div>
-    {% endif %}
-
-</header>
-
-</body>
-
-<script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/bootstrap-select.min.js"></script>
-<script src="/static/js/owl.carousel.min.js"></script>
-<script src="/static/js/jquery.ajaxchimp.min.js"></script>
-<script src="/static/js/jquery.plugin.min.js"></script>
-<script src="/static/js/jquery.countdown.min.js"></script>
-<script src="/static/js/jquery.mCustomScrollbar.min.js"></script>
-<script src="/static/js/jquery.touchwipe.min.js"></script>
-<script src="/static/js/included-plagins.js"></script>
-<script src="/static/js/froogaloop2.min.js"></script>
-<script src="/static/js/main.js"></script>
-
-</html>
