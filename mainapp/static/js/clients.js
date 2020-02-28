@@ -129,9 +129,24 @@ function createInputIfOther(elem) {
 function showFactAddressForm(elem) {
     var selectedValue = elem.options[elem.selectedIndex].text;
     if (selectedValue === 'Да') {
-        alert('Адрес регистрации совпадает с адресом проживания');
+        // console.log('Адрес регистрации совпадает с адресом проживания');
+        var actualAddressField = document.getElementById('actualAddress_');
+        if (actualAddressField) {
+            actualAddressField.style = 'display: none'
+        }
     } else {
-        alert('Адрес регистрации не совпадает с адресом проживания');
-        //todo создать форму и вставить в документ
+        // console.log('Адрес регистрации не совпадает с адресом проживания');
+        var actualAddressField = document.getElementById('actualAddress_');
+        if (actualAddressField) {
+            actualAddressField.style = ''
+        } else {
+            var childDiv = document.getElementById('actualAddress');
+            var addr2 = document.createElement('div');
+            addr2.id = "actualAddress_";
+            console.log("ураааа!!")
+            addrBlock = "<div class=\"row\"><div class=\"col-md-4 mb-3\"><label for=\"id_index\">Индекс</label><input type=\"None\" name=\"index\" class=\"form-control\" id=\"id_index\"></div><div class=\"invalid-feedback\">Valid Индекс is required.</div><div class=\"col-md-4 mb-3\"><label for=\"id_country\">Страна</label><input type=\"None\" name=\"country\" class=\"form-control\" id=\"id_country\"></div><div class=\"invalid-feedback\">Valid Страна is required.</div><div class=\"col-md-4 mb-3\"><label for=\"id_city\">Город</label><input type=\"None\" name=\"city\" class=\"form-control\" id=\"id_city\"></div><div class=\"invalid-feedback\">Valid Город is required.</div><div class=\"col-md-4 mb-3\"><label for=\"id_street\">Улица</label><input type=\"None\" name=\"street\" class=\"form-control\" id=\"id_street\"></div><div class=\"invalid-feedback\">Valid Улица is required.</div><div class=\"col-md-4 mb-3\"><label for=\"id_buildingNumber\">Номер дома</label><input type=\"None\" name=\"buildingNumber\" class=\"form-control\" id=\"id_buildingNumber\"></div><div class=\"invalid-feedback\">Valid Номер дома is required.</div><div class=\"col-md-4 mb-3\"><label for=\"id_housing\">Корпус</label><input type=\"None\" name=\"housing\" class=\"form-control\" id=\"id_housing\"></div><div class=\"invalid-feedback\">Valid Корпус is required.</div><div class=\"col-md-4 mb-3\"><label for=\"id_structure\">Строение</label><input type=\"None\" name=\"structure\" class=\"form-control\" id=\"id_structure\"></div><div class=\"invalid-feedback\">Valid Строение is required.</div><div class=\"col-md-4 mb-3\"><label for=\"id_flat\">Квартира</label><input type=\"None\" name=\"flat\" class=\"form-control\" id=\"id_flat\"></div><div class=\"invalid-feedback\">Valid Квартира is required.</div><div class=\"col-md-4 mb-3\"><label for=\"id_oblast\">Область</label><input type=\"None\" name=\"oblast\" class=\"form-control\" id=\"id_oblast\"></div><div class=\"invalid-feedback\">Valid Область is required.</div><div class=\"col-md-4 mb-3\"><label for=\"id_rayon\">Район</label><input type=\"None\" name=\"rayon\" class=\"form-control\" id=\"id_rayon\"></div><div class=\"invalid-feedback\">Valid Район is required.</div></div>"
+            addr2.innerHTML = addrBlock;
+            childDiv.appendChild(addr2);
+        }
     }
 }

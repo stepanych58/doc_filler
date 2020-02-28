@@ -215,7 +215,7 @@ class CreditForm(AbstractForm):
 			'month_pay': 'Месячный платеж',
 			'leftover': 'Остаток'}
 		widgets = {
-			'requested_field': Select(attrs={'class': 'form-control', 'choices':'small1'}, choices=YES_NO_CHOISES),
+			'requested_field': Select(attrs={'class': 'form-control', 'choices':'small2'}, choices=YES_NO_CHOISES),
 			'type': Select(attrs={'class': 'form-control', }, choices=СREDIT_TYPES),
 			'credit_goal': simpleInput,
 			'special_programms': simpleInput,
