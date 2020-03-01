@@ -13,56 +13,60 @@
         анкет</p>
 </div>
 <div class="container">
- <div class="row">
-    <div class="col-md-10 order-md-1">
-        <form action="/addClient/" method="POST">{% csrf_token %}
-            {{ client_f.printForm |safe }}
-            <h4 class="mb-3">Пасспортные данные</h4>
-            {{ passport_f.printForm |safe }}
-            <h6 class="mb-3">Aдрес регистрации</h6>
-            {{ registration_addr_f.printForm |safe }}
-            <br>
-            <h6> Адрес регистрации совпадает с адресом проживания?</h6>
-            <div class="col-md-1">
-                <select id="select_id" class="form-control" maxlength="2" onChange="showFactAddressForm(this);">
-                    <option value="1">Да</option>
-                    <option value="2">Нет</option>
-                </select>
-            </div>
-            <div id="actualAddress">
-            </div>
-            <br>
-            <h4 class="mb-3">СНИЛС</h4>
-            <div class="row">
-                <div class="col-md-4">
-                    {{ additional_client_info_f.snils_number }}
+    <div class="row">
+        <div class="col-md-10 order-md-1">
+            <form action="/addClient/" method="POST">{% csrf_token %}
+                            {{ client_f.printForm |safe }}
+                            <h4 class="mb-3">Пасспортные данные</h4>
+                            {{ passport_f.printForm |safe }}
+                            <h6 class="mb-3">Aдрес регистрации</h6>
+                            {{ registration_addr_f.printForm |safe }}
+                            <br>
+                            <h6> Адрес регистрации совпадает с адресом проживания?</h6>
+                            <div class="col-md-2">
+                                <select id="select_id" class="form-control" maxlength="2" onChange="showFactAddressForm(this);">
+                                    <option value="1">Да</option>
+                                    <option value="2">Нет</option>
+                                </select>
+                            </div>
+                            <div id="actualAddress">
+                            </div>
+                            <br>
+                            <h4 class="mb-3">СНИЛС</h4>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {{ additional_client_info_f.snils_number }}
+                                </div>
+                            </div>
+{##}
+                            <h4 class="mb-3">Информация о работе</h4>
+                            {{ job_f.printForm |safe }}
+                            <br>
+                            <h6>Информация о человеке который подтвердит инфо о работе</h6>
+                            {{ approver_f.printForm |safe }}
+                            <br>
+                            <h6>Адрес места работы</h6>
+                            {{ job_addr_f.printForm |safe }}
+                            <br>
+                            <h6>Банковские реквизиты работодателя</h6>
+                            {{ bankdetail_f.printForm |safe }}
+                <div style="display: inline">
+                    <h6>Информация о кредитах </h6>
+                    {{ credit_f.printForm |safe }}
+                    <button type="button" class="btn btn-outline-primary">+</button>
                 </div>
-            </div>
-
-            <h4 class="mb-3">Информация о работе</h4>
-            {{ job_f.printForm |safe }}
-            <br>
-            <h6>Информация о человеке который подтвердит инфо о работе</h6>
-            {{ approver_f.printForm |safe }}
-            <br>
-            <h6>Адрес места работы</h6>
-            {{ job_addr_f.printForm |safe }}
-            <br>
-            <h6>Банковские реквизиты работодателя</h6>
-            {{ bankdetail_f.printForm |safe }}
-            <div style="display: inline">
-                <h6>Информация о кредитах </h6>
-                {{ credit_f.printForm |safe }}
-                <button type="button" class="btn btn-outline-primary">+</button>
-            </div>
-            <br>
-            <br>
-            <h6>Дополнительная информация о клиенте</h6>
-{#            {{  }}#}
-            <input type="submit" name="sbm" class="btn btn-outline-primary" value="Add">
-        </form>
+                <br>
+                <br>
+                <h6>Дополнительная информация о клиенте</h6>
+                <h6>Информация о родственниках</h6>
+                <h6>Дети</h6>
+                <button type="button" onclick="createChild()" class="btn btn-outline-primary">+</button>
+                <div id="childs_id"></div>
+                <br>
+                <input type="submit" name="sbm" class="btn btn-outline-primary" value="Add">
+            </form>
+        </div>
     </div>
-</div>
 </div>
 <footer class="my-5 pt-5 text-muted text-center text-small">
     {#    <p class="mb-1">&copy; 2017-{{ site.time | date: "%Y" }} Company Name</p>#}

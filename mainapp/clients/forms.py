@@ -3,9 +3,9 @@ from django.forms.widgets import Input, Select, DateInput, Textarea, EmailInput,
 from clients.choises import *
 from clients.models import *
 
-
 # Util methods
-from clients.widgets import ManyValueInput
+from clients.widgets import ManyValueInput, Duration
+
 
 
 def aplyForAll(field, widget):
@@ -18,30 +18,32 @@ def aplyForAll(field, widget):
 def printCol(self,
 			 div1_class='col-md-5',
 			 label_id='', label='', input='',
-			 inputName='', inputValue='', inputId='' ):
-	attrs = {'id' : 'id_' + str(inputId)};
+			 inputName='', inputValue='', inputId=''):
+	attrs = {'id': 'id_' + str(inputId)};
 	if isinstance(input, Select):
 		if input.attrs.get('choices', None) == 'small1':
-			div1_class='col-md-1'
+			div1_class = 'col-md-1'
 		elif input.attrs.get('choices', None) == 'small2':
-			div1_class='col-md-2'
+			div1_class = 'col-md-2'
 	return '<div class="' + div1_class + '">' + \
 		   '<label for="id_' + label_id + '">' + label + '</label>' + \
-		   input.render(name=inputName, value=inputValue , attrs =attrs) + \
+		   input.render(name=inputName, value=inputValue, attrs=attrs) + \
 		   '</div>' + \
 		   '<div class="invalid-feedback">' + \
-		   'Valid '+ label + ' is required.' + \
+		   'Valid ' + label + ' is required.' + \
 		   '</div>';
 
 
 simpleInput = Input(attrs={'class': 'form-control', })
 simpleDate = DateInput(attrs={'class': 'form-control', 'type': 'date'})
 
+
 class AbstractForm(forms.ModelForm):
+	formId = '';
 	def printForm(self):
-		resStr = '<div class="row">'
+		resStr = '<div class="row" id = "' + self.formId + '">'
 		for label in self.Meta.widgets:
-			resStr += printCol(self, label_id=label, div1_class='col-md-4 mb-3', inputName = label,
+			resStr += printCol(self, label_id=label, div1_class='col-md-4 mb-3', inputName=label,
 							   label=self.Meta.labels[label],
 							   input=self.Meta.widgets[label], inputId=label)
 		resStr += '</div>'
@@ -56,6 +58,7 @@ class ClientForm(AbstractForm):
 				  'first_name': 'Имя',
 				  'part_name': 'Отчество', }
 		widgets = aplyForAll(labels.keys(), simpleInput)
+
 
 class AddressForm(AbstractForm):
 	class Meta:
@@ -75,6 +78,7 @@ class AddressForm(AbstractForm):
 		}
 		widgets = aplyForAll(labels.keys(), simpleInput)
 
+
 class PassportForm(forms.ModelForm):
 	class Meta:
 		model = Passport
@@ -91,7 +95,7 @@ class PassportForm(forms.ModelForm):
 			'serial': simpleInput,
 			'number': simpleInput,
 			'v_from': Textarea(attrs={'class': 'form-control', 'style': 'height: 95px;'}),
-			'gender': Select(attrs={'class': 'form-control', 'choices':'small1'}, choices=GENDER_CHOISES),
+			'gender': Select(attrs={'class': 'form-control', 'choices': 'small2'}, choices=GENDER_CHOISES),
 			'birthday': simpleDate,
 			'date_of': simpleDate,
 			'code_of': simpleInput,
@@ -101,34 +105,36 @@ class PassportForm(forms.ModelForm):
 		resStr = '<div class="row">'
 		v_fromLabel = self.Meta.fields[2]
 		for label in self.Meta.fields[:2]:
-			resStr += printCol(self, label_id=label, div1_class='col-md-4 mb-3', inputName = label,
+			resStr += printCol(self, label_id=label, div1_class='col-md-4 mb-3', inputName=label,
 							   label=self.Meta.labels[label],
 							   input=self.Meta.widgets[label], inputId=label)
 		resStr += '</div>'
 		resStr += '<div class="row">'
 		resStr += printCol(self, label_id=v_fromLabel, div1_class='col-md-8', inputName=v_fromLabel,
-				 label=self.Meta.labels[v_fromLabel],
-				 input=self.Meta.widgets[v_fromLabel], inputId=v_fromLabel)
+						   label=self.Meta.labels[v_fromLabel],
+						   input=self.Meta.widgets[v_fromLabel], inputId=v_fromLabel)
 		resStr += '</div>'
 		resStr += '<div class="row">'
 		for label in self.Meta.fields[3:7]:
-			resStr += printCol(self, label_id=label, div1_class='col-md-3 mb-3', inputName = label,
+			resStr += printCol(self, label_id=label, div1_class='col-md-3 mb-3', inputName=label,
 							   label=self.Meta.labels[label],
 							   input=self.Meta.widgets[label], inputId=label)
 		resStr += '</div>'
 		return resStr;
 
+
 class ApproverForm(ClientForm):
 	class Meta:
 		model = Approver
 		fields = '__all__'
-		labels = {'last_name': 'Фамилия',
-				  'first_name': 'Имя',
-				  'part_name': 'Отчество',
-				  'position': 'Должность',
-				  'phone_number': 'Телефонный номер',
-				  'email_v': 'Email', }
+		labels = {'a_last_name': 'Фамилия',
+				  'a_first_name': 'Имя',
+				  'a_part_name': 'Отчество',
+				  'a_position': 'Должность',
+				  'a_phone_number': 'Телефонный номер',
+				  'a_email_v': 'Email', }
 		widgets = aplyForAll(labels.keys(), simpleInput)
+
 
 class JobInfoForm(AbstractForm):
 	class Meta:
@@ -178,6 +184,7 @@ class JobInfoForm(AbstractForm):
 		allWidgets.update(dateWidgets)
 		widgets = allWidgets
 
+
 class BankDetailForm(AbstractForm):
 	class Meta:
 		model = BankDetail
@@ -197,31 +204,35 @@ class AdditionalClientInfoForm(AbstractForm):
 		labels = {'snils_number': 'СНИЛС', }
 		widgets = {'snils_number': simpleInput}
 
+
 class CreditForm(AbstractForm):
+	formId = 'creditForm';
 	class Meta:
 		model = ClientCredit
 		exclude = ('client',)
 		labels = {
-			'requested_field': 'Запрашиваемый?',
+			'requested_field': 'Кредит:',
 			'type': 'Тип кредита',
 			'credit_goal': 'Цель кредита',
 			'special_programms': 'Специальные программы',
 			'desired_pay_period': 'Желаемый платежный период',
 			'insurance': 'Страхование рисков',
 			'creditor_name': 'Банк кредитор',
+			'duration': 'Желаемый срок кредитования',
 			'date_start': 'Дата начала кредитования',
 			'date_end': 'Дата окончания кредита',
 			'value': 'Cумма кредита',
 			'month_pay': 'Месячный платеж',
 			'leftover': 'Остаток'}
 		widgets = {
-			'requested_field': Select(attrs={'class': 'form-control', 'choices':'small2'}, choices=YES_NO_CHOISES),
-			'type': Select(attrs={'class': 'form-control', }, choices=СREDIT_TYPES),
+			'requested_field': Select(attrs={'class': 'form-control', }, choices=СREDIT_REQS),
+			'type': Select(attrs={'class': 'form-control', 'onChange': 'showIpotekaForm(this);', }, choices=СREDIT_TYPES),
 			'credit_goal': simpleInput,
 			'special_programms': simpleInput,
 			'desired_pay_period': simpleInput,
 			'insurance': simpleInput,
 			'creditor_name': simpleInput,
+			'duration': simpleInput,
 			'date_start': simpleDate,
 			'date_end': simpleDate,
 			'value': ManyValueInput(),
@@ -231,10 +242,54 @@ class CreditForm(AbstractForm):
 
 
 class IpotekaForm(CreditForm):
+	formId = 'ipotekaForm';
 	class Meta:
 		model = Ipoteka
-		fields = '__all__'
-
+		exclude = ('client',)
+		labels = {
+			'requested_field': 'Кредит:',
+			'type': 'Тип кредита', #всегда ипотека
+			'credit_goal': 'Цель кредита', #всегда покупка жилья/объекта недвижимости
+			'property_value': 'Cтоимость объекта недвижимости',
+			'immovables_region': 'Регион объекта недвижимости',
+			'immovables_type': 'Тип иммущества',
+			'product_type': 'Наименование ипотечного продукта',
+			'special_programms': 'Специальные программы',
+			'desired_pay_period': 'Желаемый платежный период',
+			'insurance': 'Страхование рисков',
+			'creditor_name': 'Банк кредитор',
+			'first_pay': 'Размер первоначального взноса',
+			'source_for_first_pay': 'Источник первоначального взноса',
+			'duration': 'Желаемый срок кредитования',
+			'date_start': 'Дата начала кредитования',
+			'date_end': 'Дата окончания кредита',
+			'value': 'Cумма кредита',
+			'month_pay': 'Месячный платеж',
+			'leftover': 'Остаток',
+			'reask': 'Вариант перезапроса, если не подтвержден',
+		}
+		widgets = {
+			'requested_field': Select(attrs={'class': 'form-control', }, choices=СREDIT_REQS),
+			'type': Select(attrs={'class': 'form-control', 'onChange': 'showIpotekaForm(this);', }, choices=СREDIT_TYPES),
+			'credit_goal': simpleInput,
+			'property_value': ManyValueInput(),
+			'immovables_region': simpleInput,
+			'immovables_type': Select(attrs={'class': 'form-control', 'multiple':'' }, choices=IMMOVABLE_PROPERTY_CHOISES),
+			'product_type': Select(attrs={'class': 'form-control', }, choices = IPOTEKA_TYPES),
+			'special_programms': simpleInput,
+			'desired_pay_period': simpleInput,
+			'insurance': simpleInput,
+			'creditor_name': simpleInput,
+			'first_pay': ManyValueInput(),
+			'source_for_first_pay': Select(attrs={'class': 'form-control', }, choices=SOURCE_FOR_FIRST_PAY_CHOISES),
+			'duration': Duration(),
+			'date_start': simpleDate,
+			'date_end': simpleDate,
+			'value': ManyValueInput(),
+			'month_pay': ManyValueInput(),
+			'leftover': ManyValueInput(),
+			'reask': Select(attrs={'class': 'form-control', }, choices=IPOTEKA_REASK),
+		}
 
 class ClientRelativeForm(ApproverForm):
 	class Meta:
@@ -245,16 +300,17 @@ class ClientRelativeForm(ApproverForm):
 				  'part_name': 'Отчество',
 				  'position': 'Должность',
 				  'phone_number': 'Телефонный номер',
-				  'email_v': 'Email', }
+				  'email_v': 'Email',
+				  'relation_degree': 'Степень родства',
+				  'birthday': 'Дата рождения',
+				  }
 		widgets = {
+			'first_name': simpleInput,
 			'last_name': simpleInput,
 			'part_name': simpleInput,
 			'position': simpleInput,
 			'phone_number': simpleInput,
 			'email_v': EmailInput(attrs={'class': 'form-control', }),
-			'first_name': Input(attrs={
-				'class': 'form-control',
-				'type': 'text',
-				'placeholder': '',
-			}),
+			'relation_degree': Select(attrs={'class': 'form-control', }, choices=RELATION_DEGREE_CHOISES),
+			'birthday': simpleDate,
 		}
