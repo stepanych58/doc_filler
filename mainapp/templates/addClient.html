@@ -63,11 +63,39 @@
                 <button type="button" onclick="createChild()" class="btn btn-outline-primary">+</button>
                 <div id="childs_id"></div>
                 <br>
+
+
+
+  <div>
+    <label>Speaker name:</label>
+    <multi-input>
+      <input list="speakers">
+      <datalist id="speakers">
+        <option value="Banquo"></option>
+        <option value="Bishop Stokesly of London"></option>
+        <option value="Caesar’s Second Watchman"></option>
+        <option value="Celia"></option>
+        <option value="Cleopatra"></option>
+        <option value="Dogberry"></option>
+        <option value="Falstaff"></option>
+        <option value="First Servant"></option>
+        <option value="Hamlet"></option>
+        <option value="Juliet"></option>
+        <option value="Macbeth"></option>
+      </datalist>
+    </multi-input>
+    <button id="get">Get</button>
+  </div>
+
                 <input type="submit" name="sbm" class="btn btn-outline-primary" value="Add">
             </form>
         </div>
     </div>
+
 </div>
+<script src="{% static 'js/multi-input.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
+<link rel="stylesheet" href="{% static 'js/style.css' %}">
 <footer class="my-5 pt-5 text-muted text-center text-small">
     {#    <p class="mb-1">&copy; 2017-{{ site.time | date: "%Y" }} Company Name</p>#}
     <ul class="list-inline">
