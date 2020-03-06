@@ -16,12 +16,12 @@ class Client(models.Model):
 
 
 class Approver(models.Model):
-	first_name = models.CharField(max_length=30, default='Иван')
-	part_name = models.CharField(max_length=30, default='Иванович')
-	last_name = models.CharField(max_length=30, default='Иванов')
-	phone_number = models.CharField(max_length=12, default='89276976453')  # телефон
-	position = models.CharField(max_length=300, default='Инженер')  # должность
-	email_v = models.CharField(max_length=300, default='Инженер')  # должность
+	a_first_name = models.CharField(max_length=30, default='Иван')
+	a_part_name = models.CharField(max_length=30, default='Иванович')
+	a_last_name = models.CharField(max_length=30, default='Иванов')
+	a_phone_number = models.CharField(max_length=12, default='89276976453')  # телефон
+	a_position = models.CharField(max_length=300, default='Инженер')  # должность
+	a_email_v = models.CharField(max_length=300, default='Инженер')  # должность
 
 
 class Document(models.Model):
@@ -42,6 +42,7 @@ class ClientsFile(models.Model):
 
 
 class Address(models.Model):
+	#todo добавить поле основание проживания если это не почтовый адрес и не адрес регистрации
 	client = models.ForeignKey(
 		Client,
 		on_delete=models.CASCADE
@@ -154,11 +155,13 @@ class ClientCredit(models.Model):
 	requested_field = models.CharField(choices=YES_NO_CHOISES, max_length=50,
 									   default=YES_NO_CHOISES[1])  # запрашиваемый или в наличии
 	type = models.CharField(choices=СREDIT_TYPES, max_length=50, default=СREDIT_TYPES[1])
-	credit_goal = models.CharField(max_length=100, default="на машину", blank=True)  # цель кредита
+	credit_goal = models.CharField(max_length=100, default="Приобретение жилья", blank=True)  # цель кредита
 	special_programms = models.CharField(max_length=100, default="", blank=True)  # специальные программы
 	desired_pay_period = models.CharField(max_length=100, default="2 года", blank=True)  # желаемый платежный период
 	insurance = models.CharField(max_length=100, default="полный пакет", blank=True)  # страхование рисков
 	creditor_name = models.CharField(max_length=100, default="Сбербанк", blank=True)  #
+	#todo сделать виджет количество лет количество месяцев
+	duration = models.CharField(max_length=3, default="12", blank=True)  #Желаемый срок кредитования
 	date_start = models.DateField(default="2000-01-01")
 	date_end = models.DateField(default="2005-01-01")
 	value = models.ForeignKey(
@@ -241,7 +244,7 @@ class ClientRelative(Approver):
 		on_delete=models.CASCADE,
 		primary_key=False
 	)
-	relation_degree = models.CharField(max_length=300, default='Брат')
+	relation_degree = models.CharField(choices=RELATION_DEGREE_CHOISES, max_length=300, default=RELATION_DEGREE_CHOISES[0])
 	birthday = models.DateField(default="1999-01-01")
 
 class AdditionalClientInfo(models.Model):
@@ -253,6 +256,7 @@ class AdditionalClientInfo(models.Model):
 	home_phone_number = models.CharField(max_length=12, default='89276976453')  # домашний телефон
 	сont_phone_number = models.CharField(max_length=12, default='89276976453')  # контактный телефон
 	work_phone_number = models.CharField(max_length=12, default='89276976453')  # рабочий телефон
+	email_v = models.CharField(max_length=300, default='Инженер')  # должность
 	snils_number = models.CharField(max_length=20, default="123-123-123 00")
 
 	# 	count_of_children = models.CharField(max_length=2, default="0")  # количество детей
@@ -260,8 +264,6 @@ class AdditionalClientInfo(models.Model):
 	family_status = models.CharField(choices=FAMILY_STATUS_CHOISES, max_length=13, default=FAMILY_STATUS_CHOISES[0])
 	education_status = models.CharField(choices=EDUCATION_STATUS_CHOISES, max_length=50,
 										default=EDUCATION_STATUS_CHOISES[0])
-
-	# todo сделать поля стаж как ввод количества лет и месяцев, остальное рассчитывать исходя из этой информации
 
 	marriage_contract = models.CharField(choices=YES_NO_CHOISES, max_length=50,
 										 default=YES_NO_CHOISES[0])  # наличие брачного договора
@@ -272,3 +274,15 @@ class AdditionalClientInfo(models.Model):
 													   0])  # Являетесь ли вы налоговым резидентом другого государства за исключением США
 	foreign_citizen = models.CharField(choices=YES_NO_CHOISES, max_length=50,
 									   default=YES_NO_CHOISES[0])  # Являетесь ли вы иностранным гражданином
+	reason_for_secondFIO = models.CharField(max_length=30, default='Вышла замуж')
+	second_first_name = models.CharField(max_length=30, default='Иван')
+	second_part_name = models.CharField(max_length=30, default='Иванович')
+	second_last_name = models.CharField(max_length=30, default='Иванов')
+	work_experiance_general = models.CharField(max_length=10, default='10') #Общий стаж работы
+	work_experiance_by_profile = models.CharField(max_length=3, default='10') #Стаж работы по профилю
+	role = models.CharField(choices=CLIENT_ROLE, max_length=3, default='10') #Роль в сделке
+	relation_degree = models.CharField(choices=CLIENT_ROLE, max_length=3, default=CLIENT_ROLE[0]) #Степень родства с заемщиком
+	was_bankrot = models.CharField(choices=YES_NO_CHOISES, max_length=3, default=YES_NO_CHOISES[0]) #Применялась ли процедура банкротства
+	aliments = models.CharField(max_length=10, default='10') #Алименты
+	aliments = models.CharField(max_length=10, default='10') #Планируете ли вы покупать жилье по программе жилье для российской семьи
+	exist_zg_passport = models.CharField(choices=YES_NO_CHOISES, max_length=3, default=YES_NO_CHOISES[0]) #Есть ли загран паспорт

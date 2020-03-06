@@ -1,15 +1,14 @@
 import json
 import os
 
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
-from django.forms import modelformset_factory, modelform_factory, Textarea, Widget
-from django.forms.widgets import Input, ChoiceWidget, Select
+from django.forms import modelformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
 from mainapp.settings import *
-from django.contrib import auth
-from django.contrib.auth.decorators import login_required
 
 from .forms import *
 from .utils import *
@@ -67,7 +66,8 @@ def addClient(request):
 												  'job_f': JobInfoForm(),
 												  'bankdetail_f': BankDetailForm(),
 												  'approver_f': ApproverForm(),
-												  'credit_f': CreditForm(),
+												  'credit_f': IpotekaForm(),
+												  'relative_f': ClientRelativeForm(),
 												  # 's_f': StbeTestForm(),
 												  # 'credit_f': credits_factory,
 												  # 'client_f': client_form_set,
@@ -79,6 +79,7 @@ def addClient(request):
 												  })
 	elif sbm == 'Add':
 		client = ClientForm(post);
+		client.save()
 	# snils = snils_factory(post)
 	# address = address_factory(post)
 	# post_address = post_address_factory(post)
