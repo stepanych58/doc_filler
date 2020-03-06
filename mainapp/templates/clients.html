@@ -1,53 +1,61 @@
-<style>.hidden { display: none; }</style>
-
-<!--[if gt IE 9]><!-->
-<html class="no-js" lang="ru"><!--<![endif]-->
 <head>
     <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <link rel="stylesheet" type="text/css" href="/static/css/demo.css"/>
-    <link rel="stylesheet" type="text/css" href="/static/css/style1.css"/>
-
-
+    <link rel="stylesheet" href="/static/css/simple.css">
+    <script src="/static/js/clients.js"></script>
 </head>
 <body>
 
-<!-- Главная -->
 
+<table>
+<tr><th>Клиент</th><th>Анкета</th></tr>
 
-
-    {% for p_client in all_clients %}
-            <form action="/clientForm/{{ p_client.id }}" method="POST" style="display:inline;" id="clientForm">
-                    {% csrf_token %}
-                <input type="hidden" name="page" value="clients">
-                <td>
-                    <input type="checkbox" class="ch" id="{{ p_client.id }}" name="cl_checked" onclick="showButton()">
-                </td>
-                <td>
+<tr>
+    <td>
+        <ul>
+            {% for p_client in all_clients %}
+                <li>
+                <form action="/clientForm/{{ p_client.id }}" method="POST" style="display:inline;">
+                    <input type="checkbox" name="cl_checked" value="{{ p_client.id }}">
                     <a href="/clientInfo/{{ p_client.id }}">
                         {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
                     </a>
-                </td>
 
-
-            </form>
-
-            </tr>
-            </tr>
-
-    {% endfor %}
-                        <form action="/clientForm/{{ p_client.id }}" method="POST"  id="clientForm">
-                    <button class="btn" name="sbm" id="delete" value="Delete"><img src="/static/img/x-button.png"/>
+                    <button class="btn" name="sbm" value="Delete">Delete
                     </button>
 
 
-              </form>
+                </form>
+                </li>
+
+            {% endfor %}
+        </ul>
+    </td>
+
+
+    <td>
+        <ul>
+            {% for doc in all_docs %}
+                {% load staticfiles %}
+                <li>
+                    <a href="{% static doc.get_path %}">{{ doc.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </td>
+
+</tr>
+
+
 </table>
 
 
+ <form action="/clientForm/{{ p_client.id }}" method="POST" style="display:inline;">
 
+                    {% load staticfiles %}
+                    <button class="btn" name="sbm" value="Delete">Delete
+                    </button>
 
+ </form>
 
-<script src="/static/js/clients.js"></script>
 
 </body></html>

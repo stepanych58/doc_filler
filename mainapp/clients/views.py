@@ -119,7 +119,8 @@ def addClient(request):
 
 
 def deleteClient(client_id):
-	client = Client.objects.get(id=client_id)
+
+	client = Client.filter.getlist(in__id=client_id)
 	client.delete();
 
 
@@ -138,6 +139,7 @@ def clientForm(request, client_id):
 	page = request.POST.get('page')
 	doc_id = request.POST.get('doc_id')
 	gen_doc_id = request.POST.get('clientf_id')
+	che = request.POST.getlist('cl_checked')
 	if (
 			btn == None and
 			page == None and
@@ -146,7 +148,8 @@ def clientForm(request, client_id):
 	):
 		return HttpResponseRedirect('/clients/')
 	if btn == DELETE and page == 'clients':
-		deleteClient(client_id)
+		# Client.objects.filter(id__in = che).delete()
+		deleteClient(che)
 	if btn == DELETE and page == 'templates':
 		deleteTemplate(client_id)
 	if btn == DELETE_GEN_DOC:

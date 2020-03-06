@@ -70,8 +70,9 @@ function showButton() {
             }
             deleteButton.style.display = checked ? 'block' : 'none';
         }
-    }
 
+    }
+return id
 
 }
 

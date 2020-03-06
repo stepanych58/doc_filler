@@ -1,21 +1,15 @@
 {% load staticfiles %}
-<table id="keywords" cellspacing="0" cellpadding="0">
-    <tr>
-        <th>
-    <span>
+
+
 	  <form action="/addClient/" method="POST">{% csrf_token %}
           <button class="btn" name="sbm" value="Add Client">
-              <img src="/static/img/bw.png" width="90"  height="90" alt="Добавить клиента"
-                onmouseover="this.src='/static/img/color.png'; this.width=90;this.height=90;"
-                onmouseout="this.src='/static/img/bw.png'; this.width=90;this.height=90;">
+              <img src="/static/img/bw.png" width="90"  height="90" alt="Добавить клиента">
           </button>
 
 
       </form>
 
-	</span>
-        </th>
-    </tr>
+
 
 
 
@@ -43,4 +37,4 @@
 
 
 
-</table>
+
