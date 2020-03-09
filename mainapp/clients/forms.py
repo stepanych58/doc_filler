@@ -4,7 +4,7 @@ from clients.choises import *
 from clients.models import *
 
 # Util methods
-from clients.widgets import ManyValueInput, Duration
+from clients.widgets import ManyValueInput, Duration, MultipleSelect
 
 
 
@@ -274,7 +274,7 @@ class IpotekaForm(CreditForm):
 			'credit_goal': simpleInput,
 			'property_value': ManyValueInput(),
 			'immovables_region': simpleInput,
-			'immovables_type': Select(attrs={'class': 'form-control', 'multiple':'' }, choices=IMMOVABLE_PROPERTY_CHOISES),
+			'immovables_type': MultipleSelect(attrs={'class': 'form-control',}, choices=IMMOVABLE_PROPERTY_CHOISES),
 			'product_type': Select(attrs={'class': 'form-control', }, choices = IPOTEKA_TYPES),
 			'special_programms': simpleInput,
 			'desired_pay_period': simpleInput,

@@ -153,17 +153,17 @@ function deleteChild(elemId) {
     // childContainer2.removeChild(childContainer);
 }
 
-function createInputIfOther(elem) {
+function createInputIfOther(elem, selectedIndex) {
     // use one of possible conditions
     // if (elem.value == 'Other')
     console.log('createInputIfOther start');
-    var selectedValue = elem.options[elem.selectedIndex].text;
+    var selectedValue = elem.options[selectedIndex].text;
     console.log(elem);
     console.log('selectedValue: ' + selectedValue);
     if (selectedValue == "иное") {
-        document.getElementById("other-div").style.display = 'block';
+        // document.getElementById("other-div").style.display = 'block';
     } else {
-        document.getElementById("other-div").style.display = 'none';
+        // document.getElementById("other-div").style.display = 'none';
     }
     console.log('createInputIfOther end');
 
