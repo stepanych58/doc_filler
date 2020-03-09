@@ -12,9 +12,12 @@
 <tr>
     <td>
         <ul>
+        <form action="/clientForm/" method="POST" style="display:inline;">
+                       {% csrf_token %}
+
             {% for p_client in all_clients %}
                 <li>
-                <form action="/clientForm/{{ p_client.id }}" method="POST" style="display:inline;">
+
                     <input type="checkbox" name="cl_checked" value="{{ p_client.id }}">
                     <a href="/clientInfo/{{ p_client.id }}">
                         {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
@@ -24,7 +27,6 @@
                     </button>
 
 
-                </form>
                 </li>
 
             {% endfor %}
@@ -47,11 +49,7 @@
 
 
 </table>
-
-
- <form action="/clientForm/{{ p_client.id }}" method="POST" style="display:inline;">
-
-                    {% load staticfiles %}
+ {% load staticfiles %}
                     <button class="btn" name="sbm" value="Delete">Delete
                     </button>
 

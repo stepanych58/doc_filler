@@ -144,8 +144,6 @@ class LeftoverValue(models.Model):  # сделать такую форму, ко
 	amount = models.CharField(max_length=15, default="1000", blank=True)
 	currency = models.CharField(max_length=20, choices=CURRANCY_CHOISES, default=CURRANCY_CHOISES[0])
 
-
-#
 class ClientCredit(models.Model):
 	client = models.ForeignKey(
 		Client,
@@ -237,6 +235,19 @@ class RentalIncome(models.Model):
 	count_room = models.CharField(max_length=3, default="2", blank=True)
 	square = models.CharField(max_length=20, default="100", blank=True)  # m2
 	own_percent = models.CharField(max_length=3, default="100", blank=True)  # доля в собственности
+	value = models.CharField(max_length=10, default="100", blank=True)
+
+
+class PensionValue(models.Model):
+	client = models.ForeignKey(
+		Client,
+		on_delete=models.CASCADE
+	)
+	value = models.ForeignKey(
+		ManyValue,
+		on_delete=models.CASCADE,
+		primary_key=False
+	)
 
 class ClientRelative(Approver):
 	client = models.ForeignKey(

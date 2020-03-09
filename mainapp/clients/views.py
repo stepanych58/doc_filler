@@ -68,6 +68,8 @@ def addClient(request):
 												  'approver_f': ApproverForm(),
 												  'credit_f': IpotekaForm(),
 												  'relative_f': ClientRelativeForm(),
+												  'rental_f': RentalIncomeForm(),
+												  'pension_f': PensionValueForm(),
 												  # 's_f': StbeTestForm(),
 												  # 'credit_f': credits_factory,
 												  # 'client_f': client_form_set,
@@ -119,10 +121,9 @@ def addClient(request):
 	return HttpResponseRedirect('/clients/');
 
 
-def deleteClient(client_id):
-
-	client = Client.filter.getlist(in__id=client_id)
-	client.delete();
+def deleteClient(client_ids):
+	clients = Client.objects.filter(id__in=client_ids)
+	clients.delete();
 
 
 @login_required
@@ -135,7 +136,8 @@ def deleteGenDoc(gen_doc_id):
 	ClientsFile.objects.get(id=gen_doc_id).delete();
 
 
-def clientForm(request, client_id):
+def clientForm(request):
+	print('clientForm start')
 	btn = request.POST.get('sbm')
 	page = request.POST.get('page')
 	doc_id = request.POST.get('doc_id')
@@ -148,8 +150,7 @@ def clientForm(request, client_id):
 			gen_doc_id == None
 	):
 		return HttpResponseRedirect('/clients/')
-	if btn == DELETE and page == 'clients':
-		# Client.objects.filter(id__in = che).delete()
+	if btn == DELETE:
 		deleteClient(che)
 	if btn == DELETE and page == 'templates':
 		deleteTemplate(client_id)

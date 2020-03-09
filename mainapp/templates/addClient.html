@@ -60,9 +60,18 @@
                 <h6>Дополнительная информация о клиенте</h6>
                 <h6>Информация о родственниках</h6>
                 <h6>Дети</h6>
-                <button type="button" onclick="createChild()" class="btn btn-outline-primary">+</button>
+                <button type="button" onclick="addClientChildForm()" class="btn btn-outline-primary">+</button>
                 <div id="childs_id"></div>
                 <br>
+                <h6>Доходы заявителя</h6>
+                <p>Недвижимость cдаваемая в аренду</p>
+                <button type="button" onclick="rentalPropertyForm()" class="btn btn-outline-primary">+</button>
+                {{ rental_f.printForm |safe }}<br/>
+                <p>Пенсия</p>
+                {{ pension_f.printForm |safe }}<br/>
+                <br/>
+                <br/>
+
                 <input type="submit" name="sbm" class="btn btn-outline-primary" value="Add">
             </form>
         </div>

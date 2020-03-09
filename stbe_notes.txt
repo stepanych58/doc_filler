@@ -59,7 +59,7 @@ https://docs.djangoproject.com/en/2.2/topics/auth/
 --Сделать добавлялку родственников
 --Подумать о подходе через таблицы
 --СДЕЛАТЬ ПОЯВЛЕНИЕ НОВОГО ПОЛЯ ЕСЛИ ВЫБРАНО OTHER
-
+--сделать красивое поле ввода для процентов, площади (велью|мера)
 AdditionalParams
 ID|field type|label|default value|value|choise|model|group|order|client ID
 Choises

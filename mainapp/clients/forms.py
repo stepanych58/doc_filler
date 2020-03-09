@@ -7,7 +7,6 @@ from clients.models import *
 from clients.widgets import ManyValueInput, Duration, MultipleSelect
 
 
-
 def aplyForAll(field, widget):
 	resultDict = {}
 	for i in field:
@@ -40,6 +39,7 @@ simpleDate = DateInput(attrs={'class': 'form-control', 'type': 'date'})
 
 class AbstractForm(forms.ModelForm):
 	formId = '';
+
 	def printForm(self):
 		resStr = '<div class="row" id = "' + self.formId + '">'
 		for label in self.Meta.widgets:
@@ -197,6 +197,7 @@ class BankDetailForm(AbstractForm):
 		}
 		widgets = aplyForAll(labels.keys(), simpleInput)
 
+
 class AdditionalClientInfoForm(AbstractForm):
 	class Meta:
 		model = AdditionalClientInfo
@@ -207,6 +208,7 @@ class AdditionalClientInfoForm(AbstractForm):
 
 class CreditForm(AbstractForm):
 	formId = 'creditForm';
+
 	class Meta:
 		model = ClientCredit
 		exclude = ('client',)
@@ -226,7 +228,8 @@ class CreditForm(AbstractForm):
 			'leftover': 'Остаток'}
 		widgets = {
 			'requested_field': Select(attrs={'class': 'form-control', }, choices=СREDIT_REQS),
-			'type': Select(attrs={'class': 'form-control', 'onChange': 'showIpotekaForm(this);', }, choices=СREDIT_TYPES),
+			'type': Select(attrs={'class': 'form-control', 'onChange': 'showIpotekaForm(this);', },
+						   choices=СREDIT_TYPES),
 			'credit_goal': simpleInput,
 			'special_programms': simpleInput,
 			'desired_pay_period': simpleInput,
@@ -243,13 +246,14 @@ class CreditForm(AbstractForm):
 
 class IpotekaForm(CreditForm):
 	formId = 'ipotekaForm';
+
 	class Meta:
 		model = Ipoteka
 		exclude = ('client',)
 		labels = {
 			'requested_field': 'Кредит:',
-			'type': 'Тип кредита', #всегда ипотека
-			'credit_goal': 'Цель кредита', #всегда покупка жилья/объекта недвижимости
+			'type': 'Тип кредита',  # всегда ипотека
+			'credit_goal': 'Цель кредита',  # всегда покупка жилья/объекта недвижимости
 			'property_value': 'Cтоимость объекта недвижимости',
 			'immovables_region': 'Регион объекта недвижимости',
 			'immovables_type': 'Тип иммущества',
@@ -270,12 +274,13 @@ class IpotekaForm(CreditForm):
 		}
 		widgets = {
 			'requested_field': Select(attrs={'class': 'form-control', }, choices=СREDIT_REQS),
-			'type': Select(attrs={'class': 'form-control', 'onChange': 'showIpotekaForm(this);', }, choices=СREDIT_TYPES),
+			'type': Select(attrs={'class': 'form-control', 'onChange': 'showIpotekaForm(this);', },
+						   choices=СREDIT_TYPES),
 			'credit_goal': simpleInput,
 			'property_value': ManyValueInput(),
 			'immovables_region': simpleInput,
-			'immovables_type': MultipleSelect(attrs={'class': 'form-control',}, choices=IMMOVABLE_PROPERTY_CHOISES),
-			'product_type': Select(attrs={'class': 'form-control', }, choices = IPOTEKA_TYPES),
+			'immovables_type': MultipleSelect(attrs={'class': 'form-control', }, choices=IMMOVABLE_PROPERTY_CHOISES),
+			'product_type': Select(attrs={'class': 'form-control', }, choices=IPOTEKA_TYPES),
 			'special_programms': simpleInput,
 			'desired_pay_period': simpleInput,
 			'insurance': simpleInput,
@@ -290,6 +295,7 @@ class IpotekaForm(CreditForm):
 			'leftover': ManyValueInput(),
 			'reask': Select(attrs={'class': 'form-control', }, choices=IPOTEKA_REASK),
 		}
+
 
 class ClientRelativeForm(ApproverForm):
 	class Meta:
@@ -314,3 +320,30 @@ class ClientRelativeForm(ApproverForm):
 			'relation_degree': Select(attrs={'class': 'form-control', }, choices=RELATION_DEGREE_CHOISES),
 			'birthday': simpleDate,
 		}
+
+
+class RentalIncomeForm(AbstractForm):
+	class Meta:
+		model = RentalIncome
+		exclude = ('client', 'address')
+		labels = {'contract_start': 'Дата заключения договора',
+				  'contract_end': 'Дата окончания договора',
+				  'property_type': 'Вид недвижимости сдаваемой в наем',
+				  'own_percent': 'Доля в собственности',
+				  'square': 'Площадь',
+				  'count_room': 'Количество комнат', }
+		widgets = {'contract_start': simpleDate,
+				   'contract_end': simpleDate,
+				   'property_type': Select(attrs={'class': 'form-control', }, choices=IMMOVABLE_PROPERTY_CHOISES),
+				   'own_percent': simpleInput,
+				   'square': simpleInput,
+				   'count_room': simpleInput, }
+
+
+class PensionValueForm(AbstractForm):
+	class Meta:
+		model = PensionValue
+		exclude = ('client',)
+		labels = {'value': 'Среднемесячный доход за вычетом налогов', }
+		widgets = {'value': ManyValueInput(),}
+

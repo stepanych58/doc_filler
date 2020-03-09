@@ -78,7 +78,7 @@ return id
 
 var counter = 0;
 
-function createChild() {
+function addClientChildForm() {
     var childDiv = document.getElementById('childs_id');
     var newdiv = document.createElement('div');
     newdiv.id = "child_id_" + counter;
@@ -252,4 +252,9 @@ function showFactAddressForm(elem) {
             childDiv.appendChild(addr2);
         }
     }
+}
+
+function rentalPropertyForm() {
+    console.log('rentalPropertyForm()');
+    return;
 }
