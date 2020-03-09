@@ -201,9 +201,13 @@ class BankDetailForm(AbstractForm):
 class AdditionalClientInfoForm(AbstractForm):
 	class Meta:
 		model = AdditionalClientInfo
-		fields = ['snils_number']
-		labels = {'snils_number': 'СНИЛС', }
-		widgets = {'snils_number': simpleInput}
+		fields = ['snils_number', 'aliments']
+		labels = {'snils_number': 'СНИЛС',
+				  'aliments':'Алименты'}
+		widgets = {
+			'snils_number': simpleInput,
+			'aliments': ManyValueInput(),
+		}
 
 
 class CreditForm(AbstractForm):
@@ -331,13 +335,17 @@ class RentalIncomeForm(AbstractForm):
 				  'property_type': 'Вид недвижимости сдаваемой в наем',
 				  'own_percent': 'Доля в собственности',
 				  'square': 'Площадь',
-				  'count_room': 'Количество комнат', }
+				  'count_room': 'Количество комнат',
+				  'value': 'Среднемесячный доход за вычетом налогов',
+				  }
 		widgets = {'contract_start': simpleDate,
 				   'contract_end': simpleDate,
 				   'property_type': Select(attrs={'class': 'form-control', }, choices=IMMOVABLE_PROPERTY_CHOISES),
 				   'own_percent': simpleInput,
 				   'square': simpleInput,
-				   'count_room': simpleInput, }
+				   'count_room': simpleInput,
+				   'value': ManyValueInput(),
+				   }
 
 
 class PensionValueForm(AbstractForm):
@@ -347,3 +355,38 @@ class PensionValueForm(AbstractForm):
 		labels = {'value': 'Среднемесячный доход за вычетом налогов', }
 		widgets = {'value': ManyValueInput(),}
 
+class ImmovablePropForm(AbstractForm):
+	class Meta:
+		model = ImmovableProp
+		exclude = ('client', 'address')
+		labels = {
+			'type':'Вид недвижимости',
+			'own_percent':'Доля в собственности',
+			'square':'Площадь',
+			'value':'Рыночная стоимость',
+		}
+		widgets = {
+			'type':Select(attrs={'class': 'form-control', }, choices=IMMOVABLE_PROPERTY_CHOISES),
+			'own_percent':simpleInput,
+			'square':simpleInput,
+			'value':ManyValueInput(),
+		}
+
+class AutoForm(AbstractForm):
+	class Meta:
+		model = Auto
+		exclude = ('client', )
+		labels  = {
+			'car_mark':'Марка',
+			'car_model':'Модель',
+			'year_of_manufacture_of_car':'Год выпуска',
+			'value':'Рыночная стоимость',
+		}
+		widgets = {
+			'car_mark':simpleInput,
+			'car_model':simpleInput,
+			'year_of_manufacture_of_car':simpleDate,
+			'value': ManyValueInput(),
+		}
+		car_model = models.CharField(max_length=100, default="Лада")
+		year_of_manufacture_of_car = models.CharField(max_length=200, default="год выпуска авто")

@@ -70,6 +70,8 @@ def addClient(request):
 												  'relative_f': ClientRelativeForm(),
 												  'rental_f': RentalIncomeForm(),
 												  'pension_f': PensionValueForm(),
+												  'imm_prop_f': ImmovablePropForm(),
+												  'car_f': AutoForm(),
 												  # 's_f': StbeTestForm(),
 												  # 'credit_f': credits_factory,
 												  # 'client_f': client_form_set,
