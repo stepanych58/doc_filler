@@ -30,6 +30,7 @@
                     </select>
                 </div>
                 <div id="actualAddress">
+                    {{ registration_addr_f.printHiddenForm |safe  }}
                 </div>
                 <br>
                 <h4 class="mb-3">СНИЛС</h4>
@@ -46,7 +47,7 @@
                 {{ approver_f.printForm |safe }}
                 <br>
                 <h6>Адрес места работы</h6>
-                {{ job_addr_f.printForm |safe }}
+{#                {{ job_addr_f.printForm |safe }}#}
                 <br>
                 <h6>Банковские реквизиты работодателя</h6>
                 {{ bankdetail_f.printForm |safe }}

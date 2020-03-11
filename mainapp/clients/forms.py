@@ -17,16 +17,16 @@ def aplyForAll(field, widget):
 def printCol(self,
 			 div1_class='col-md-5',
 			 label_id='', label='', input='',
-			 inputName='', inputValue='', inputId=''):
-	attrs = {'id': 'id_' + str(inputId)};
+			 inputName='', inputValue='', inputId='', counter = ''):
+	attrs = {'id': 'id_' + str(inputId)+ str(counter)};
 	if isinstance(input, Select):
 		if input.attrs.get('choices', None) == 'small1':
 			div1_class = 'col-md-1'
 		elif input.attrs.get('choices', None) == 'small2':
 			div1_class = 'col-md-2'
 	return '<div class="' + div1_class + '">' + \
-		   '<label for="id_' + label_id + '">' + label + '</label>' + \
-		   input.render(name=inputName, value=inputValue, attrs=attrs) + \
+		   '<label for="id_' + label_id + str(counter) + '">' + label + '</label>' + \
+		   input.render(name=inputName + str(counter), value=inputValue, attrs=attrs) + \
 		   '</div>' + \
 		   '<div class="invalid-feedback">' + \
 		   'Valid ' + label + ' is required.' + \
@@ -38,15 +38,27 @@ simpleDate = DateInput(attrs={'class': 'form-control', 'type': 'date'})
 
 
 class AbstractForm(forms.ModelForm):
+	counter = 0;
 	formId = '';
-
+	hiddenId = '';
+	useCounter = False
 	def printForm(self):
 		resStr = '<div class="row" id = "' + self.formId + '">'
 		for label in self.Meta.widgets:
 			resStr += printCol(self, label_id=label, div1_class='col-md-4 mb-3', inputName=label,
 							   label=self.Meta.labels[label],
+							   input=self.Meta.widgets[label], inputId=label, counter= self.counter) if self.useCounter else printCol(self, label_id=label, div1_class='col-md-4 mb-3', inputName=label,
+							   label=self.Meta.labels[label],
 							   input=self.Meta.widgets[label], inputId=label)
 		resStr += '</div>'
+		self.counter+=1;
+		# print(self.counter)
+		return resStr;
+
+	def printHiddenForm(self):
+		resStr = '<div id= "' + self.hiddenId + '" style="display: none;" >';
+		resStr += self.printForm()
+		resStr += '</div>';
 		return resStr;
 
 
@@ -61,6 +73,8 @@ class ClientForm(AbstractForm):
 
 
 class AddressForm(AbstractForm):
+	hiddenId = 'actualAddress_'
+	useCounter = True
 	class Meta:
 		model = Address
 		exclude = ('client',)

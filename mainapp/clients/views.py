@@ -51,6 +51,25 @@ def allTemplates(request):
 	view_params['p_table'] = 'templates'
 	view_params['page_title'] = 'Анкеты'
 	return render(request, 'index.html', view_params);
+def getPostValue(post, param, counter):
+	return post.get(param + str(counter))
+
+def createAddressObj(post, counterp, clientp):
+	address = Address.objects.create(
+	    client = clientp,
+	    index = getPostValue(post, 'index', counterp),
+	    country = getPostValue(post, 'country', counterp),  # страна
+	    oblast = getPostValue(post, 'oblast', counterp),  # область/республика/край
+	    rayon = getPostValue(post, 'rayon', counterp),  # район
+	    city = getPostValue(post, 'city', counterp),  # город/поселок
+	    street = getPostValue(post, 'street', counterp),  # улица
+	    buildingNumber = getPostValue(post, 'buildingNumber', counterp),  # номер дома
+	    housing = getPostValue(post, 'housing', counterp),  # корпус
+	    structure = getPostValue(post, 'structure', counterp),  # строение
+	    flat = getPostValue(post, 'flat', counterp),  # квартира/офис
+	    basis_of_residence = getPostValue(post, 'basis_of_residence', counterp)
+	)
+	return address;
 
 
 @login_required
@@ -83,7 +102,12 @@ def addClient(request):
 												  })
 	elif sbm == 'Add':
 		client = ClientForm(post);
-		client.save()
+		client = client.save()
+		passportAddress = createAddressObj(post=post, counterp=0, clientp=client);
+		passport = PassportForm(post)
+		passport.instance.registration_address = passportAddress
+		passport = passport.save()
+
 	# snils = snils_factory(post)
 	# address = address_factory(post)
 	# post_address = post_address_factory(post)

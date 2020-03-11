@@ -42,22 +42,23 @@ class ClientsFile(models.Model):
 
 
 class Address(models.Model):
-	#todo добавить поле основание проживания если это не почтовый адрес и не адрес регистрации
+	#todo поле основание проживания - если это не почтовый адрес и не адрес регистрации
 	client = models.ForeignKey(
 		Client,
 		on_delete=models.CASCADE
 	)
-	index = models.CharField(max_length=6, default="446100")  # индекс
-	country = models.CharField(max_length=200, default="Россия", blank=True)  # страна
-	oblast = models.CharField(max_length=200, default="Самарская обл.", blank=True)  # область/республика/край
-	rayon = models.CharField(max_length=200, default="Волжский р-он.", blank=True)  # район
-	city = models.CharField(max_length=200, default="Самара")  # город/поселок
-	street = models.CharField(max_length=200, default="Николая-Панова")  # улица
-	buildingNumber = models.CharField(max_length=6, default="144")  # номер дома
-	housing = models.CharField(max_length=6, default="", blank=True)  # корпус
-	structure = models.CharField(max_length=6, default="", blank=True)  # строение
-	flat = models.CharField(max_length=6, default="25", blank=True)  # квартира/офис
-	is_post_addr = models.CharField(choices=YES_NO_CHOISES, max_length=50, default=YES_NO_CHOISES[1])
+	index = models.CharField(max_length=6, default="446100", null = True)  # индекс
+	country = models.CharField(max_length=200, default="Россия", blank=True, null = True)  # страна
+	oblast = models.CharField(max_length=200, default="Самарская обл.", blank=True, null = True)  # область/республика/край
+	rayon = models.CharField(max_length=200, default="Волжский р-он.", blank=True, null = True)  # район
+	city = models.CharField(max_length=200, default="Самара", null = True)  # город/поселок
+	street = models.CharField(max_length=200, default="Николая-Панова", null = True)  # улица
+	buildingNumber = models.CharField(max_length=6, default="144", null = True)  # номер дома
+	housing = models.CharField(max_length=6, default="", blank=True, null = True)  # корпус
+	structure = models.CharField(max_length=6, default="", blank=True, null = True)  # строение
+	flat = models.CharField(max_length=6, default="25", blank=True, null = True)  # квартира/офис
+	basis_of_residence = models.CharField(max_length=6, default="", blank=True, null = True)  # основание проживания
+	is_post_addr = models.CharField(choices=YES_NO_CHOISES, max_length=50, default=YES_NO_CHOISES[1], blank=True, null = True)
 
 
 class Passport(models.Model):
