@@ -203,6 +203,19 @@ function showFactAddressForm(elem) {
     }
 }
 
+var counter = 0;
+function cloneCreditForm(elem) {
+   var ipotekaForm = document.getElementById('ipotekaForm')
+   var ipotekaFormClone = ipotekaForm.cloneNode(true)
+   for(var formLabel of ipotekaFormClone.getElementsByTagName('label')) {
+       var formLabelFOR = formLabel.getAttribute('for')
+       formLabelFOR = formLabelFOR.replace(new RegExp('id_', 'g'), '')
+       ipotekaFormClone.innerHTML = ipotekaFormClone.innerHTML.replace(new RegExp(formLabelFOR, 'g'), formLabelFOR.concat(counter))
+   }
+   ipotekaForm.parentNode.appendChild(ipotekaFormClone);
+   counter ++;
+}
+
 function rentalPropertyForm() {
     console.log('rentalPropertyForm()');
     return;
