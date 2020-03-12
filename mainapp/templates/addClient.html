@@ -30,6 +30,7 @@
                     </select>
                 </div>
                 <div id="actualAddress">
+                    {{ registration_addr_f.printHiddenForm |safe  }}
                 </div>
                 <br>
                 <h4 class="mb-3">СНИЛС</h4>
@@ -46,7 +47,7 @@
                 {{ approver_f.printForm |safe }}
                 <br>
                 <h6>Адрес места работы</h6>
-                {{ job_addr_f.printForm |safe }}
+{#                {{ job_addr_f.printForm |safe }}#}
                 <br>
                 <h6>Банковские реквизиты работодателя</h6>
                 {{ bankdetail_f.printForm |safe }}
@@ -63,15 +64,27 @@
                 <button type="button" onclick="addClientChildForm()" class="btn btn-outline-primary">+</button>
                 <div id="childs_id"></div>
                 <br>
-                <h6>Доходы заявителя</h6>
+                <h6>Сведения о доходах заявителя</h6>
                 <p>Недвижимость cдаваемая в аренду</p>
                 <button type="button" onclick="rentalPropertyForm()" class="btn btn-outline-primary">+</button>
                 {{ rental_f.printForm |safe }}<br/>
                 <p>Пенсия</p>
                 {{ pension_f.printForm |safe }}<br/>
                 <br/>
+                <h6>Сведения о расходах заявителя</h6>
+                <p>Алименты</p>
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ additional_client_info_f.aliments }}
+                    </div>
+                </div>
+                <h6>Сведения имуществе заявителя</h6>
+                <i>Раздел не заполняется, если недвижимость планируется к продаже или находится в залоге</i>
+                <p>Недвижимое имущество</p>
+                {{ imm_prop_f.printForm |safe }}
+                <p>Движимое имущество</p>
+                {{ car_f.printForm |safe }}
                 <br/>
-
                 <input type="submit" name="sbm" class="btn btn-outline-primary" value="Add">
             </form>
         </div>

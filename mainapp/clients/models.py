@@ -42,22 +42,23 @@ class ClientsFile(models.Model):
 
 
 class Address(models.Model):
-	#todo добавить поле основание проживания если это не почтовый адрес и не адрес регистрации
+	#todo поле основание проживания - если это не почтовый адрес и не адрес регистрации
 	client = models.ForeignKey(
 		Client,
 		on_delete=models.CASCADE
 	)
-	index = models.CharField(max_length=6, default="446100")  # индекс
-	country = models.CharField(max_length=200, default="Россия", blank=True)  # страна
-	oblast = models.CharField(max_length=200, default="Самарская обл.", blank=True)  # область/республика/край
-	rayon = models.CharField(max_length=200, default="Волжский р-он.", blank=True)  # район
-	city = models.CharField(max_length=200, default="Самара")  # город/поселок
-	street = models.CharField(max_length=200, default="Николая-Панова")  # улица
-	buildingNumber = models.CharField(max_length=6, default="144")  # номер дома
-	housing = models.CharField(max_length=6, default="", blank=True)  # корпус
-	structure = models.CharField(max_length=6, default="", blank=True)  # строение
-	flat = models.CharField(max_length=6, default="25", blank=True)  # квартира/офис
-	is_post_addr = models.CharField(choices=YES_NO_CHOISES, max_length=50, default=YES_NO_CHOISES[1])
+	index = models.CharField(max_length=6, default="446100", null = True)  # индекс
+	country = models.CharField(max_length=200, default="Россия", blank=True, null = True)  # страна
+	oblast = models.CharField(max_length=200, default="Самарская обл.", blank=True, null = True)  # область/республика/край
+	rayon = models.CharField(max_length=200, default="Волжский р-он.", blank=True, null = True)  # район
+	city = models.CharField(max_length=200, default="Самара", null = True)  # город/поселок
+	street = models.CharField(max_length=200, default="Николая-Панова", null = True)  # улица
+	buildingNumber = models.CharField(max_length=6, default="144", null = True)  # номер дома
+	housing = models.CharField(max_length=6, default="", blank=True, null = True)  # корпус
+	structure = models.CharField(max_length=6, default="", blank=True, null = True)  # строение
+	flat = models.CharField(max_length=6, default="25", blank=True, null = True)  # квартира/офис
+	basis_of_residence = models.CharField(max_length=6, default="", blank=True, null = True)  # основание проживания
+	is_post_addr = models.CharField(choices=YES_NO_CHOISES, max_length=50, default=YES_NO_CHOISES[1], blank=True, null = True)
 
 
 class Passport(models.Model):
@@ -195,14 +196,18 @@ class Ipoteka(ClientCredit):
 # наименование опции
 # источник информации об ипотечном продукте
 class Own(models.Model):
-	type = models.CharField(max_length=100, default="Собственность", blank=True)
-	value = models.CharField(max_length=100, default="1 000 000", blank=True)  # стоимость
+	value = models.ForeignKey(
+		ManyValue,
+		on_delete=models.CASCADE,
+		primary_key=False
+	)  # стоимость
 
 class Auto(Own):
 	client = models.ForeignKey(
 		Client,
 		on_delete=models.CASCADE
 	)
+	car_mark = models.CharField(max_length=100, default="Лада")
 	car_model = models.CharField(max_length=100, default="Лада")
 	year_of_manufacture_of_car = models.CharField(max_length=200, default="год выпуска авто")
 
@@ -216,6 +221,8 @@ class ImmovableProp(Own):
 		Address,
 		on_delete=models.CASCADE
 	)
+	type = models.CharField(choices=IMMOVABLE_PROPERTY_CHOISES, max_length=50, default=IMMOVABLE_PROPERTY_CHOISES[0])
+	own_percent = models.CharField(max_length=3, default="100", blank=True)  # доля в собственности
 	square = models.CharField(max_length=100, default="100 m2", blank=True)  # площадь
 
 ###Доход от сдачи в аренду недвижимости может быть несколько объектов
@@ -235,7 +242,11 @@ class RentalIncome(models.Model):
 	count_room = models.CharField(max_length=3, default="2", blank=True)
 	square = models.CharField(max_length=20, default="100", blank=True)  # m2
 	own_percent = models.CharField(max_length=3, default="100", blank=True)  # доля в собственности
-	value = models.CharField(max_length=10, default="100", blank=True)
+	value = models.ForeignKey(
+		ManyValue,
+		on_delete=models.CASCADE,
+		primary_key=False
+	)
 
 
 class PensionValue(models.Model):
@@ -294,6 +305,10 @@ class AdditionalClientInfo(models.Model):
 	role = models.CharField(choices=CLIENT_ROLE, max_length=3, default='10') #Роль в сделке
 	relation_degree = models.CharField(choices=CLIENT_ROLE, max_length=3, default=CLIENT_ROLE[0]) #Степень родства с заемщиком
 	was_bankrot = models.CharField(choices=YES_NO_CHOISES, max_length=3, default=YES_NO_CHOISES[0]) #Применялась ли процедура банкротства
-	aliments = models.CharField(max_length=10, default='10') #Алименты
-	aliments = models.CharField(max_length=10, default='10') #Планируете ли вы покупать жилье по программе жилье для российской семьи
+	aliments = models.ForeignKey(
+		ManyValue,
+		on_delete=models.CASCADE,
+		primary_key=False
+	) #Алименты
+	# aliments = models.CharField(max_length=10, default='10') #Планируете ли вы покупать жилье по программе жилье для российской семьи
 	exist_zg_passport = models.CharField(choices=YES_NO_CHOISES, max_length=3, default=YES_NO_CHOISES[0]) #Есть ли загран паспорт
