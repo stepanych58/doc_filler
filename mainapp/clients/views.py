@@ -9,6 +9,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
 from mainapp.settings import *
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 from .forms import *
 from .utils import *
@@ -152,8 +153,6 @@ def clientForm(request):
 		return HttpResponseRedirect('/clients/')
 	if btn == DELETE:
 		deleteClient(che)
-	if btn == DELETE and page == 'templates':
-		deleteTemplate(client_id)
 	if btn == DELETE_GEN_DOC:
 		deleteGenDoc(gen_doc_id)
 	return HttpResponseRedirect('/clients/');

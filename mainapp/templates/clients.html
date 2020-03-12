@@ -6,54 +6,82 @@
 <body>
 
 
-<table>
-<tr><th>Клиент</th><th>Анкета</th></tr>
-
-<tr>
-    <td>
-        <ul>
+<header>
+    <table>
+        <td>
+            <form action="/addClient/" method="POST">{% csrf_token %}
+                <button class="btn" name="sbm" value="Add Client">Добавить
+                </button>
+            </form>
+        </td>
+        <td>
+            <button class="btn">Сформировать</button>
+        </td>
         <form action="/clientForm/" method="POST" style="display:inline;">
-                       {% csrf_token %}
-
-            {% for p_client in all_clients %}
-                <li>
-
-                    <input type="checkbox" name="cl_checked" value="{{ p_client.id }}">
-                    <a href="/clientInfo/{{ p_client.id }}">
-                        {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
-                    </a>
-
-                    <button class="btn" name="sbm" value="Delete">Delete
-                    </button>
+            <td>
+                <button class="btn" name="sbm" value="Delete">Удалить</button>
+            </td>
 
 
-                </li>
-
-            {% endfor %}
-        </ul>
-    </td>
+            </tr>
+    </table>
+</header>
 
 
-    <td>
-        <ul>
-            {% for doc in all_docs %}
-                {% load staticfiles %}
-                <li>
-                    <a href="{% static doc.get_path %}">{{ doc.name }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    </td>
+<table>
+    <tr>
+        <td>
+            <div id="scrolltable">
+                <input class=form-control id=searchs-text onkeyup=tableSearch() placeholder="Поиск по клиентам"
+                       type=text>
+                <table id=info-table>
+                    <tr>
+                        <td>
+                            <ul>
+                                {% csrf_token %}
+                                {% for p_client in all_clients %}
+                                    <li>
+                                        <input type="checkbox" name="cl_checked" value="{{ p_client.id }}">
+                                        <a href="/clientInfo/{{ p_client.id }}">
+                                            {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
+                                        </a>
+                                    </li>
 
-</tr>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        <td>
+            <div id="scrolltable">
+                <input class=form-control id=search-text onkeyup=tableSearch() placeholder="Поиск по анкетам"
+                       type=text>
+                <table id="info-table">
+                    <tr>
 
+                        <td>
+                            <ul>
+                                {% for doc in all_docs %}
+                                    {% load staticfiles %}
+                                    <li>
+                                        <a href="{% static doc.get_path %}">{{ doc.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
 
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
 </table>
- {% load staticfiles %}
-                    <button class="btn" name="sbm" value="Delete">Delete
-                    </button>
 
- </form>
+</form>
 
 
-</body></html>
+</body>
+
+</html>

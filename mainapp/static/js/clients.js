@@ -56,26 +56,6 @@ function generateReport(doc_id) {
 }
 
 
-function showButton() {
-    var checkboxes = document.getElementsByClassName('ch');
-    var deleteButton = document.getElementById('delete');
-    for (var i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].onchange = function () {
-            var checked = false;
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    checked = true;
-                    break;
-                }
-            }
-            deleteButton.style.display = checked ? 'block' : 'none';
-        }
-
-    }
-return id
-
-}
-
 var counter = 0;
 
 function addClientChildForm() {
@@ -257,4 +237,25 @@ function showFactAddressForm(elem) {
 function rentalPropertyForm() {
     console.log('rentalPropertyForm()');
     return;
+}
+
+function tableSearch() {
+    var phrase = document.getElementById('searchs-text');
+    var table = document.getElementById('info-table');
+    var regPhrase = new RegExp(phrase.value, 'i');
+    var flag = false;
+    console.log(phrase)
+    for (var i = 1; i < table.rows.length; i++) {
+        flag = false;
+        for (var j = table.rows[i].cells.length - 1; j >= 0; j--) {
+            flag = regPhrase.test(table.rows[i].cells[j].innerHTML);
+            if (flag) break;
+        }
+        if (flag) {
+            table.rows[i].style.display = "";
+        } else {
+            table.rows[i].style.display = "none";
+        }
+
+    }
 }
