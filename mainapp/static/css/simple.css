@@ -1,7 +1,8 @@
 table, th, td
 {
     margin: auto;
-    text-align: center;
+    width: 600px;
+    height: 100px;
 
 }
 ul
@@ -12,4 +13,42 @@ li
 {
         list-style-type: none;
 }
+#scrolltable { margin-top: 0px; height: 200px; overflow: auto; }
+#scrolltable th div { position: absolute; margin-top: -20px; }
 
+::-webkit-scrollbar-button {
+
+background-repeat:no-repeat;
+width:5px;
+height:0px
+}
+
+::-webkit-scrollbar-track {
+background-color:#ecedee
+}
+
+::-webkit-scrollbar-thumb {
+-webkit-border-radius: 0px;
+border-radius: 0px;
+background-color:#6dc0c8;
+}
+
+::-webkit-scrollbar-thumb:hover{
+background-color:#56999f;
+}
+
+::-webkit-resizer{
+background-image:url('');
+background-repeat:no-repeat;
+width:4px;
+height:0px
+}
+
+::-webkit-scrollbar{
+width: 2px;
+}
+header {
+ display: block;
+ height: 105px;
+ /*background: url(images/header-bg.png) repeat-x center bottom;*/
+}
