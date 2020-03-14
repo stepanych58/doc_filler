@@ -4,6 +4,16 @@ table, th, td
     width: 600px;
     height: 100px;
 
+
+}
+
+
+.relative {
+position: relative; /* относительное позиционирование элемента */
+height: 100px; /* высота элемента */
+
+left: 0%; /* смещение от левого края */
+
 }
 ul
 {
@@ -50,5 +60,91 @@ width: 2px;
 header {
  display: block;
  height: 105px;
- /*background: url(images/header-bg.png) repeat-x center bottom;*/
+
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* Navigation */
+
+nav {
+    /*height: 100%;*/
+    width: 160px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 100; /* Stay on top */
+    top: 0px; /* Stay at the top */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+    background: #1ABC9C;
+}
+leff {
+    /*гавно ебаное для тестов*/
+    /*height: 100%;*/
+    width: 200px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 400; /* Stay on top */
+    top: 400px; /* Stay at the top */
+    /*overflow-x: hidden; !* Disable horizontal scroll *!*/
+    padding-top: 20px;
+    background: #1ABC9C;
+}
+
+nav ul {
+    padding: 20px;
+    top: 50%;
+    /*position: relative;*/
+    list-style: none;
+    text-align: center;
+}
+nav ul li {
+  display: inline-block;
+  margin: 0 10px;
+}
+nav ul li a {
+  padding: 10px 0;
+  color: #fff;
+  font-size: 1rem;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+nav ul li a:hover {
+  color: #34495E;
+}
+a.active {
+  color:#0000FF
+}
+
+/* Headings */
+
+h1 {
+  font-size: 5rem;
+  color: #34495E;
+}
+
+section {
+  width: 100%;
+  padding: 50px;
+  background: #fff;
+  text-align: center;
+}
+
+.sections section:first-child {
+    margin-top: 0px;
+}
+section.active {}
+
+footer {
+  height: 200px;
+  background: #34495e;
+}
+.amazing{
+    height:100px;
+    /*background: #34495e;*/
+    position: fixed;
+    right: -60px;
+    margin-bottom: auto;
 }

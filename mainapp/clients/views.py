@@ -29,7 +29,7 @@ view_params = {'all_clients': Client.objects.all(),
 def welcomePage(request):
 	username = auth.get_user(request).username
 	context = {'username': username}
-	return render(request, 'welcome.html', context)
+	return render(request, 'welcome.html',  context)
 
 
 @login_required()
@@ -83,8 +83,10 @@ def updateClient(post, client):
 
 @login_required
 def addClient(request):
+	username = auth.get_user(request).username
 	post = request.POST
 	sbm = post['sbm']
+
 	if sbm == 'Add Client':
 		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 												  'client_f': ClientForm(),
@@ -100,6 +102,8 @@ def addClient(request):
 												  'pension_f': PensionValueForm(),
 												  'imm_prop_f': ImmovablePropForm(),
 												  'car_f': AutoForm(),
+												  'p_table': 'addClient',
+												  'username': username,
 												  # 's_f': StbeTestForm(),
 												  # 'credit_f': credits_factory,
 												  # 'client_f': client_form_set,

@@ -1,4 +1,4 @@
-import self as self
+# import self as self
 from clients.choises import *
 from clients.models import *
 # Util methods
