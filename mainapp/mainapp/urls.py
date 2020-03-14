@@ -29,6 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('clients/', allClients),
     path('clientForm/', clientForm),
+    path('edit_client_page/<int:client_id>', edit_client_page),
     path('addClient/', addClient),
     path('deleteClient/<int:client_id>', deleteClient),
     path('generateReport/', generateReport),

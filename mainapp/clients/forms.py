@@ -1,10 +1,10 @@
-from django import forms
-from django.forms.widgets import Input, Select, DateInput, Textarea, EmailInput, NumberInput
+import self as self
 from clients.choises import *
 from clients.models import *
-
 # Util methods
 from clients.widgets import ManyValueInput, Duration, MultipleSelect
+from django import forms
+from django.forms.widgets import Input, Select, DateInput, Textarea, EmailInput
 
 
 def aplyForAll(field, widget):
@@ -17,14 +17,20 @@ def aplyForAll(field, widget):
 def printCol(self,
 			 div1_class='col-md-5',
 			 label_id='', label='', input='',
-			 inputName='', inputValue='', inputId='', counter = ''):
+			 inputName='', inputValue='', inputId='', counter = '',
+			 hiddenName=None,
+			 hiddenValue=''
+			 ):
 	attrs = {'id': 'id_' + str(inputId)+ str(counter)};
+	hiddenIdInput = '';
+
 	if isinstance(input, Select):
 		if input.attrs.get('choices', None) == 'small1':
 			div1_class = 'col-md-1'
 		elif input.attrs.get('choices', None) == 'small2':
 			div1_class = 'col-md-2'
 	return '<div class="' + div1_class + '">' + \
+		   hiddenIdInput +\
 		   '<label for="id_' + label_id + str(counter) + '">' + label + '</label>' + \
 		   input.render(name=inputName + str(counter), value=inputValue, attrs=attrs) + \
 		   '</div>' + \
@@ -38,21 +44,34 @@ simpleDate = DateInput(attrs={'class': 'form-control', 'type': 'date'})
 
 
 class AbstractForm(forms.ModelForm):
-	counter = 0;
+	counter = '';
 	formId = '';
 	hiddenId = '';
+	hiddenName = None;
+	hiddenValue = '';
 	useCounter = False
+
+	def getValue(self, value):
+		return getattr(self.instance, value) \
+			if len(self.initial) != 0 and value in self.initial \
+			else '';
+
+	def getHiddenValue(self):
+		return self.hiddenValue;
+
 	def printForm(self):
-		resStr = '<div class="row" id = "' + self.formId + '">'
+		hiddenIdInput='';
+		if self.hiddenName is not None:
+			hiddenIdInput = '<input type="hidden" name="' + self.hiddenName + '"' + ' value="' + str(self.getHiddenValue()) + '">'
+		resStr = '<div class="row" id = "' + self.formId + '">\n' + hiddenIdInput
 		for label in self.Meta.widgets:
 			resStr += printCol(self, label_id=label, div1_class='col-md-4 mb-3', inputName=label,
+							   inputValue=self.getValue(value=label),
 							   label=self.Meta.labels[label],
-							   input=self.Meta.widgets[label], inputId=label, counter= self.counter) if self.useCounter else printCol(self, label_id=label, div1_class='col-md-4 mb-3', inputName=label,
-							   label=self.Meta.labels[label],
-							   input=self.Meta.widgets[label], inputId=label)
+							   input=self.Meta.widgets[label], inputId=label, counter= self.counter)
 		resStr += '</div>'
-		self.counter+=1;
-		# print(self.counter)
+		if isinstance(self.counter, int):
+			self.counter+=1;
 		return resStr;
 
 	def printHiddenForm(self):
@@ -63,6 +82,9 @@ class AbstractForm(forms.ModelForm):
 
 
 class ClientForm(AbstractForm):
+	hiddenName = 'client_id'
+	def getHiddenValue(self):
+		return self.getValue(value='id');
 	class Meta:
 		model = Client
 		fields = '__all__'
@@ -74,7 +96,7 @@ class ClientForm(AbstractForm):
 
 class AddressForm(AbstractForm):
 	hiddenId = 'actualAddress_'
-	useCounter = True
+	counter = 0
 	class Meta:
 		model = Address
 		exclude = ('client',)
@@ -93,7 +115,7 @@ class AddressForm(AbstractForm):
 		widgets = aplyForAll(labels.keys(), simpleInput)
 
 
-class PassportForm(forms.ModelForm):
+class PassportForm(AbstractForm):
 	class Meta:
 		model = Passport
 		fields = ['serial', 'number', 'v_from', 'date_of', 'gender', 'birthday', 'code_of', ]
@@ -120,17 +142,20 @@ class PassportForm(forms.ModelForm):
 		v_fromLabel = self.Meta.fields[2]
 		for label in self.Meta.fields[:2]:
 			resStr += printCol(self, label_id=label, div1_class='col-md-4 mb-3', inputName=label,
+							   inputValue=self.getValue(value=label),
 							   label=self.Meta.labels[label],
 							   input=self.Meta.widgets[label], inputId=label)
 		resStr += '</div>'
 		resStr += '<div class="row">'
 		resStr += printCol(self, label_id=v_fromLabel, div1_class='col-md-8', inputName=v_fromLabel,
+						   inputValue=self.getValue(value=v_fromLabel),
 						   label=self.Meta.labels[v_fromLabel],
 						   input=self.Meta.widgets[v_fromLabel], inputId=v_fromLabel)
 		resStr += '</div>'
 		resStr += '<div class="row">'
 		for label in self.Meta.fields[3:7]:
 			resStr += printCol(self, label_id=label, div1_class='col-md-3 mb-3', inputName=label,
+							   inputValue=self.getValue(value=label),
 							   label=self.Meta.labels[label],
 							   input=self.Meta.widgets[label], inputId=label)
 		resStr += '</div>'
@@ -138,6 +163,7 @@ class PassportForm(forms.ModelForm):
 
 
 class ApproverForm(ClientForm):
+	hiddenName = 'approver_id'
 	class Meta:
 		model = Approver
 		fields = '__all__'
@@ -316,6 +342,7 @@ class IpotekaForm(CreditForm):
 
 
 class ClientRelativeForm(ApproverForm):
+	hiddenName = 'client_relative_id'
 	class Meta:
 		model = ClientRelative
 		exclude = ('client',)

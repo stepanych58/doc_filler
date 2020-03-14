@@ -40,56 +40,54 @@ def writeClientDoc(client_id, doc_id):
 	writer_class.write(p_client, p_doc)
 
 class SberPoFormeBanka:
-	def write(client, doc):
-		p_client = client
-		p_doc = doc
-		organization = p_client.organizationinfo
-		organization_address = organization.address
-		organization_postaddress = organization.post_address
-		organization_bank_detail = organization.bank_detail
-		clients_file_name = str(p_client.first_name) + ' ' + \
-                                    str(p_client.last_name) + '_' + str(
-			p_doc.file_name)  # date or time
+	def write(client, anketa):
+		# organization = client.organizationinfo
+		# organization_address = organization.address
+		# organization_postaddress = organization.post_address
+		# organization_bank_detail = organization.bank_detail
+		clients_file_name = str(client.first_name) + ' ' + \
+                                    str(client.last_name) + '_' + str(
+			anketa.file_name)  # date or time
 		p_file_path = ''
-		if p_doc.file_type == 'pdf':
+		if anketa.file_type == 'pdf':
 			p_file_path = os.path.join(PDF_GENERATED_RESULT_DIR, clients_file_name)
-		client_file = ClientsFile(client=p_client, file_path=p_file_path)
+		client_file = ClientsFile(client=client, file_path = p_file_path)
 		client_file.save()
-		path_in_file = os.path.join(PDF_TEMPLATE_DIR, p_doc.file_name)
+		path_in_file = os.path.join(PDF_TEMPLATE_DIR, anketa.file_name)
 		path_out_file = p_file_path
 		inpt = open(path_in_file, 'rb')
 		reads = PdfFileReader(inpt)
 		read = reads.getFormTextFields()
 		Page = reads.getPage(0)
 		for i, value in Page.items():
-                    read['1'] = p_client.last_name
-                    read['2'] = p_client.first_name
-                    read['undefined_4'] = p_client.part_name
-                    read['undefined_5'] = p_client.position
+                    read['1'] = client.last_name
+                    read['2'] = client.first_name
+                    read['undefined_4'] = client.part_name
+                    # read['undefined_5'] = client.position
                     # Организация
-                    read['1_2'] = organization.full_name
-                    read['fill_11'] = organization_address.index
-                    read['fill_12'] = organization_address.city
-                    read['undefined_6'] = organization_address.street
-                    read['fill_14'] = organization_address.buildingNumber
-                    read['fill_15'] = organization_address.housing
-                    read['fill_16'] = organization_address.structure
-                    read['fill_17'] = organization_address.flat
-                    read['fill_25'] = organization.accountent_number
-                    read['undefined_8'] = organization.hr_number
-                    read['undefined_9'] = organization.inn_number
-                    read['fill_28'] = organization_bank_detail.account_number
-                    read['fill_29'] = organization_bank_detail.correspondent_account_number
-                    read['fill_30'] = organization_bank_detail.bic
-                    read['fill_31'] = organization_bank_detail.bank_name
+                    # read['1_2'] = organization.full_name
+                    # read['fill_11'] = organization_address.index
+                    # read['fill_12'] = organization_address.city
+                    # read['undefined_6'] = organization_address.street
+                    # read['fill_14'] = organization_address.buildingNumber
+                    # read['fill_15'] = organization_address.housing
+                    # read['fill_16'] = organization_address.structure
+                    # read['fill_17'] = organization_address.flat
+                    # read['fill_25'] = organization.accountent_number
+                    # read['undefined_8'] = organization.hr_number
+                    # read['undefined_9'] = organization.inn_number
+                    # read['fill_28'] = organization_bank_detail.account_number
+                    # read['fill_29'] = organization_bank_detail.correspondent_account_number
+                    # read['fill_30'] = organization_bank_detail.bic
+                    # read['fill_31'] = organization_bank_detail.bank_name
                     # почтовый адрес
-                    read['fill_18'] = organization_postaddress.index
-                    read['fill_19'] = organization_postaddress.city
-                    read['undefined_7'] = organization_postaddress.street
-                    read['fill_21'] = organization_postaddress.buildingNumber
-                    read['fill_22'] = organization_postaddress.housing
-                    read['fill_23'] = organization_postaddress.structure
-                    read['fill_24'] = organization_postaddress.flat
+                    # read['fill_18'] = organization_postaddress.index
+                    # read['fill_19'] = organization_postaddress.city
+                    # read['undefined_7'] = organization_postaddress.street
+                    # read['fill_21'] = organization_postaddress.buildingNumber
+                    # read['fill_22'] = organization_postaddress.housing
+                    # read['fill_23'] = organization_postaddress.structure
+                    # read['fill_24'] = organization_postaddress.flat
 		outpt = open(path_out_file, 'wb')
 		write = PdfFileWriter()
 		set_need_appearances_writer(write)
@@ -428,22 +426,20 @@ class VTBAnketa:
         outpt.close()
 
 class DomRF_Ipoteca:
-    def write(client, doc):
-        p_client = client
-        p_doc = doc
-        organization = p_client.organizationinfo
-        organization_address = organization.address
-        organization_postaddress = organization.post_address
-        organization_bank_detail = organization.bank_detail
+    def write(p_client, p_anketa):
+        # organization = p_client.organizationinfo
+        # organization_address = organization.address
+        # organization_postaddress = organization.post_address
+        # organization_bank_detail = organization.bank_detail
         clients_file_name = str(p_client.first_name) + ' ' + \
                             str(p_client.last_name) + '_' + str(
-            p_doc.file_name)  # date or time
+            p_anketa.file_name)  # date or time
         p_file_path = ''
-        if p_doc.file_type == 'pdf':
+        if p_anketa.file_type == 'pdf':
             p_file_path = os.path.join(PDF_GENERATED_RESULT_DIR, clients_file_name)
         client_file = ClientsFile(client=p_client, file_path=p_file_path)
         client_file.save()
-        path_in_file = os.path.join(PDF_TEMPLATE_DIR, p_doc.file_name)
+        path_in_file = os.path.join(PDF_TEMPLATE_DIR, p_anketa.file_name)
         path_out_file = p_file_path
         inpt = open(path_in_file, 'rb')
         reads = PdfFileReader(inpt)
@@ -463,7 +459,7 @@ class DomRF_Ipoteca:
             read['Text Field 5569'] = p_client.last_name
             read['Text Field 5570'] = p_client.first_name
             read['Text Field 5571'] = p_client.part_name
-            read['Text Field 5572'] = p_client.part_name#дата рождения
+            # read['Text Field 5572'] = p_client.part_name#дата рождения
             #Предыдущие Ф.И.О.
             read['Text Field 5572'] = p_client.last_name
             read['Text Field 5573'] = p_client.first_name
@@ -481,47 +477,46 @@ class DomRF_Ipoteca:
             read['Text Field 5580'] = p_client.passport.code_of #код подразделения 3 символа
             read['Text Field 5581'] = p_client.passport.code_of #код подразделения 3 символа
             read['Text Field 5583'] = p_client.snils.snils_number #cнилс
-            read['Text Field 5583'] = p_client.snils.snils_number
 
             #адрес регистрации
             # адрес проживания
             #контакты
-            read['Text Field 5498'] = p_client.phone_number #мобильный
-            read['Text Field 5499'] = p_client.additionalclientinfo.home_phone_number #домашний
-            read['Text Field 5500'] = p_client.additionalclientinfo.сont_phone_number #контактный
-            read['Text Field 5501'] = p_client.additionalclientinfo.work_phone_number #рабочий
-            read['Text Field 5503'] = p_client.email #email
-            read['Text Field 5502'] = p_client.additionalclientinfo.relations_phone_number #телефон близкого родственника
+            # read['Text Field 5498'] = p_client.phone_number #мобильный
+            # read['Text Field 5499'] = p_client.additionalclientinfo.home_phone_number #домашний
+            # read['Text Field 5500'] = p_client.additionalclientinfo.сont_phone_number #контактный
+            # read['Text Field 5501'] = p_client.additionalclientinfo.work_phone_number #рабочий
+            # read['Text Field 5503'] = p_client.email #email
+            # read['Text Field 5502'] = p_client.additionalclientinfo.relations_phone_number #телефон близкого родственника
             #Фио близкого родственника
-            read['Text Field 5505'] = p_client.clientrelative.first_name #имя
-            read['Text Field 5506'] = p_client.clientrelative.part_name #отчество
-            read['Text Field 5507'] = p_client.clientrelative.last_name #фамилия
-            read['Text Field 5504'] = p_client.clientrelative.relation_degree #степень родства
+            # read['Text Field 5505'] = p_client.clientrelative.first_name #имя
+            # read['Text Field 5506'] = p_client.clientrelative.part_name #отчество
+            # read['Text Field 5507'] = p_client.clientrelative.last_name #фамилия
+            # read['Text Field 5504'] = p_client.clientrelative.relation_degree #степень родства
 
             #Сведения о занятости и доходах Заявителя
-            read['Text Field 5480'] = p_client.additionalclientinfo.work_expireance_years #(год) стаж за последние 5 лет (2 цифры)
-            read['Text Field 5482'] = p_client.additionalclientinfo.work_expireance_month #(месяцев) стаж за последние 5 лет (2 цифры)
-            read['Text Field 5483'] = p_client.additionalclientinfo.work_type_other #тип занятости иное
+            # read['Text Field 5480'] = p_client.additionalclientinfo.work_expireance_years #(год) стаж за последние 5 лет (2 цифры)
+            # read['Text Field 5482'] = p_client.additionalclientinfo.work_expireance_month #(месяцев) стаж за последние 5 лет (2 цифры)
+            # read['Text Field 5483'] = p_client.additionalclientinfo.work_type_other #тип занятости иное
             #Основная работа (заполняется при наличии)
-            read['Text Field 5484'] = p_client.additionalclientinfo.work_expireance_lw_years  # (год) стаж за последние 5 лет (2 цифры)
-            read['Text Field 5485'] = p_client.additionalclientinfo.work_expireance_lw_month  # (месяцев) стаж за последние 5 лет (2 цифры)
+            # read['Text Field 5484'] = p_client.additionalclientinfo.work_expireance_lw_years  # (год) стаж за последние 5 лет (2 цифры)
+            # read['Text Field 5485'] = p_client.additionalclientinfo.work_expireance_lw_month  # (месяцев) стаж за последние 5 лет (2 цифры)
 
             # Организация
-            read['Text Field 5495'] = organization.full_name
-            read['Text Field 5486'] = organization_address.index
-            read['Text Field 5487'] = organization_address.oblast
-            read['Text Field 5488'] = organization_address.rayon
-            read['Text Field 5489'] = organization_address.city
-            read['Text Field 5490'] = organization_address.street
-            read['Text Field 5491'] = organization_address.buildingNumber
-            read['Text Field 5492'] = organization_address.housing
-            read['Text Field 5493'] = organization_address.structure
-            read['Text Field 5494'] = organization_address.flat
-            read['Text Field 5497'] = organization.hr_number
-            read['Text Field 5496'] = organization.site #адрес сайта
-            read['Text Field 5524'] = organization.inn_number #вид деятельности иное
-            read['Text Field 5522'] = p_client.position #вид деятельности иное
-            read['Text Field 5523'] = p_client.additionalclientinfo.average_income #среднемесячный доход
+            # read['Text Field 5495'] = organization.full_name
+            # read['Text Field 5486'] = organization_address.index
+            # read['Text Field 5487'] = organization_address.oblast
+            # read['Text Field 5488'] = organization_address.rayon
+            # read['Text Field 5489'] = organization_address.city
+            # read['Text Field 5490'] = organization_address.street
+            # read['Text Field 5491'] = organization_address.buildingNumber
+            # read['Text Field 5492'] = organization_address.housing
+            # read['Text Field 5493'] = organization_address.structure
+            # read['Text Field 5494'] = organization_address.flat
+            # read['Text Field 5497'] = organization.hr_number
+            # read['Text Field 5496'] = organization.site #адрес сайта
+            # read['Text Field 5524'] = organization.inn_number #вид деятельности иное
+            # read['Text Field 5522'] = p_client.position #вид деятельности иное
+            # read['Text Field 5523'] = p_client.additionalclientinfo.average_income #среднемесячный доход
 
             #Работа по совместительству (заполняется при наличии) - пока не заполняем
             #Иные доходы Заявителя - пока не заполняем
@@ -531,31 +526,31 @@ class DomRF_Ipoteca:
                 #«Легкая ипотека» и при наличии доходов от сдачи недвижимости в аренду) - пока не заполняем
 
             #Сведения о расходах Заявителя
-            read['Text Field 5704'] = p_client.additionalclientinfo.aliment  # алименты
+            # read['Text Field 5704'] = p_client.additionalclientinfo.aliment  # алименты
             #Информация о кредите/займе
-            read['Text Field 5611'] = p_client.clientcredit.type  # типкредита
-            read['Text Field 5612'] = p_client.clientcredit.creditor_name  # Наименование кредитора
-            read['Text Field 5613'] = p_client.clientcredit.date_start.day  # срок кредита с день
-            read['Text Field 5614'] = p_client.clientcredit.date_start.month  # месяц
-            read['Text Field 5615'] = p_client.clientcredit.date_start.year  # год
-            read['Text Field 5616'] = p_client.clientcredit.date_end.day  # день
-            read['Text Field 5617'] = p_client.clientcredit.date_end.month  # месяц
-            read['Text Field 5618'] = p_client.clientcredit.date_end.year  # год
-            read['Text Field 5620'] = p_client.clientcredit.currency  # валюта
-            read['Text Field 5619'] = p_client.clientcredit.value  # сумма
-            read['Text Field 5621'] = p_client.clientcredit.month_pay  # платеж в месяц
-            read['Text Field 5622'] = p_client.clientcredit.leftover  # остаток
+            # read['Text Field 5611'] = p_client.clientcredit.type  # типкредита
+            # read['Text Field 5612'] = p_client.clientcredit.creditor_name  # Наименование кредитора
+            # read['Text Field 5613'] = p_client.clientcredit.date_start.day  # срок кредита с день
+            # read['Text Field 5614'] = p_client.clientcredit.date_start.month  # месяц
+            # read['Text Field 5615'] = p_client.clientcredit.date_start.year  # год
+            # read['Text Field 5616'] = p_client.clientcredit.date_end.day  # день
+            # read['Text Field 5617'] = p_client.clientcredit.date_end.month  # месяц
+            # read['Text Field 5618'] = p_client.clientcredit.date_end.year  # год
+            # read['Text Field 5620'] = p_client.clientcredit.currency  # валюта
+            # read['Text Field 5619'] = p_client.clientcredit.value  # сумма
+            # read['Text Field 5621'] = p_client.clientcredit.month_pay  # платеж в месяц
+            # read['Text Field 5622'] = p_client.clientcredit.leftover  # остаток
             #Сведения об имуществе Заявителя
-            read['Text Field 5456'] = p_client.additionalclientinfo.immovable_property  # вид недвижимости
-            read['Text Field 5457'] = '100'  # доля в собственности
-            read['Text Field 5458'] = ''  # регион местонахождения
-            read['Text Field 5459'] = ''  # населенный пункт
-            read['Text Field 5460'] = p_client.additionalclientinfo.market_value_of_real_estate  # стоимость
+            # read['Text Field 5456'] = p_client.additionalclientinfo.immovable_property  # вид недвижимости
+            # read['Text Field 5457'] = '100'  # доля в собственности
+            # read['Text Field 5458'] = ''  # регион местонахождения
+            # read['Text Field 5459'] = ''  # населенный пункт
+            # read['Text Field 5460'] = p_client.additionalclientinfo.market_value_of_real_estate  # стоимость
             #авто заявителя
-            read['Text Field 5461'] = p_client.additionalclientinfo.mark_of_car  # марка
-            read['Text Field 5462'] = p_client.additionalclientinfo.model_of_car  # модель
-            read['Text Field 5464'] = p_client.additionalclientinfo.year_of_manufacture_of_car  # год выпуска
-            read['Text Field 5463'] = p_client.additionalclientinfo.car_valuation  # стоимость
+            # read['Text Field 5461'] = p_client.additionalclientinfo.mark_of_car  # марка
+            # read['Text Field 5462'] = p_client.additionalclientinfo.model_of_car  # модель
+            # read['Text Field 5464'] = p_client.additionalclientinfo.year_of_manufacture_of_car  # год выпуска
+            # read['Text Field 5463'] = p_client.additionalclientinfo.car_valuation  # стоимость
         outpt = open(path_out_file, 'wb')
         write = PdfFileWriter()
         set_need_appearances_writer(write)

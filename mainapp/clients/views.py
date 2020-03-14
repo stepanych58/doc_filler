@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.forms import modelformset_factory
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from doc_filler_app.main_file_filler import *
 from mainapp.settings import *
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -52,11 +52,11 @@ def allTemplates(request):
 	view_params['p_table'] = 'templates'
 	view_params['page_title'] = 'Анкеты'
 	return render(request, 'index.html', view_params);
-def getPostValue(post, param, counter):
+def getPostValue(post, param, counter=''):
 	return post.get(param + str(counter))
 
-def createAddressObj(post, counterp, clientp):
-	address = Address.objects.create(
+def updateOrCreateAddressObj(post, counterp, clientp):
+	address = Address.objects.update_or_create(
 	    client = clientp,
 	    index = getPostValue(post, 'index', counterp),
 	    country = getPostValue(post, 'country', counterp),  # страна
@@ -71,6 +71,14 @@ def createAddressObj(post, counterp, clientp):
 	    basis_of_residence = getPostValue(post, 'basis_of_residence', counterp)
 	)
 	return address;
+
+
+def updateClient(post, client):
+	client.first_name = getPostValue(post, 'first_name');
+	client.last_name = getPostValue(post, 'last_name');
+	client.part_name = getPostValue(post, 'part_name');
+	client.save()
+	return client;
 
 
 @login_required
@@ -100,13 +108,20 @@ def addClient(request):
 												  # 'bankdetail_f': bank_detail_factory,
 												  # 'orginfo_f': organization_factory,
 												  'additional_client_info_f': AdditionalClientInfoForm(),
+												  'save_btn': 'Add'
 												  })
-	elif sbm == 'Add':
-		client = ClientForm(post);
-		client = client.save()
-		passportAddress = createAddressObj(post=post, counterp=0, clientp=client);
+	elif sbm == 'Add' or 'Update':
+		client_id = getPostValue(post=post, param='client_id')
+		if client_id is not None and client_id != '':
+			сlient = Client.objects.get(id = client_id)
+			сlient = updateClient(post, сlient)
+		else:
+			сlient = ClientForm(post).save();
+
+		passportAddress = updateOrCreateAddressObj(post=post, counterp=0, clientp=сlient);
 		passport = PassportForm(post)
-		passport.instance.registration_address = passportAddress
+		passport.instance.client = сlient
+		passport.instance.registration_address = passportAddress[0]
 		passport = passport.save()
 
 	# snils = snils_factory(post)
@@ -223,16 +238,48 @@ def uploadTemplate(request):
 		Document(name=tmp_name, file_name=file_name, file_type=type).save()
 	return HttpResponseRedirect('/clients/');
 
+#https://github.com/csev/dj4e-samples/blob/master/form/views.py
+@login_required
+def edit_client_page(request, client_id):
+	client_inst = Client.objects.get(id=client_id);
+	passportForm = PassportForm() if not hasattr(client_inst, 'passport') else PassportForm(instance=client_inst.passport);
+	return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
+												  'client_f': ClientForm(instance=client_inst),
+												  'passport_f': passportForm,
+												  'registration_addr_f': AddressForm(),
+												  'job_addr_f': AddressForm(),
+												  'job_f': JobInfoForm(),
+												  'bankdetail_f': BankDetailForm(),
+												  'approver_f': ApproverForm(),
+												  'credit_f': IpotekaForm(),
+												  'relative_f': ClientRelativeForm(),
+												  'rental_f': RentalIncomeForm(),
+												  'pension_f': PensionValueForm(),
+												  'imm_prop_f': ImmovablePropForm(),
+												  'car_f': AutoForm(),
+												  # 's_f': StbeTestForm(),
+												  # 'credit_f': credits_factory,
+												  # 'client_f': client_form_set,
+												  # 'address_f': address_factory,
+												  # 'postaddress_f': post_address_factory,
+												  # 'bankdetail_f': bank_detail_factory,
+												  # 'orginfo_f': organization_factory,
+												  'additional_client_info_f': AdditionalClientInfoForm(),
+											      'save_btn':'Update'
+												  })
 
 @login_required
 def generateReport(request):
 	print(request)
 	client_view_params = request.body.decode('utf-8')
 	json_view_params = json.loads(client_view_params)
-	clientids = json_view_params['checkedClients']
-	pdocs = json_view_params['checkedDocs']
-	for client_id in clientids:
-		writeClientDoc(client_id, pdocs[0])
+	client_ids = json_view_params['checkedClients']
+	doc_ids = json_view_params['checkedDocs']
+	# print("client_ids: " + str(client_ids))
+	# print("doc_ids: " + str(doc_ids))
+	for client_id in client_ids:
+		for doc_id in doc_ids:
+			writeClientDoc(client_id, doc_id)
 	return HttpResponseRedirect('/clients/');
 
 

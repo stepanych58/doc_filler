@@ -15,7 +15,7 @@
             </form>
         </td>
         <td>
-            <button class="btn">Сформировать</button>
+            <button class="btn" onclick="generateReport()">Сформировать</button>
         </td>
         <form action="/clientForm/" method="POST" style="display:inline;">
             <td>
@@ -42,7 +42,7 @@
                                 {% for p_client in all_clients %}
                                     <li>
                                         <input type="checkbox" name="cl_checked" value="{{ p_client.id }}">
-                                        <a href="/clientInfo/{{ p_client.id }}">
+                                        <a href="/edit_client_page/{{ p_client.id }}">
                                             {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
                                         </a>
                                     </li>
@@ -66,6 +66,7 @@
                                 {% for doc in all_docs %}
                                     {% load staticfiles %}
                                     <li>
+                                        <input type="checkbox" name="doc_checked" value="{{ doc.id }}">
                                         <a href="{% static doc.get_path %}">{{ doc.name }}</a>
                                     </li>
                                 {% endfor %}

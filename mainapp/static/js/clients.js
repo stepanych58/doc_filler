@@ -30,7 +30,15 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function generateReport(doc_id) {
+function addIfChecked(checkedClients) {
+    return function (element) {
+        if (element.checked) {
+            checkedClients.push(String(element.value))
+        }
+    };
+}
+
+function generateReport() {
     csrftoken = getCookie('csrftoken')//in future we can change name of cookie
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/generateReport/")
@@ -38,17 +46,16 @@ function generateReport(doc_id) {
     xhr.setRequestHeader("Location", '/clients/');
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     cl_checkboxes = document.getElementsByName('cl_checked');
+    doc_checkboxes = document.getElementsByName('doc_checked');
     var checkedClients = [];
-    var checkedDocs = [doc_id];
-    cl_checkboxes.forEach(function (element) {
-        if (element.checked) {
-            checkedClients.push(String(element.value))
-        }
-    })
+    var checkedDocs = [];
+    cl_checkboxes.forEach(addIfChecked(checkedClients))
+    doc_checkboxes.forEach(addIfChecked(checkedDocs))
     var viewParams = JSON.stringify({
         'checkedClients': checkedClients,
         'checkedDocs': checkedDocs
     });
+    console.log(viewParams)
     xhr.send(viewParams)
     xhr.onreadystatechange = function () {
         location = location //to reload page
