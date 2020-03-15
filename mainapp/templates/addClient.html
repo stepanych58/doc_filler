@@ -3,36 +3,39 @@
     <link rel="stylesheet" href="/static/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="/static/css/simple.css">
     {# для боковой шапки #}
-    {#<link rel="stylesheet" href="/static/css/bootstrap.min.css"> {# для боковой шапки #}
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    {# для боковой шапки#}
+    {#    <meta name="viewport" content="width=device-width, initial-scale=1">#}
     {% load staticfiles %}
-{#    <script class="cssdeck" src="/static/js/jquery.min.js"></script>#}
+    <script class="cssdeck" src="/static/js/jquery.min.js"></script>
     <script src="{% static 'js/clients.js' %}"></script>
+
     <title> Добавить клиента</title>
 </head>
 <body>
 
-<form action="/addClient/" method="POST">{% csrf_token %}
-    <header class="amazing">
-        <table>
 
-            <td>
-                <button class="btn" name="sbm" value="{{ save_btn }}">
-                    {% if save_btn == 'Update' %}
-                    Обновить
-                    {% else %}
-                    Добавить
-                    {% endif %}
-                </button>
-            </td>
-            <td>
-                <a href="/clients/">
-                    <button class="btn">Назад</button>
-                </a>
-            </td>
-            <td>
-                <button class="btn" name="sbm"><a href="/auth/logout">Выйти ({{ username }})</a></button>
-            </td>
+<form action="/addClient/" method="POST">{% csrf_token %}
+    <header>
+        <table align="right">
+            <tr>
+                <td>
+                    <button class="btn" name="sbm" value="{{ save_btn }}">
+                        {% if save_btn == 'Update' %}
+                            Обновить
+                        {% else %}
+                            Добавить
+                        {% endif %}
+                    </button>
+                </td>
+                <td>
+                    <a href="/clients/">
+                        <button class="btn">Назад</button>
+                    </a>
+                </td>
+                <td>
+                    <button class="btn" name="sbm"><a href="/auth/logout">Выйти ({{ username }})</a></button>
+                </td>
 
 
             </tr>
@@ -97,7 +100,7 @@
                 {{ approver_f.printForm |safe }}
                 <br>
                 <h6>Адрес места работы</h6>
-                                {{ job_addr_f.printForm |safe }}
+                {{ job_addr_f.printForm |safe }}
                 <br>
                 <h6>Банковские реквизиты работодателя</h6>
                 {{ bankdetail_f.printForm |safe }}

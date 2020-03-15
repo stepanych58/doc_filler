@@ -7,14 +7,6 @@ table, th, td
 
 }
 
-
-.relative {
-position: relative; /* относительное позиционирование элемента */
-height: 100px; /* высота элемента */
-
-left: 0%; /* смещение от левого края */
-
-}
 ul
 {
     list-style-type: none;
@@ -23,6 +15,7 @@ li
 {
         list-style-type: none;
 }
+
 #scrolltable { margin-top: 0px; height: 200px; overflow: auto; }
 #scrolltable th div { position: absolute; margin-top: -20px; }
 
@@ -57,11 +50,17 @@ height:0px
 ::-webkit-scrollbar{
 width: 2px;
 }
+
+html, body {
+    scrollbar-color: #6dc0c8 #ffffff;     /* «цвет ползунка» «цвет полосы скроллбара» */
+    scrollbar-width: thin;  /* толщина */
+}
 header {
- display: block;
- height: 105px;
+    height: 105px;
+    /*position: fixed;*/
 
 }
+
 
 * {
   margin: 0;
@@ -72,23 +71,13 @@ header {
 
 nav {
     /*height: 100%;*/
-    width: 160px; /* Set the width of the sidebar */
+    width: 5%; /* Set the width of the sidebar */
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
     z-index: 100; /* Stay on top */
     top: 0px; /* Stay at the top */
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 20px;
-    background: #1ABC9C;
-}
-leff {
-    /*гавно ебаное для тестов*/
-    /*height: 100%;*/
-    width: 200px; /* Set the width of the sidebar */
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-    z-index: 400; /* Stay on top */
-    top: 400px; /* Stay at the top */
-    /*overflow-x: hidden; !* Disable horizontal scroll *!*/
-    padding-top: 20px;
+    font-size: 14px;
     background: #1ABC9C;
 }
 
@@ -143,8 +132,5 @@ footer {
 }
 .amazing{
     height:100px;
-    /*background: #34495e;*/
     position: fixed;
-    right: -60px;
-    margin-bottom: auto;
 }
