@@ -62,6 +62,30 @@ function generateReport() {
     }
 }
 
+function deleteChecked() {
+    csrftoken = getCookie('csrftoken')//in future we can change name of cookie
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/deleteChecked/")
+    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    xhr.setRequestHeader("Location", '/clients/');
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    cl_checkboxes = document.getElementsByName('cl_checked');
+    doc_checkboxes = document.getElementsByName('doc_checked');
+    var checkedClients = [];
+    var checkedDocs = [];
+    cl_checkboxes.forEach(addIfChecked(checkedClients))
+    doc_checkboxes.forEach(addIfChecked(checkedDocs))
+    var viewParams = JSON.stringify({
+        'checkedClients': checkedClients,
+        'checkedDocs': checkedDocs
+    });
+    console.log(viewParams)
+    xhr.send(viewParams)
+    xhr.onreadystatechange = function () {
+        location = location //to reload page
+    }
+}
+
 
 var counter = 0;
 
@@ -71,7 +95,7 @@ function addClientChildForm() {
     newdiv.id = "child_id_" + counter;
 
     newdiv.innerHTML =
-    "<div class=\"row\" id=\"\">\n" +
+        "<div class=\"row\" id=\"\">\n" +
         "                    <div class=\"col-md-4 mb-3\"><label for=\"id_last_name\">Фамилия</label><input type=\"None\"\n" +
         "                                                                                               name=\"last_name\"\n" +
         "                                                                                               class=\"form-control\"\n" +
@@ -141,19 +165,40 @@ function deleteChild(elemId) {
 }
 
 function createInputIfOther(elem, selectedIndex) {
-    // use one of possible conditions
-    // if (elem.value == 'Other')
-    console.log('createInputIfOther start');
-    var selectedValue = elem.options[selectedIndex].text;
-    console.log(elem);
-    console.log('selectedValue: ' + selectedValue);
-    if (selectedValue == "иное") {
-        // document.getElementById("other-div").style.display = 'block';
+    if (!selectedIndex) {
+        let chosedElem = elem.options[elem.selectedIndex];
+        let parentNode = elem.parentNode;
+        let otherId = elem.id + '_other';
+        otherInput = undefined
+        for (const child of parentNode.children) {
+            if (child.id == otherId) {
+                otherInput = child;
+                break;
+            }
+        }
+        if (chosedElem.text === 'Иное') {
+            if (!otherInput) {
+                otherInput = document.createElement('input')
+                otherInput.type = 'text'
+                otherInput.id = otherId
+                otherInput.setAttribute('class', 'form-control')
+                parentNode.appendChild(otherInput)
+            } else {
+                otherInput.setAttribute('style', '')
+            }
+        } else if (chosedElem.text != 'Иное' && otherInput) {
+            otherInput.setAttribute('style', 'display:none')
+        }
     } else {
-        // document.getElementById("other-div").style.display = 'none';
+        var selectedValue = elem.options[selectedIndex].text;
+        console.log(elem);
+        console.log('selectedValue: ' + selectedValue);
+        if (selectedValue == "иное") {
+            // document.getElementById("other-div").style.display = 'block';
+        } else {
+            // document.getElementById("other-div").style.display = 'none';
+        }
     }
-    console.log('createInputIfOther end');
-
 }
 
 function showIpotekaForm(elem) {
@@ -173,6 +218,7 @@ function showIpotekaForm(elem) {
         // }
     }
 }
+
 function showFactAddressForm(elem) {
     var selectedValue = elem.options[elem.selectedIndex].text;
     if (selectedValue === 'Да') {
@@ -191,16 +237,17 @@ function showFactAddressForm(elem) {
 }
 
 var counter = 0;
+
 function cloneCreditForm(elem) {
-   var ipotekaForm = document.getElementById('ipotekaForm')
-   var ipotekaFormClone = ipotekaForm.cloneNode(true)
-   for(var formLabel of ipotekaFormClone.getElementsByTagName('label')) {
-       var formLabelFOR = formLabel.getAttribute('for')
-       formLabelFOR = formLabelFOR.replace(new RegExp('id_', 'g'), '')
-       ipotekaFormClone.innerHTML = ipotekaFormClone.innerHTML.replace(new RegExp(formLabelFOR, 'g'), formLabelFOR.concat(counter))
-   }
-   ipotekaForm.parentNode.appendChild(ipotekaFormClone);
-   counter ++;
+    var ipotekaForm = document.getElementById('ipotekaForm')
+    var ipotekaFormClone = ipotekaForm.cloneNode(true)
+    for (var formLabel of ipotekaFormClone.getElementsByTagName('label')) {
+        var formLabelFOR = formLabel.getAttribute('for')
+        formLabelFOR = formLabelFOR.replace(new RegExp('id_', 'g'), '')
+        ipotekaFormClone.innerHTML = ipotekaFormClone.innerHTML.replace(new RegExp(formLabelFOR, 'g'), formLabelFOR.concat(counter))
+    }
+    ipotekaForm.parentNode.appendChild(ipotekaFormClone);
+    counter++;
 }
 
 function rentalPropertyForm() {
@@ -227,38 +274,5 @@ function tableSearch() {
         }
     }
 }
-
-
-var sections = $('section')
-  , nav = $('nav')
-  , nav_height = nav.outerHeight();
-
-$(window).on('scroll', function () {
-  var cur_pos = $(this).scrollTop();
-
-  sections.each(function() {
-    var top = $(this).offset().top - nav_height,
-        bottom = top + $(this).outerHeight();
-
-    if (cur_pos >= top && cur_pos <= bottom) {
-      nav.find('a').removeClass('active');
-      sections.removeClass('active');
-
-      $(this).addClass('active');
-      nav.find('a[href="#'+$(this).attr('id')+'"]').addClass('active');
-    }
-  });
-});
-
-nav.find('a').on('click', function () {
-  var $el = $(this)
-    , id = $el.attr('href');
-
-  $('html, body').animate({
-    scrollTop: $(id).offset().top - nav_height
-  }, 500);
-
-  return false;
-});
 
 

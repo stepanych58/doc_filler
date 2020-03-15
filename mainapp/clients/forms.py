@@ -17,11 +17,9 @@ def aplyForAll(field, widget):
 def printCol(self,
 			 div1_class='col-md-5',
 			 label_id='', label='', input='',
-			 inputName='', inputValue='', inputId='', counter = '',
-			 hiddenName=None,
-			 hiddenValue=''
+			 inputName='', inputValue='', inputId='', counter = ''
 			 ):
-	attrs = {'id': 'id_' + str(inputId)+ str(counter)};
+	attrs = {'id': 'id_' + str(inputId) + str(counter)};
 	hiddenIdInput = '';
 
 	if isinstance(input, Select):
@@ -29,6 +27,8 @@ def printCol(self,
 			div1_class = 'col-md-1'
 		elif input.attrs.get('choices', None) == 'small2':
 			div1_class = 'col-md-2'
+	if isinstance(input, MultipleSelect):
+		print('ms input: ' + str(input))
 	return '<div class="' + div1_class + '">' + \
 		   hiddenIdInput +\
 		   '<label for="id_' + label_id + str(counter) + '">' + label + '</label>' + \
@@ -177,6 +177,7 @@ class ApproverForm(ClientForm):
 
 
 class JobInfoForm(AbstractForm):
+	counter = 0
 	class Meta:
 		model = JobInfo
 		exclude = ('client', 'address', 'bank_detail', 'approver')
@@ -290,7 +291,7 @@ class CreditForm(AbstractForm):
 
 class IpotekaForm(CreditForm):
 	formId = 'ipotekaForm';
-
+	counter = 0
 	class Meta:
 		model = Ipoteka
 		exclude = ('client',)
@@ -318,7 +319,7 @@ class IpotekaForm(CreditForm):
 		}
 		widgets = {
 			'requested_field': Select(attrs={'class': 'form-control', }, choices=СREDIT_REQS),
-			'type': Select(attrs={'class': 'form-control', 'onChange': 'showIpotekaForm(this);', },
+			'type': Select(attrs={'class': 'form-control', 'onChange': 'createInputIfOther(this, false);', },
 						   choices=СREDIT_TYPES),
 			'credit_goal': simpleInput,
 			'property_value': ManyValueInput(),

@@ -54,7 +54,7 @@ https://wsvincent.com/django-user-authentication-tutorial-login-and-logout/
 https://pypi.org/project/django-classic-user-accounts/
 https://docs.djangoproject.com/en/2.2/topics/auth/
 
-
+--мультиселект сортировать https://stackoverflow.com/questions/12073270/sorting-options-elements-alphabetically-using-jquery
 --Сделать плавающую шапку и футер с кнопкой добавления
 --Сделать скрытие полей кредит формы если это не ипотека
 --Сделать валидацию полей: телефонный номер, индекс, код-номер-серия паспорта, снилс, инн, и другие где известен формат ввода

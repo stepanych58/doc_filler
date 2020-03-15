@@ -7,6 +7,5 @@ class Duration(Widget):
     template_name = 'django/widgets/duration.html'
 
 class MultipleSelect(Select):
-    template_name = 'django/widgets/multipleSelect2.html'
-    # option_template_name = 'django/widgets/data_option.html'
-
+    template_name = 'django/widgets/multipleSelect.html'
+    option_template_name = 'django/widgets/data_option.html'

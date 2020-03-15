@@ -1,57 +1,85 @@
-from .models import *
+from clients.forms import *
+from clients.models import *
+import json
+def getPostValue(post, param, counter=''):
+	return post.get(param + str(counter))
 
-def create_test_data():
-	create_clients()
-	create_documents()
+def updateOrCreateJobInfo(post, counterp, clientp):
+	jobinfo = JobInfo.objects.update_or_create(
+		client = clientp,
+		defaults = {
+			'position':getPostValue(post, 'position', counterp),
+		}
+	)[0];
+	return jobinfo;
 
-def is_exist(client):
-	res = False
-	for x in Client.objects.all():
-		res = client.first_name == x.first_name and client.last_name == x.last_name and client.part_name == x.part_name
-		if res:
-			return res
-	return res
+def updateOrCreateAddressObj(post, counterp, clientp):
+	address = Address.objects.update_or_create(
+	    client = clientp,
+		defaults ={
+			'index': getPostValue(post, 'index', counterp),
+			'country': getPostValue(post, 'country', counterp),  # страна
+			'oblast': getPostValue(post, 'oblast', counterp),  # область/республика/край
+			'rayon': getPostValue(post, 'rayon', counterp),  # район
+			'city': getPostValue(post, 'city', counterp),  # город/поселок
+			'street': getPostValue(post, 'street', counterp),  # улица
+			'buildingNumber': getPostValue(post, 'buildingNumber', counterp),  # номер дома
+			'housing': getPostValue(post, 'housing', counterp),  # корпус
+			'structure': getPostValue(post, 'structure', counterp),  # строение
+			'flat': str(getPostValue(post, 'flat', counterp))  # квартира/офис
+		}
+	)[0]
+	return address;
 
-def create_clients():
-	client = Client(first_name="Дмитрий", part_name="Алексеевич", last_name="Саленый")
-	if not is_exist(client):
-		client.save()
-	client = Client(first_name="Степан", part_name="Владимирович", last_name="Берендяев")
+def updateClient(post, client):
+	client.first_name = getPostValue(post, 'first_name');
+	client.last_name = getPostValue(post, 'last_name');
+	client.part_name = getPostValue(post, 'part_name');
 	client.save()
-	Passport(client = client, info = {
-		'документ':'пасспорт гр. РФ',
-		'серия': '3345',
-		'номер': '180009',
-		'Пасспорт выдан':'ОТДЕЛОМ УФМС РОССИИ ПО САМАРСКОЙ ОБЛАСТИ В ГОРОДЕ МАХАЧКАЛА',
-		'Фамилия':'Берендяев',
-		'Имя':'Степан',
-		'Отчество':'Владимирович',
-		'пол':'муж.',
-		'Дата рождения':'23.07.1999',
-		'Место рождения':'г. Саратов Самарская обл.'
-	}).save()
-	SNILS(client = client, info={
-		'документ':'Cнилс',
-		'номер': '123-123-123 11',
-	}).save()
-	client = Client(first_name="Ирина", part_name="Генадьевна", last_name="Иванова")
-	if not is_exist(client):
-		client.save()
-	Client(first_name="Алена", part_name="Аллександровна", last_name="Голованова")
-	Client(first_name="Екатерина", part_name="Евгеньевна", last_name="Герасимова")
-	Client(first_name="Екатерина", part_name="Владимировна", last_name="Сычева")
-	Client(first_name="Антон", part_name="Олегович", last_name="Сытник")
-	Client(first_name="Антон", part_name="Владимирович", last_name="Кузнецов")
+	return client;
 
-def create_documents():
-	# Document(name="Credit", file_name='', file_type='pdf').save()
-	# Document(name="Ipoteka", file_name='', file_type='pdf').save()
-	Document(name="Справка по форме банка (сбер)", file_name='spravka_po_forme_banka.pdf', file_type='pdf').save()
-	# Document(name="Spravka1", file_name='', file_type='pdf').save()
-	# Document(name="Spravka3", file_name='', file_type='pdf').save()
-	# Document(name="Spravka4", file_name='', file_type='pdf').save()
-	# Document(name="Spravka5", file_name='', file_type='pdf').save()
-def create_client_docs():
-	return ''
+def getPassport(post, сlient):
+	passport = PassportForm(post)
+	passport.instance.client = сlient
+	passport.instance.registration_address = updateOrCreateAddressObj(post=post, counterp=0, clientp=сlient)
+	passport = passport.save()
+	return passport
 
+def getClient(post):
+	client_id = getPostValue(post=post, param='client_id')
+	if client_id is not None and client_id != '':
+		сlient = Client.objects.get(id=client_id)
+		сlient = updateClient(post, сlient)
+	else:
+		сlient = ClientForm(post)
+		print(post)
+		print(сlient)
+		сlient = ClientForm(post).save();
+	return сlient
 
+def getRegAddressForm(clientHasPassport, client_inst):
+	regAddressForm = AddressForm()
+	if clientHasPassport:
+		passportHasAddress = hasattr(client_inst.passport, 'registration_address')
+		regAddressForm = getForm(passportHasAddress, 'AddressForm',
+									 client_inst.passport, 'registration_address')
+	return regAddressForm;
+
+def getForm(isExist, formClass, instance, attr):
+	return globals()[formClass](instance=getattr(instance, attr)) \
+		if isExist \
+		else globals()[formClass];
+
+def getObjectByClient(client_inst, modelClass):
+	return globals()[modelClass].objects.select_related().filter(client=client_inst)[0];
+
+def getFormByForeignKey(client_inst, modelClass, formClass):
+	inst = getObjectByClient(client_inst, modelClass)
+	return globals()[formClass] if inst is None else  globals()[formClass](instance=inst);
+
+def getCheckedItems(request):
+	client_view_params = request.body.decode('utf-8')
+	json_view_params = json.loads(client_view_params)
+	client_ids = json_view_params['checkedClients']
+	doc_ids = json_view_params['checkedDocs']
+	return client_ids, doc_ids

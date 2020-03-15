@@ -5,9 +5,68 @@
     <title>Test Page</title>
 </head>
 <body>
-<form method="POST" action="/test_page/" style="display:inline;">{% csrf_token %}
-  {{ client_form.as_p }}
-  <input type="submit" name="sbm" value="save">
+<form method="POST" action="/test_page/" style="display:inline;">
+    <multi-input>
+        <input list="speakers" name="immovables_type" class="form-control" id="id_immovables_type">
+        <datalist id="speakers" class="datalist">
+            <option value="Апартаменты"></option>
+            <option value="Таунхаус"></option>
+            <option value="Дом"></option>
+            <option value="Квартира"></option>
+            <option value="Иное"></option>
+            <option value="Дом с участком"></option>
+            <option value="Комната"></option>
+        </datalist>
+        <style>
+            /*multi-input input::-webkit-calendar-picker-indicator {*/
+            /*  display: none;*/
+            /*}*/
+            /* NB use of pointer-events to only allow events from the × icon */
+            multi-input div.item::after {
+                color: black;
+                content: '×';
+                cursor: pointer;
+                /*font-size: 18px;*/
+                font-size: initial;
+                pointer-events: auto;
+                position: unset;
+                right: 5px;
+                top: -1px;
+            }
+
+        </style>
+    </multi-input>
+    <multi-input>
+        <input list="speakers" name="immovables_type" class="form-control" id="id_immovables_type">
+        <datalist id="speakers" class="datalist">
+            <option value="Апартаменты"></option>
+            <option value="Таунхаус"></option>
+            <option value="Дом"></option>
+            <option value="Квартира"></option>
+            <option value="Иное"></option>
+            <option value="Дом с участком"></option>
+            <option value="Комната"></option>
+        </datalist>
+        <style>
+            /*multi-input input::-webkit-calendar-picker-indicator {*/
+            /*  display: none;*/
+            /*}*/
+            /* NB use of pointer-events to only allow events from the × icon */
+            multi-input div.item::after {
+                color: black;
+                content: '×';
+                cursor: pointer;
+                /*font-size: 18px;*/
+                font-size: initial;
+                pointer-events: auto;
+                position: unset;
+                right: 5px;
+                top: -1px;
+            }
+
+        </style>
+    </multi-input>
+    <input type="submit" name="sbm" value="save">
 </form>
 </body>
 </html>

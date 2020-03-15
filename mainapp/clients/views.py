@@ -1,15 +1,9 @@
-import json
-import os
-
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
-from django.core.files.storage import FileSystemStorage
-from django.forms import modelformset_factory
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from doc_filler_app.main_file_filler import *
 from mainapp.settings import *
-from django.contrib.auth.mixins import UserPassesTestMixin
 
 from .forms import *
 from .utils import *
@@ -33,60 +27,19 @@ def welcomePage(request):
 
 
 @login_required()
-def allClients(request, test_param="tp"):
-	username = auth.get_user(request).username
+def allClients(request):
 	view_params['all_clients'] = Client.objects.all()
 	view_params['all_docs'] = Document.objects.all()
 	view_params['all_clients_files'] = ClientsFile.objects.all()
 	view_params['p_table'] = 'clients'
-	view_params['page_title'] = 'Клиенты'
-	view_params['username'] = username
+	view_params['username'] = auth.get_user(request).username
 	return render(request, 'index.html', view_params);
-
-
-@login_required
-def allTemplates(request):
-	view_params['all_clients'] = Client.objects.all()
-	view_params['all_docs'] = Document.objects.all()
-	view_params['all_clients_files'] = ClientsFile.objects.all()
-	view_params['p_table'] = 'templates'
-	view_params['page_title'] = 'Анкеты'
-	return render(request, 'index.html', view_params);
-def getPostValue(post, param, counter=''):
-	return post.get(param + str(counter))
-
-def updateOrCreateAddressObj(post, counterp, clientp):
-	address = Address.objects.update_or_create(
-	    client = clientp,
-	    index = getPostValue(post, 'index', counterp),
-	    country = getPostValue(post, 'country', counterp),  # страна
-	    oblast = getPostValue(post, 'oblast', counterp),  # область/республика/край
-	    rayon = getPostValue(post, 'rayon', counterp),  # район
-	    city = getPostValue(post, 'city', counterp),  # город/поселок
-	    street = getPostValue(post, 'street', counterp),  # улица
-	    buildingNumber = getPostValue(post, 'buildingNumber', counterp),  # номер дома
-	    housing = getPostValue(post, 'housing', counterp),  # корпус
-	    structure = getPostValue(post, 'structure', counterp),  # строение
-	    flat = getPostValue(post, 'flat', counterp),  # квартира/офис
-	    basis_of_residence = getPostValue(post, 'basis_of_residence', counterp)
-	)
-	return address;
-
-
-def updateClient(post, client):
-	client.first_name = getPostValue(post, 'first_name');
-	client.last_name = getPostValue(post, 'last_name');
-	client.part_name = getPostValue(post, 'part_name');
-	client.save()
-	return client;
-
 
 @login_required
 def addClient(request):
 	username = auth.get_user(request).username
 	post = request.POST
 	sbm = post['sbm']
-
 	if sbm == 'Add Client':
 		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 												  'client_f': ClientForm(),
@@ -115,18 +68,12 @@ def addClient(request):
 												  'save_btn': 'Add'
 												  })
 	elif sbm == 'Add' or 'Update':
-		client_id = getPostValue(post=post, param='client_id')
-		if client_id is not None and client_id != '':
-			сlient = Client.objects.get(id = client_id)
-			сlient = updateClient(post, сlient)
+		сlient = getClient(post)
+		if PassportForm(post).is_valid():
+			passport = getPassport(post, сlient)
 		else:
-			сlient = ClientForm(post).save();
-
-		passportAddress = updateOrCreateAddressObj(post=post, counterp=0, clientp=сlient);
-		passport = PassportForm(post)
-		passport.instance.client = сlient
-		passport.instance.registration_address = passportAddress[0]
-		passport = passport.save()
+			print('passport not created')
+		jobInfo = updateOrCreateJobInfo(post, 0, сlient)
 
 	# snils = snils_factory(post)
 	# address = address_factory(post)
@@ -166,22 +113,6 @@ def addClient(request):
 	# 		print(errorform.errors)
 	return HttpResponseRedirect('/clients/');
 
-
-def deleteClient(client_ids):
-	clients = Client.objects.filter(id__in=client_ids)
-	clients.delete();
-
-
-@login_required
-def deleteTemplate(template_id):
-	Document.objects.get(id=template_id).delete();
-
-
-@login_required
-def deleteGenDoc(gen_doc_id):
-	ClientsFile.objects.get(id=gen_doc_id).delete();
-
-
 def clientForm(request):
 	print('clientForm start')
 	btn = request.POST.get('sbm')
@@ -202,57 +133,23 @@ def clientForm(request):
 		deleteGenDoc(gen_doc_id)
 	return HttpResponseRedirect('/clients/');
 
-
-@login_required
-def createTestData(request):
-	create_test_data()
-	return HttpResponseRedirect('/clients/');
-
-
-@login_required
-def clearData(request):
-	Client.objects.all().delete()
-	Document.objects.all().delete()
-	return HttpResponseRedirect('/clients/');
-
-
-@login_required
-def uploadTemplate(request):
-	# add logic to save template in certain directory https://www.programcreek.com/python/example/59557/django.core.files.storage.FileSystemStorage
-	if request.method == 'POST':
-		uploaded_file = request.FILES['template']
-		tmp_name = request.POST['tmp_name']
-		file_name = os.path.splitext(uploaded_file.name)[0]
-		ext = os.path.splitext(uploaded_file.name)[1]
-		file_name += ext
-		loc, type = None, None
-		if ext == PDF_EXT:
-			loc, type, res_mes = PDF_TEMPL_DIR, PDF, 'PDF File uploaded';
-		elif ext == DOC_EXT:
-			loc, type, res_mes = DOC_TEMPL_DIR, DOC, 'DOC File uploaded';
-		elif ext == TXT_EXT:
-			loc, type, res_mes = TXT_TEMPL_DIR, TXT, 'TXT File uploaded';
-		elif ext == EXEL_EXT:
-			loc, type, res_mes = EXEL_TEMPL_DIR, EXEL, 'Exel File uploaded';
-		else:
-			view_params['test_param'] = 'No file extentions!'
-			return HttpResponseRedirect('/clients/');
-		view_params['test_param'] = res_mes
-		FileSystemStorage(location=loc).save(file_name, uploaded_file)
-		Document(name=tmp_name, file_name=file_name, file_type=type).save()
-	return HttpResponseRedirect('/clients/');
-
 #https://github.com/csev/dj4e-samples/blob/master/form/views.py
 @login_required
 def edit_client_page(request, client_id):
 	client_inst = Client.objects.get(id=client_id);
-	passportForm = PassportForm() if not hasattr(client_inst, 'passport') else PassportForm(instance=client_inst.passport);
+	clientHasPassport = hasattr(client_inst, 'passport')
+	clientHasNotJob = hasattr(client_inst, 'jobinfo')
+	print('clientHasNotJob: '+ str(clientHasNotJob))
+	passportForm = getForm(clientHasPassport, 'PassportForm', client_inst, 'passport')
+	regAddressForm = getRegAddressForm(clientHasPassport, client_inst)
+	jobInfoForm = getFormByForeignKey(client_inst, 'JobInfo', 'JobInfoForm')
+
 	return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 												  'client_f': ClientForm(instance=client_inst),
 												  'passport_f': passportForm,
-												  'registration_addr_f': AddressForm(),
+												  'registration_addr_f': regAddressForm,
 												  'job_addr_f': AddressForm(),
-												  'job_f': JobInfoForm(),
+												  'job_f': jobInfoForm,
 												  'bankdetail_f': BankDetailForm(),
 												  'approver_f': ApproverForm(),
 												  'credit_f': IpotekaForm(),
@@ -274,22 +171,19 @@ def edit_client_page(request, client_id):
 
 @login_required
 def generateReport(request):
-	print(request)
-	client_view_params = request.body.decode('utf-8')
-	json_view_params = json.loads(client_view_params)
-	client_ids = json_view_params['checkedClients']
-	doc_ids = json_view_params['checkedDocs']
-	# print("client_ids: " + str(client_ids))
-	# print("doc_ids: " + str(doc_ids))
+	client_ids, doc_ids = getCheckedItems(request)
 	for client_id in client_ids:
 		for doc_id in doc_ids:
 			writeClientDoc(client_id, doc_id)
 	return HttpResponseRedirect('/clients/');
 
-
-@login_required
-def addTemplate(request):
-	return render(request, 'addTemplate.html', {'doc_f': modelformset_factory(Client, fields='__all__')})
+def deleteChecked(request):
+	client_ids, doc_ids = getCheckedItems(request)
+	clients = Client.objects.filter(id__in=client_ids)
+	clients.delete()
+	docs = Document.objects.filter(id__in=doc_ids)
+	docs.delete()
+	return HttpResponseRedirect('/clients/');
 
 
 def login(request):

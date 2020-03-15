@@ -31,7 +31,7 @@ urlpatterns = [
     path('clientForm/', clientForm),
     path('edit_client_page/<int:client_id>', edit_client_page),
     path('addClient/', addClient),
-    path('deleteClient/<int:client_id>', deleteClient),
+    path('deleteChecked/', deleteChecked),
     path('generateReport/', generateReport),
     
 ]

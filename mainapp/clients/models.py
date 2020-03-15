@@ -95,44 +95,43 @@ class JobInfo(models.Model):
 		primary_key=False
 	)
 	is_general = models.CharField(choices=YES_NO_CHOISES, max_length=4,
-								  default=YES_NO_CHOISES[0])  # основное место работы(да, нет)
-	full_name = models.CharField(max_length=200, default="Пятёрочка")
+								  default=YES_NO_CHOISES[0], null = True)  # основное место работы(да, нет)
+	full_name = models.CharField(max_length=200, default="Пятёрочка", null = True)
 	address = models.ForeignKey(
 		Address,
-		on_delete=models.CASCADE
+		on_delete=models.CASCADE, null = True
 	)
-	inn_number = models.CharField(max_length=100, default='1345678911')  # Инн
+	inn_number = models.CharField(max_length=100, default='1345678911', null = True)  # Инн
 	bank_detail = models.ForeignKey(
 		BankDetail,
-		on_delete=models.CASCADE
+		on_delete=models.CASCADE, null = True
 	)
-	account_phone_number = models.CharField(max_length=12, default='89276976453')  # телефон бугалтерии
-	hr_phone_number = models.CharField(max_length=12, default='89276976453')  # телефон отдела кадров
-	work_phone_number = models.CharField(max_length=12, default='89276976453')  # рабочий телефон
-	age = models.CharField(max_length=3, default='10')  # возраст организации
+	account_phone_number = models.CharField(max_length=12, default='89276976453', null = True)  # телефон бугалтерии
+	hr_phone_number = models.CharField(max_length=12, default='89276976453', null = True)  # телефон отдела кадров
+	work_phone_number = models.CharField(max_length=12, default='89276976453', null = True)  # рабочий телефон
+	age = models.CharField(max_length=3, default='10', null = True)  # возраст организации
 	number_of_staff = models.CharField(choices=NUMBER_OF_STAFF_CHOISES, max_length=13,
-									   default=NUMBER_OF_STAFF_CHOISES[0])  # количество сотрудников (сделать селект)
+									   default=NUMBER_OF_STAFF_CHOISES[0], null = True)  # количество сотрудников (сделать селект)
 	work_experience = models.CharField(choices=WORK_EXPERIENCE_CHOISES, max_length=13,
-									   default=WORK_EXPERIENCE_CHOISES[0])  # стаж в данной организации
-	site = models.CharField(max_length=100, default='google.com')  # сайт организации
-	position = models.CharField(max_length=300, default='Инженер')  # должность
+									   default=WORK_EXPERIENCE_CHOISES[0], null = True)  # стаж в данной организации
+	site = models.CharField(max_length=100, default='google.com', null = True)  # сайт организации
+	position = models.CharField(max_length=300, default='Инженер', null = True)  # должность
 	position_category = models.CharField(choices=POSITION_CATEGORY_CHOISES, max_length=200,
-										 default=POSITION_CATEGORY_CHOISES[0])  # категория должности
+										 default=POSITION_CATEGORY_CHOISES[0], null = True)  # категория должности
 	salary = models.CharField(max_length=3, default='10')  # доход до налогооблажения
 	is_probation = models.CharField(choices=YES_NO_CHOISES, max_length=200,
-									default=YES_NO_CHOISES[0])  # испытательный срок(да, нет)
+									default=YES_NO_CHOISES[0], null = True)  # испытательный срок(да, нет)
 	kind_of_contract = models.CharField(choices=KINDS_OF_CONTRACT, max_length=200,
-										default=KINDS_OF_CONTRACT[
-											0])  # Вид договора (Понайму, бессрочный, по найму срочный)
-	contract_start = models.DateField(default="2000-01-01")  # дата заключения договора
-	contract_end = models.DateField(default="2000-01-01")  # дата окончания договора
+										default=KINDS_OF_CONTRACT[0], null = True)  # Вид договора (Понайму, бессрочный, по найму срочный)
+	contract_start = models.DateField(default="2000-01-01", null = True)  # дата заключения договора
+	contract_end = models.DateField(default="2000-01-01", null = True)  # дата окончания договора
 	incorparation_form = models.CharField(choices=INCORPARATION_FORM_CHOISES, max_length=200,
-										  default=INCORPARATION_FORM_CHOISES[0])  # организационно правовая форма
+										  default=INCORPARATION_FORM_CHOISES[0], null = True)  # организационно правовая форма
 	approver = models.ForeignKey(
 		Approver,
-		on_delete=models.CASCADE
+		on_delete=models.CASCADE, null = True
 	)
-	obligations = models.CharField(max_length=1000, default='Должностные обязанности')  # должностные обязаности
+	obligations = models.CharField(max_length=1000, default='Должностные обязанности', null = True)  # должностные обязаности
 
 
 class ManyValue(models.Model):  # сделать такую форму, которая будет суммироваться в другие поля
