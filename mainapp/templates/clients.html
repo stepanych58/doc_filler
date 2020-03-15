@@ -8,7 +8,7 @@
 
 
 <header>
-    <table>
+    <table align="right">
         <td>
             <form action="/addClient/" method="POST">{% csrf_token %}
                 <button class="btn" name="sbm" value="Add Client">Добавить
@@ -32,9 +32,10 @@
 
         <tr>
             <td>
+
+                <input class=form-control id=searchs-text onkeyup=tableSearch() placeholder="Поиск по клиентам"
+                       type=text>
                 <div id="scrolltable">
-                    <input class=form-control id=searchs-text onkeyup=tableSearch() placeholder="Поиск по клиентам"
-                           type=text>
                     <table id=info-table>
                         <tr>
                             <td>
@@ -56,9 +57,10 @@
                 </div>
             </td>
             <td>
+
+                <input class=form-control id=search-text onkeyup=tableSearch() placeholder="Поиск по анкетам"
+                       type=text>
                 <div id="scrolltable">
-                    <input class=form-control id=search-text onkeyup=tableSearch() placeholder="Поиск по анкетам"
-                           type=text>
                     <table id="info-table">
                         <tr>
 
