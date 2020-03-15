@@ -11,7 +11,6 @@ from .utils import *
 DELETE = 'Delete'
 GENERATE = 'Generete Doc'
 DELETE_GEN_DOC = 'Delete generated doc'
-
 view_params = {'all_clients': Client.objects.all(),
 			   'page_title': 'Clients page',
 			   'all_docs': Document.objects.all(),
@@ -44,8 +43,8 @@ def addClient(request):
 		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 												  'client_f': ClientForm(),
 												  'passport_f': PassportForm(),
-												  'registration_addr_f': AddressForm(),
-												  'job_addr_f': AddressForm(),
+												  'registration_addr_f': AddressForm(counter=0),
+												  'job_addr_f': AddressForm(counter=2),
 												  'job_f': JobInfoForm(),
 												  'bankdetail_f': BankDetailForm(),
 												  'approver_f': ApproverForm(),
@@ -73,8 +72,21 @@ def addClient(request):
 			passport = getPassport(post, сlient)
 		else:
 			print('passport not created')
-		jobInfo = updateOrCreateJobInfo(post, 0, сlient)
-
+		if sbm == 'Update':
+			print('Update')
+			# //get job, get address id, get address
+			jobInfo = updateOrCreateJobInfo(post, '', сlient)
+			print(jobInfo.address.id)
+			updateOrCreateJobAddressObj(post,2, jobInfo.address.id)
+		if 	sbm == 'Add':
+			print('Add')
+			jobAddress = updateOrCreateAddressObj(post=post, counterp=2, clientp=None)
+			jobInfo = updateOrCreateJobInfo(post, 0, сlient)
+			jobInfo.address = jobAddress
+			jobInfo.save()
+		# 	create address create job with address
+		#
+		# jobAddress = updateOrCreateJobAddressObj()
 	# snils = snils_factory(post)
 	# address = address_factory(post)
 	# post_address = post_address_factory(post)
@@ -143,12 +155,13 @@ def edit_client_page(request, client_id):
 	passportForm = getForm(clientHasPassport, 'PassportForm', client_inst, 'passport')
 	regAddressForm = getRegAddressForm(clientHasPassport, client_inst)
 	jobInfoForm = getFormByForeignKey(client_inst, 'JobInfo', 'JobInfoForm')
-
+	addressInst = jobInfoForm.instance.address
+	addressForm = AddressForm(instance=addressInst, counter=2)
 	return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 												  'client_f': ClientForm(instance=client_inst),
 												  'passport_f': passportForm,
 												  'registration_addr_f': regAddressForm,
-												  'job_addr_f': AddressForm(),
+												  'job_addr_f': addressForm,
 												  'job_f': jobInfoForm,
 												  'bankdetail_f': BankDetailForm(),
 												  'approver_f': ApproverForm(),

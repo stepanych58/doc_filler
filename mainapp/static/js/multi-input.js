@@ -16,7 +16,7 @@ class MultiInput extends HTMLElement {
       cursor: pointer;
       font-size: 18px;
       pointer-events: auto;
-      position: absolute;
+      position: unset;
       right: 5px;
       top: -1px;
     }
@@ -115,7 +115,7 @@ class MultiInput extends HTMLElement {
             // Insert as first option seems reasonable...
             var datalistElem = this.getElementsByClassName(this.datalistId)[0]
             datalistElem.appendChild(option)
-          // this._datalist.insertBefore(option, this._datalist.firstChild);
+            // this._datalist.insertBefore(option, this._datalist.firstChild);
             this._allowedValues.push(value);
         }
     }
@@ -149,9 +149,11 @@ class MultiInput extends HTMLElement {
             this._addItem(value);
         }
     }
-    orderItenms(){
+
+    orderItenms() {
 
     }
+
     // Public method for getting item values as an array.
     getValues() {
         const values = [];

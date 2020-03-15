@@ -4,6 +4,7 @@ from clients.models import *
 # Util methods
 from clients.widgets import ManyValueInput, Duration, MultipleSelect
 from django import forms
+from django.forms.utils import ErrorList
 from django.forms.widgets import Input, Select, DateInput, Textarea, EmailInput
 
 
@@ -51,6 +52,7 @@ class AbstractForm(forms.ModelForm):
 	hiddenValue = '';
 	useCounter = False
 
+
 	def getValue(self, value):
 		return getattr(self.instance, value) \
 			if len(self.initial) != 0 and value in self.initial \
@@ -97,6 +99,9 @@ class ClientForm(AbstractForm):
 class AddressForm(AbstractForm):
 	hiddenId = 'actualAddress_'
 	counter = 0
+	def __init__(self,instance=None, counter = ''):
+		super().__init__(instance=instance)
+		self.counter = counter;
 	class Meta:
 		model = Address
 		exclude = ('client',)
@@ -115,7 +120,7 @@ class AddressForm(AbstractForm):
 		widgets = aplyForAll(labels.keys(), simpleInput)
 
 
-class PassportForm(AbstractForm):
+class PassportForm(forms.ModelForm):
 	class Meta:
 		model = Passport
 		fields = ['serial', 'number', 'v_from', 'date_of', 'gender', 'birthday', 'code_of', ]
@@ -136,6 +141,10 @@ class PassportForm(AbstractForm):
 			'date_of': simpleDate,
 			'code_of': simpleInput,
 		}
+	def getValue(self, value):
+		return getattr(self.instance, value) \
+			if len(self.initial) != 0 and value in self.initial \
+			else '';
 
 	def printForm(self):
 		resStr = '<div class="row">'

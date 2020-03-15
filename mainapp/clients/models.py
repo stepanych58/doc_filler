@@ -45,7 +45,8 @@ class Address(models.Model):
 	#todo поле основание проживания - если это не почтовый адрес и не адрес регистрации
 	client = models.ForeignKey(
 		Client,
-		on_delete=models.CASCADE
+		on_delete=models.CASCADE,
+		null=True
 	)
 	index = models.CharField(max_length=6, default="446100", null = True)  # индекс
 	country = models.CharField(max_length=200, default="Россия", blank=True, null = True)  # страна

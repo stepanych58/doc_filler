@@ -71,7 +71,7 @@ class SberPoFormeBanka:
 			read['undefined_4'] = client.part_name
 			read['undefined_5'] = jobInfo.position
 			# Организация
-			# read['1_2'] = organization.full_name
+			read['1_2'] = jobInfo.full_name
 			# read['fill_11'] = organization_address.index
 			# read['fill_12'] = organization_address.city
 			# read['undefined_6'] = organization_address.street
