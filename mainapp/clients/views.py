@@ -44,8 +44,8 @@ def addClient(request):
 		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 												  'client_f': empty_client_form,
 												  'passport_f': empty_passp_form,
-												  'registration_addr_f': AddressForm(counter=0),
-												  'job_addr_f': AddressForm(counter=2),
+												  'registration_addr_f': AddressForm(initial=address_initial, counter=0),
+												  'job_addr_f': AddressForm(initial=address_initial, counter=2),
 												  'job_f': JobInfoForm(counter=0),
 												  'bankdetail_f': BankDetailForm(),
 												  'approver_f': ApproverForm(),
@@ -75,7 +75,10 @@ def addClient(request):
 			passport = updateOrCreateObjByClient(post, '', сlient, 'Passport')
 			updateOrCreateAddressObj(post, 0, passport.registration_address.id)
 			jobInfo = updateOrCreateObjByClient(post, 0, сlient, 'JobInfo')
-			updateOrCreateAddressObj(post, 2, jobInfo.address.id)
+			if jobInfo.address is not None:
+				updateOrCreateAddressObj(post, 2, jobInfo.address.id)
+			else:
+				print('address dosnt exist for ' + str(сlient.first_name) + ' ' +str(сlient.last_name))
 		if 	sbm == 'Add':
 			print('Add')
 			passport = getPassport(post, сlient)
