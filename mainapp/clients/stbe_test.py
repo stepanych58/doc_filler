@@ -1,63 +1,28 @@
-# class T1():
-#      r = '1234';
-#      def do(self):
-#           return 'do'
+# s = {'r':'1','r1':'2'}
+# s1 = s.keys()
+# print(s1)
+# print(s)
+# for s2 in s1:
+#      print(s2)
 
-# print("start")
-# # obj = T1();
-# # a1 = 'r' in dir(obj)
-# # print(a1)
-# # # print(dir(obj))
-# # print(obj.__dir__())
-# # print(obj.__dict__)
-# # print(obj.__getattribute__('r'))
-# # print("end")
+class S1():
+     s2='s2'
+     s3='s3'
+     s4='s4'
+     s5='s5'
+     def __init__(self,s4='s4p',s5='s5p'):
+          print('S1 __init__')
+          self.s4 = s4
+          self.s5 = s5
 
+class S2(S1):
+     s6='s6'
+     s7='s7'
 
-
-
-
-
-import os
-import sqlite3
-from mainapp.mainapp.settings import *
-
-db_path = os.path.join(BASE_DIR, "db.sqlite3")
-query = os.path.join(BASE_DIR, "queries.txt")
-print(query)
-f = open(query,'rb')
-conn = sqlite3.connect(db_path)  # или :memory: чтобы сохранить в RAM
-cursor = conn.cursor()
-# Создание таблицы
-
-    # cursor.executescript(queryfile.read())
-f = open (query , 'rb')
-for line in f:
-     insert_query = line.decode('utf8')
-     print(insert_query)
-     cursor.executescript(insert_query)
-f.close()
-
-
-
-
-
-
-
-
-
-
-
-# что то что было, неизвестно зачем
-# import os
-# from mainapp.mainapp.settings import *
-# from django.contrib.auth.models import User
-# for file in os.listdir(STATIC_DIR):
-#     if file:
-#         print(os.path.join(STATIC_DIR, file))
-
-
-# user = User.objects.create_user('myusername', 'myemail@crazymail.com', 'mypassword')
-# user.first_name = 'John'
-# user.last_name = 'Citizen'
-# user.save()
+     def __init__(self, s6='s6p'):
+          S1.__init__(self)
+          print('S2 __init__')
+          self.s6 = s6
+s2cl = S2('s6sss')
+print(s2cl.s6)
+print(s2cl.s4)

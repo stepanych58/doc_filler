@@ -1,6 +1,15 @@
-from clients.forms import *
-from clients.models import *
+from django.http import QueryDict
+
+from .forms import *
+from .models import *
 import json
+
+def initDefaults(post, counter='', keys={}):
+	defaults = {}
+	for key in keys:
+		defaults[key] = getPostValue(post,key, counter)
+	return defaults
+
 def getPostValue(post, param, counter=''):
 	return post.get(param + str(counter))
 
@@ -13,22 +22,44 @@ def updateOrCreateJobInfo(post, counterp, clientp):
 	)[0];
 	return jobinfo;
 
-def updateOrCreateAddressObj(post, counterp, clientp):
-	address = Address.objects.update_or_create(
-	    client = clientp,
-		defaults ={
-			'index': getPostValue(post, 'index', counterp),
-			'country': getPostValue(post, 'country', counterp),  # страна
-			'oblast': getPostValue(post, 'oblast', counterp),  # область/республика/край
-			'rayon': getPostValue(post, 'rayon', counterp),  # район
-			'city': getPostValue(post, 'city', counterp),  # город/поселок
-			'street': getPostValue(post, 'street', counterp),  # улица
-			'buildingNumber': getPostValue(post, 'buildingNumber', counterp),  # номер дома
-			'housing': getPostValue(post, 'housing', counterp),  # корпус
-			'structure': getPostValue(post, 'structure', counterp),  # строение
-			'flat': str(getPostValue(post, 'flat', counterp))  # квартира/офис
-		}
-	)[0]
+def updateOrCreatePassport(post, clientp):
+	defaults = initDefaults(post, '',PassportForm.Meta.labels.keys())
+	print('passport defaults:' + str(defaults))
+	print('passport post:' + str(post))
+	print('passport keys:' + str(PassportForm.Meta.labels.keys()))
+	passport = Passport.objects.update_or_create(
+		client = clientp,
+		defaults = defaults
+	)[0];
+	return passport;
+
+def updateOrCreateAddressObj(post, counterp = ''):
+	defaults = initDefaults(post, counterp, AddressForm.Meta.labels.keys())
+	print('Address defaults:' + str(defaults))
+	address = Address.objects.create(
+			index = getPostValue(post, 'index', counterp),
+			country =getPostValue(post, 'country', counterp),  # страна
+			oblast=getPostValue(post, 'oblast', counterp),  # область/республика/край
+			rayon=getPostValue(post, 'rayon', counterp),  # район
+			city= getPostValue(post, 'city', counterp),  # город/поселок
+			street= getPostValue(post, 'street', counterp),  # улица
+			buildingNumber= getPostValue(post, 'buildingNumber', counterp),  # номер дома
+			housing= getPostValue(post, 'housing', counterp),  # корпус
+			structure= getPostValue(post, 'structure', counterp),  # строение
+			flat= str(getPostValue(post, 'flat', counterp)));
+	# query_dict = QueryDict('', mutable=True)
+	# query_dict.update(defaults)
+	# addr = AddressForm(query_dict)
+	# if addr.is_valid():
+	# 	addr = addr.save()
+	# else:
+	# 	print(addr)
+	# 	print('addr isValid false ')
+	# 	print(addr.errors)
+	# address = Address.objects.update_or_create(
+	# 	id = addr.id,
+	# 	defaults =defaults)[0]
+	# print('created addrr ' + str(address.id))
 	return address;
 
 def updateOrCreateJobAddressObj(post, counterp, addressId):
@@ -59,7 +90,7 @@ def updateClient(post, client):
 def getPassport(post, сlient):
 	passport = PassportForm(post)
 	passport.instance.client = сlient
-	passport.instance.registration_address = updateOrCreateAddressObj(post=post, counterp=0, clientp=сlient)
+	passport.instance.registration_address = updateOrCreateAddressObj(post=post, counterp=0)
 	passport = passport.save()
 	return passport
 
@@ -80,21 +111,21 @@ def getRegAddressForm(clientHasPassport, client_inst):
 	if clientHasPassport:
 		passportHasAddress = hasattr(client_inst.passport, 'registration_address')
 		regAddressForm = getForm(passportHasAddress, 'AddressForm',
-									 client_inst.passport, 'registration_address')
+									 client_inst.passport, 'registration_address', counter=2)
 	return regAddressForm;
 
-def getForm(isExist, formClass, instance, attr):
-	return globals()[formClass](instance=getattr(instance, attr)) \
+def getForm(isExist, formClass, instance, attr, counter=''):
+	return globals()[formClass](instance=getattr(instance, attr), counter=counter) \
 		if isExist \
-		else globals()[formClass];
+		else globals()[formClass](counter=counter);
 
 def getObjectByClient(client_inst, modelClass):
 	related__filter = globals()[modelClass].objects.select_related().filter(client=client_inst)
 	return related__filter[0] if len(related__filter)>0 else None;
 
-def getFormByForeignKey(client_inst, modelClass, formClass, counter = ''):
+def getFormByForeignKey(client_inst, modelClass, formClass):
 	inst = getObjectByClient(client_inst, modelClass)
-	return globals()[formClass](counter=counter) if inst is None else  globals()[formClass](instance=inst);
+	return globals()[formClass]() if inst is None else  globals()[formClass](instance=inst);
 
 def getCheckedItems(request):
 	client_view_params = request.body.decode('utf-8')

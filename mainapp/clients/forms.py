@@ -1,11 +1,11 @@
 # import self as self
-from clients.choises import *
-from clients.models import *
-# Util methods
-from clients.widgets import ManyValueInput, Duration, MultipleSelect
 from django import forms
-from django.forms.utils import ErrorList
 from django.forms.widgets import Input, Select, DateInput, Textarea, EmailInput
+
+from .choises import *
+from .models import *
+# Util methods
+from .widgets import ManyValueInput, Duration, MultipleSelect
 
 
 def aplyForAll(field, widget):
@@ -52,6 +52,9 @@ class AbstractForm(forms.ModelForm):
 	hiddenValue = '';
 	useCounter = False
 
+	def __init__(self, data = {}, instance=None, counter = ''):
+		forms.ModelForm.__init__(self, data = data, instance=instance)
+		self.counter = counter;
 
 	def getValue(self, value):
 		return getattr(self.instance, value) \
@@ -99,9 +102,6 @@ class ClientForm(AbstractForm):
 class AddressForm(AbstractForm):
 	hiddenId = 'actualAddress_'
 	counter = 0
-	def __init__(self,instance=None, counter = ''):
-		super().__init__(instance=instance)
-		self.counter = counter;
 	class Meta:
 		model = Address
 		exclude = ('client',)
@@ -120,7 +120,7 @@ class AddressForm(AbstractForm):
 		widgets = aplyForAll(labels.keys(), simpleInput)
 
 
-class PassportForm(forms.ModelForm):
+class PassportForm(AbstractForm):
 	class Meta:
 		model = Passport
 		fields = ['serial', 'number', 'v_from', 'date_of', 'gender', 'birthday', 'code_of', ]

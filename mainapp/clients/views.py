@@ -27,6 +27,7 @@ def welcomePage(request):
 
 @login_required()
 def allClients(request):
+
 	view_params['all_clients'] = Client.objects.all()
 	view_params['all_docs'] = Document.objects.all()
 	view_params['all_clients_files'] = ClientsFile.objects.all()
@@ -43,8 +44,8 @@ def addClient(request):
 		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 												  'client_f': ClientForm(),
 												  'passport_f': PassportForm(),
-												  'registration_addr_f': AddressForm(counter=0),
-												  'job_addr_f': AddressForm(counter=2),
+												  'registration_addr_f': AddressForm(),
+												  'job_addr_f': AddressForm(),
 												  'job_f': JobInfoForm(),
 												  'bankdetail_f': BankDetailForm(),
 												  'approver_f': ApproverForm(),
@@ -68,19 +69,21 @@ def addClient(request):
 												  })
 	elif sbm == 'Add' or 'Update':
 		сlient = getClient(post)
-		if PassportForm(post).is_valid():
-			passport = getPassport(post, сlient)
-		else:
-			print('passport not created')
+		# if PassportForm(post).is_valid():
+		# 	passport = getPassport(post, сlient)
+		# else:
+		# 	print('passport not created')
 		if sbm == 'Update':
 			print('Update')
 			# //get job, get address id, get address
+			passport = updateOrCreatePassport(post, сlient)
+			updateOrCreateJobAddressObj(post, 0, passport.registration_address.id)
 			jobInfo = updateOrCreateJobInfo(post, '', сlient)
-			print(jobInfo.address.id)
-			updateOrCreateJobAddressObj(post,2, jobInfo.address.id)
+			updateOrCreateJobAddressObj(post, 2, jobInfo.address.id)
 		if 	sbm == 'Add':
 			print('Add')
-			jobAddress = updateOrCreateAddressObj(post=post, counterp=2, clientp=None)
+			passport = getPassport(post, сlient)
+			jobAddress = updateOrCreateAddressObj(post=post, counterp=2)
 			jobInfo = updateOrCreateJobInfo(post, 0, сlient)
 			jobInfo.address = jobAddress
 			jobInfo.save()
