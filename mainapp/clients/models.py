@@ -1,9 +1,11 @@
 # from django.contrib.postgres.fields import JSONField
+from datetime import datetime
+
 from django.db import models
 from mainapp.settings import *
 
 # PDF TEMPLATE DIR
-from clients.choises import *
+from .choises import *
 
 PDF_TEMPLATE_DIR = STATICFILES_DIRS[8]
 # PDF GENERETED RESULT DIR
@@ -52,7 +54,7 @@ class Address(models.Model):
 	housing = models.CharField(max_length=6, default="", blank=True, null = True)  # корпус
 	structure = models.CharField(max_length=6, default="", blank=True, null = True)  # строение
 	flat = models.CharField(max_length=6, default="25", blank=True, null = True)  # квартира/офис
-	basis_of_residence = models.CharField(max_length=6, default="", blank=True, null = True)  # основание проживания
+	basis_of_residence = models.CharField(max_length=6, default="Зарегистрирован", blank=True, null = True)  # основание проживания
 	is_post_addr = models.CharField(choices=YES_NO_CHOISES, max_length=50, default=YES_NO_CHOISES[1], blank=True, null = True)
 
 
@@ -78,10 +80,10 @@ class Passport(models.Model):
 
 
 class BankDetail(models.Model):
-	account_number = models.CharField(max_length=24, default='0000 0000 0000 0000 0000', blank=True)
-	correspondent_account_number = models.CharField(max_length=24, default='0000 0000 0000 0000 0000', blank=True)
-	bic = models.CharField(max_length=11, default='000 000 000', blank=True)
-	bank_name = models.CharField(max_length=1000, default='ОАО Сбербанк', blank=True)
+	account_number = models.CharField(max_length=24, default='0000 0000 0000 0000 0000', blank=True, null = True)
+	correspondent_account_number = models.CharField(max_length=24, default='0000 0000 0000 0000 0000', blank=True, null = True)
+	bic = models.CharField(max_length=11, default='000 000 000', blank=True, null = True)
+	bank_name = models.CharField(max_length=1000, default='ОАО Сбербанк', blank=True, null = True)
 
 class JobInfo(models.Model):
 	client = models.ForeignKey(
@@ -113,7 +115,7 @@ class JobInfo(models.Model):
 	position = models.CharField(max_length=300, default='Инженер', null = True)  # должность
 	position_category = models.CharField(choices=POSITION_CATEGORY_CHOISES, max_length=200,
 										 default=POSITION_CATEGORY_CHOISES[0], null = True)  # категория должности
-	salary = models.CharField(max_length=3, default='10')  # доход до налогооблажения
+	salary = models.CharField(max_length=3, default='10', null = True)  # доход до налогооблажения
 	is_probation = models.CharField(choices=YES_NO_CHOISES, max_length=200,
 									default=YES_NO_CHOISES[0], null = True)  # испытательный срок(да, нет)
 	kind_of_contract = models.CharField(choices=KINDS_OF_CONTRACT, max_length=200,

@@ -52,8 +52,8 @@ class AbstractForm(forms.ModelForm):
 	hiddenValue = '';
 	useCounter = False
 
-	def __init__(self, data = {}, instance=None, counter = ''):
-		forms.ModelForm.__init__(self, data = data, instance=instance)
+	def __init__(self, data = {}, initial=None, instance=None, counter = ''):
+		forms.ModelForm.__init__(self, data = data, initial= initial, instance=instance)
 		self.counter = counter;
 
 	def getValue(self, value):

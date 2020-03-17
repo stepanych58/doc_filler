@@ -42,11 +42,11 @@ def addClient(request):
 	sbm = post['sbm']
 	if sbm == 'Add Client':
 		return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
-												  'client_f': ClientForm(),
-												  'passport_f': PassportForm(),
-												  'registration_addr_f': AddressForm(),
-												  'job_addr_f': AddressForm(),
-												  'job_f': JobInfoForm(),
+												  'client_f': empty_client_form,
+												  'passport_f': empty_passp_form,
+												  'registration_addr_f': AddressForm(counter=0),
+												  'job_addr_f': AddressForm(counter=2),
+												  'job_f': JobInfoForm(counter=0),
 												  'bankdetail_f': BankDetailForm(),
 												  'approver_f': ApproverForm(),
 												  'credit_f': IpotekaForm(),
@@ -69,22 +69,18 @@ def addClient(request):
 												  })
 	elif sbm == 'Add' or 'Update':
 		сlient = getClient(post)
-		# if PassportForm(post).is_valid():
-		# 	passport = getPassport(post, сlient)
-		# else:
-		# 	print('passport not created')
 		if sbm == 'Update':
 			print('Update')
 			# //get job, get address id, get address
-			passport = updateOrCreatePassport(post, сlient)
-			updateOrCreateJobAddressObj(post, 0, passport.registration_address.id)
-			jobInfo = updateOrCreateJobInfo(post, '', сlient)
-			updateOrCreateJobAddressObj(post, 2, jobInfo.address.id)
+			passport = updateOrCreateObjByClient(post, '', сlient, 'Passport')
+			updateOrCreateAddressObj(post, 0, passport.registration_address.id)
+			jobInfo = updateOrCreateObjByClient(post, 0, сlient, 'JobInfo')
+			updateOrCreateAddressObj(post, 2, jobInfo.address.id)
 		if 	sbm == 'Add':
 			print('Add')
 			passport = getPassport(post, сlient)
-			jobAddress = updateOrCreateAddressObj(post=post, counterp=2)
-			jobInfo = updateOrCreateJobInfo(post, 0, сlient)
+			jobAddress = createAddressObj(post=post, counterp=2)
+			jobInfo = updateOrCreateObjByClient(post, 0, сlient, 'JobInfo')
 			jobInfo.address = jobAddress
 			jobInfo.save()
 		# 	create address create job with address
@@ -157,7 +153,7 @@ def edit_client_page(request, client_id):
 	print('clientHasNotJob: '+ str(clientHasNotJob))
 	passportForm = getForm(clientHasPassport, 'PassportForm', client_inst, 'passport')
 	regAddressForm = getRegAddressForm(clientHasPassport, client_inst)
-	jobInfoForm = getFormByForeignKey(client_inst, 'JobInfo', 'JobInfoForm')
+	jobInfoForm = getFormByForeignKey(client_inst, 'JobInfo', 0)
 	addressInst = jobInfoForm.instance.address
 	addressForm = AddressForm(instance=addressInst, counter=2)
 	return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
