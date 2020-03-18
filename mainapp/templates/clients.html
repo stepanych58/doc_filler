@@ -9,11 +9,14 @@
 
 <header>
     <table align="right">
+        <td><input type="button" class="btn" value="Check" onclick="checkUncheck('doc_checked');"></td>
         <td>
+
             <form action="/addClient/" method="POST">{% csrf_token %}
                 <button class="btn" name="sbm" value="Add Client">Добавить
                 </button>
             </form>
+
         </td>
         <td>
             <button class="btn" onclick="generateReport()">Сформировать</button>
@@ -38,12 +41,12 @@
                 <div id="scrolltable">
                     <table id=info-table>
                         <tr>
-                            <td>
+                            <td><input type="button" class="btn" value="Check" onclick="checkUncheck('cl_checked');">
                                 <ul>
                                     {% csrf_token %}
                                     {% for p_client in all_clients %}
                                         <li>
-                                            <input type="checkbox" name="cl_checked" value="{{ p_client.id }}">
+                                            <input type="checkbox" name="cl_checked" id="1" value="{{ p_client.id }}">
                                             <a href="/edit_client_page/{{ p_client.id }}">
                                                 {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
                                             </a>
@@ -61,6 +64,7 @@
                 <input class=form-control id=search-text onkeyup=tableSearch() placeholder="Поиск по анкетам"
                        type=text>
                 <div id="scrolltable">
+
                     <table id="info-table">
                         <tr>
 
@@ -69,7 +73,7 @@
                                     {% for doc in all_docs %}
                                         {% load staticfiles %}
                                         <li>
-                                            <input type="checkbox" name="doc_checked" value="{{ doc.id }}">
+                                            <input type="checkbox" name="doc_checked" id="1" value="{{ doc.id }}">
                                             <a href="{% static doc.get_path %}">{{ doc.name }}</a>
                                         </li>
                                     {% endfor %}

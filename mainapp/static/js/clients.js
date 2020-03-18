@@ -275,4 +275,41 @@ function tableSearch() {
     }
 }
 
+function check(name)
+{
+ var check=document.getElementsByName(name);
+ for(var i=0;i<check.length;i++)
+ {
+  if(check[i].type=='checkbox')
+  {
+   check[i].checked=true;
+  }
+ }
+}
 
+
+function uncheck(name)
+{
+ var uncheck=document.getElementsByName(name);
+ for(var i=0;i<uncheck.length;i++)
+ {
+  if(uncheck[i].type=='checkbox')
+  {
+   uncheck[i].checked=false;
+  }
+ }
+}
+
+function checkUncheck(name) {
+    var chk=document.getElementsByName(name)
+    if (chk.id=='1'){
+        uncheck(name)
+        chk.id = '2'
+    }
+    else{
+        check(name)
+        chk.id = '1'
+    }
+
+
+}
