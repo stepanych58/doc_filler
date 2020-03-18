@@ -16,6 +16,18 @@ passport_initial = {'serial': '0000',
 				  'code_of': '644-066',
 				  }
 
+address_initial = {
+			'index': '446100',
+			'country': 'Россия',
+			'city': 'Самара',
+			'street': 'Николая-Панова',
+			'buildingNumber': '64',
+			'housing': '2',
+			'structure': '1',
+			'flat': '125',
+			'oblast': 'Самарская',
+			'rayon': 'Промышленный',}
+
 empty_client_form = ClientForm(initial=client_initial)
 empty_passp_form = PassportForm(initial=passport_initial)
 
@@ -23,31 +35,40 @@ empty_passp_form = PassportForm(initial=passport_initial)
 def initDefaults(post, counter='', keys={}):
 	print('initDefaults start counter : ' + str(counter))
 	print(post)
-	defaults = {}
+	defaults = {}; empty_fields = {}
 	for key in keys:
 		print(key)
-		print(getPostValue(post, key, counter))
-		defaults[key] = getPostValue(post, key, counter)
-	print('initDefaults end defaults : ' + str(defaults))
-	return defaults
+		postValue = getPostValue(post, key, counter)
+		print(postValue)
+		if postValue is None or len(postValue) == 0:
+			empty_fields[key] = None
+		else:
+			defaults[key] = postValue
+	# print('initDefaults end defaults : ' + str(defaults))
+	# print('initDefaults end empty_fields : ' + str(empty_fields))
+	return defaults, empty_fields
 
 def getPostValue(post, param, counter=''):
 	return post.get(str(param + str(counter)))
 
 def updateOrCreateObjByClient(post, counterp, clientp, modelClass):
-	defaults = initDefaults(post, counterp, globals()[str(modelClass + 'Form')].Meta.labels.keys())
-	print(post)
-	print(modelClass)
-	print(defaults)
-	jobinfo = globals()[modelClass].objects.update_or_create(
+	parsedPost = initDefaults(post, counterp, globals()[str(modelClass + 'Form')].Meta.labels.keys())
+	defaults = parsedPost[0]
+	# print(post)
+	# print(modelClass)
+	# print(defaults)
+	obj = globals()[modelClass].objects.update_or_create(
 		client = clientp,
-		# defaults = {'position': defaults['position']} if modelClass =='JobInfo' else defaults)[0];
 		defaults = defaults)[0];
-	return jobinfo;
+	emtyFields = parsedPost[1]
+	for key in emtyFields:
+		setattr(obj, key, emtyFields[key])
+	obj.save()
+	return obj;
 
 def createAddressObj(post, counterp = ''):
-	defaults = initDefaults(post, counterp, AddressForm.Meta.labels.keys())
-	print('Address defaults:' + str(defaults))
+	# defaults = initDefaults(post, counterp, AddressForm.Meta.labels.keys())
+	# print('Address defaults:' + str(defaults))
 	address = Address.objects.create(
 			index = getPostValue(post, 'index', counterp),
 			country =getPostValue(post, 'country', counterp),  # страна
@@ -122,7 +143,8 @@ def getObjectByClient(client_inst, modelClass):
 def getFormByForeignKey(client_inst, modelClass, counter=''):
 	inst = getObjectByClient(client_inst, modelClass)
 	formClass = modelClass + 'Form'
-	return globals()[formClass](counter=counter) if inst is None else  globals()[formClass](instance=inst);
+	return globals()[formClass](counter=counter) if inst is None else  globals()[formClass](instance=inst,
+																							counter=counter);
 
 def getCheckedItems(request):
 	client_view_params = request.body.decode('utf-8')

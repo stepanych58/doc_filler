@@ -1,34 +1,19 @@
-# s = {'r':'1','r1':'2'}
-# s1 = s.keys()
-# print(s1)
-# print(s)
-# for s2 in s1:
-#      print(s2)
+import os
+import sqlite3
+from mainapp.mainapp.settings import *
 
-class S1():
-     s2='s2'
-     s3='s3'
-     s4='s4'
-     s5='s5'
-     @staticmethod
-     def stMethod(t=4):
-          print('S1.stMethod  '  + str(t))
+db_path = os.path.join(BASE_DIR, "db.sqlite3")
+query = os.path.join(BASE_DIR, "queries.txt")
+print(query)
+f = open(query,'rb')
+conn = sqlite3.connect(db_path)  # или :memory: чтобы сохранить в RAM
+cursor = conn.cursor()
+# Создание таблицы
 
-     def __init__(self,s4='s4p',s5='s5p'):
-          print('S1 __init__')
-          self.s4 = s4
-          self.s5 = s5
-
-class S2(S1):
-     s6='s6'
-     s7='s7'
-
-     def __init__(self, s6='s6p'):
-          S1.__init__(self)
-          print('S2 __init__')
-          self.s6 = s6
-s2cl = S2('s6sss')
-
- # print(s2cl.s6)
-# print(s2cl.s4)
-globals()['S1'].stMethod(t=';')
+    # cursor.executescript(queryfile.read())
+f = open (query , 'rb')
+for line in f:
+     insert_query = line.decode('utf8')
+     print(insert_query)
+     cursor.executescript(insert_query)
+f.close()
