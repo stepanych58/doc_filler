@@ -57,7 +57,6 @@ class Address(models.Model):
 	basis_of_residence = models.CharField(max_length=6, default="Зарегистрирован", blank=True, null = True)  # основание проживания
 	is_post_addr = models.CharField(choices=YES_NO_CHOISES, max_length=50, default=YES_NO_CHOISES[1], blank=True, null = True)
 
-
 class Passport(models.Model):
 	client = models.OneToOneField(
 		Client,
@@ -96,6 +95,12 @@ class JobInfo(models.Model):
 	full_name = models.CharField(max_length=200, default="Пятёрочка", null = True)
 	address = models.ForeignKey(
 		Address,
+		related_name='address_rn',
+		on_delete=models.CASCADE, null = True
+	)
+	post_address = models.ForeignKey(
+		Address,
+		related_name='post_address_rn',
 		on_delete=models.CASCADE, null = True
 	)
 	inn_number = models.CharField(max_length=100, default='1345678911', null = True)  # Инн
@@ -134,12 +139,12 @@ class JobInfo(models.Model):
 class ManyValue(models.Model):  # сделать такую форму, которая будет суммироваться в другие поля
 	amount = models.CharField(max_length=15, default="1000", blank=True)
 	currency = models.CharField(max_length=20, choices=CURRANCY_CHOISES, default=CURRANCY_CHOISES[0])
-class MonthPayValue(models.Model):  # сделать такую форму, которая будет суммироваться в другие поля
-	amount = models.CharField(max_length=15, default="1000", blank=True)
-	currency = models.CharField(max_length=20, choices=CURRANCY_CHOISES, default=CURRANCY_CHOISES[0])
-class LeftoverValue(models.Model):  # сделать такую форму, которая будет суммироваться в другие поля
-	amount = models.CharField(max_length=15, default="1000", blank=True)
-	currency = models.CharField(max_length=20, choices=CURRANCY_CHOISES, default=CURRANCY_CHOISES[0])
+# class MonthPayValue(models.Model):  # сделать такую форму, которая будет суммироваться в другие поля
+# 	amount = models.CharField(max_length=15, default="1000", blank=True)
+# 	currency = models.CharField(max_length=20, choices=CURRANCY_CHOISES, default=CURRANCY_CHOISES[0])
+# class LeftoverValue(models.Model):  # сделать такую форму, которая будет суммироваться в другие поля
+# 	amount = models.CharField(max_length=15, default="1000", blank=True)
+# 	currency = models.CharField(max_length=20, choices=CURRANCY_CHOISES, default=CURRANCY_CHOISES[0])
 
 class ClientCredit(models.Model):
 	client = models.ForeignKey(
@@ -162,16 +167,19 @@ class ClientCredit(models.Model):
 	value = models.ForeignKey(
 		ManyValue,
 		on_delete=models.CASCADE,
+		related_name = 'value_rn',
 		primary_key=False
 	)  # сумма кредита
 	month_pay = models.ForeignKey(
-		MonthPayValue,
+		ManyValue,
 		on_delete=models.CASCADE,
+		related_name = 'month_pay_rn',
 		primary_key=False
 	)  # месячный платеж
 	leftover = models.ForeignKey(
-		LeftoverValue,
+		ManyValue,
 		on_delete=models.CASCADE,
+		related_name = 'leftover_rn',
 		primary_key=False
 	)  # остаток
 

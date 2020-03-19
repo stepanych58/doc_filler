@@ -47,6 +47,7 @@ def writeClientDoc(client_id, doc_id):
 class SberPoFormeBanka:
 	def write(client, anketa):
 		jobInfo = getObjectByClient(client, 'JobInfo');
+		jobaddress = jobInfo.address
 		# organization = client.organizationinfo
 		# organization_address = organization.address
 		# organization_postaddress = organization.post_address
@@ -72,28 +73,28 @@ class SberPoFormeBanka:
 			read['undefined_5'] = jobInfo.position
 			# Организация
 			read['1_2'] = jobInfo.full_name
-			# read['fill_11'] = organization_address.index
-			# read['fill_12'] = organization_address.city
-			# read['undefined_6'] = organization_address.street
-			# read['fill_14'] = organization_address.buildingNumber
-			# read['fill_15'] = organization_address.housing
-			# read['fill_16'] = organization_address.structure
-			# read['fill_17'] = organization_address.flat
-			# read['fill_25'] = organization.accountent_number
-			# read['undefined_8'] = organization.hr_number
-			# read['undefined_9'] = organization.inn_number
+			read['fill_11'] = jobaddress.index
+			read['fill_12'] = jobaddress.city
+			read['undefined_6'] = jobaddress.street
+			read['fill_14'] = jobaddress.buildingNumber
+			read['fill_15'] = jobaddress.housing
+			read['fill_16'] = jobaddress.structure
+			read['fill_17'] = jobaddress.flat
+			read['fill_25'] = jobaddress.accountent_number
+			read['undefined_8'] = jobInfo.hr_number
+			read['undefined_9'] = jobInfo.inn_number
 			# read['fill_28'] = organization_bank_detail.account_number
 			# read['fill_29'] = organization_bank_detail.correspondent_account_number
 			# read['fill_30'] = organization_bank_detail.bic
 			# read['fill_31'] = organization_bank_detail.bank_name
 			# почтовый адрес
-			# read['fill_18'] = organization_postaddress.index
-			# read['fill_19'] = organization_postaddress.city
-			# read['undefined_7'] = organization_postaddress.street
-			# read['fill_21'] = organization_postaddress.buildingNumber
-			# read['fill_22'] = organization_postaddress.housing
-			# read['fill_23'] = organization_postaddress.structure
-			# read['fill_24'] = organization_postaddress.flat
+			read['fill_18'] = jobaddress.index
+			read['fill_19'] = jobaddress.city
+			read['undefined_7'] = jobaddress.street
+			read['fill_21'] = jobaddress.buildingNumber
+			read['fill_22'] = jobaddress.housing
+			read['fill_23'] = jobaddress.structure
+			read['fill_24'] = jobaddress.flat
 		outpt = open(path_out_file, 'wb')
 		write = PdfFileWriter()
 		set_need_appearances_writer(write)
