@@ -1,15 +1,16 @@
 <head>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="/static/css/simple.css">
+    <link rel="stylesheet" href="/static/css/checkbox.css">
     <script src="/static/js/clients.js"></script>
 
 </head>
 <body>
 
+<div id="head">
+    <div align="right"><a class="exit" href="/auth/logout">Выйти ({{ username }})</a></div>
 
-<header>
-    <table align="right">
-        <td><input type="button" class="btn" value="Check" onclick="checkUncheck('doc_checked');"></td>
+    <table class="mytable" align="center">
         <td>
 
             <form action="/addClient/" method="POST">{% csrf_token %}
@@ -28,66 +29,79 @@
 
         </tr>
     </table>
-</header>
+</div>
 
-<form action="/clientForm/" method="POST" style="display:inline;">
-    <table>
+<div class="py-5 text-center">
+    <div id="content"></div>
+    <div id="content"></div>
+    <form action="/clientForm/" method="POST" style="display:inline;">
+        <table class="mytable">
+            <tr>
+                <td class="table"><input type="button" class="btn" value="Выделить всех"
+                                         onclick="checkUncheck('cl_checked');"></td>
+                <td class="table"><input type="button" class="btn" value="Выделить все"
+                                         onclick="checkUncheck('doc_checked');"></td>
+            </tr>
+            <tr>
 
-        <tr>
-            <td>
+                <td>
 
-                <input class=form-control id=searchs-text onkeyup=tableSearch() placeholder="Поиск по клиентам"
-                       type=text>
-                <div id="scrolltable">
-                    <table id=info-table>
-                        <tr>
-                            <td><input type="button" class="btn" value="Check" onclick="checkUncheck('cl_checked');">
-                                <ul>
-                                    {% csrf_token %}
-                                    {% for p_client in all_clients %}
-                                        <li>
-                                            <input type="checkbox" name="cl_checked" id="1" value="{{ p_client.id }}">
-                                            <a href="/edit_client_page/{{ p_client.id }}">
-                                                {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
-                                            </a>
-                                        </li>
+                    <input class=form-control id=searchs-text onkeyup=tableSearch() placeholder="Поиск по клиентам"
+                           type=text>
+                    <div id="scrolltable">
+                        <table class="mytable" id=info-table>
+                            <tr>
+                                <td class="mytd">
+                                    <ul>
+                                        {% csrf_token %}
+                                        {% for p_client in all_clients %}
+                                            <li>
+                                                <input type="checkbox" name="cl_checked" id="1"
+                                                       value="{{ p_client.id }}">
+                                                <a href="/edit_client_page/{{ p_client.id }}">
+                                                    {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
+                                                </a>
+                                            </li>
 
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </td>
-            <td>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+                <td>
 
-                <input class=form-control id=search-text onkeyup=tableSearch() placeholder="Поиск по анкетам"
-                       type=text>
-                <div id="scrolltable">
+                    <input class=form-control id=search-text onkeyup=tableSearch() placeholder="Поиск по анкетам"
+                           type=text>
+                    <div id="scrolltable">
 
-                    <table id="info-table">
-                        <tr>
+                        <table id="info-table" class="mytable">
+                            <tr>
 
-                            <td>
-                                <ul>
-                                    {% for doc in all_docs %}
-                                        {% load staticfiles %}
-                                        <li>
-                                            <input type="checkbox" name="doc_checked" id="1" value="{{ doc.id }}">
-                                            <a href="{% static doc.get_path %}">{{ doc.name }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
+                                <td class="mytd">
+                                    <ul>
+                                        {% for doc in all_docs %}
+                                            {% load staticfiles %}
+                                            <li>
 
-                        </tr>
-                    </table>
-                </div>
-            </td>
-        </tr>
-    </table>
-</form>
+                                                <input type="checkbox" name="doc_checked" id="1" value="{{ doc.id }}">
+                                                <a href="{% static doc.get_path %}">{{ doc.name }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
 
 </body>
+
+
 
 </html>

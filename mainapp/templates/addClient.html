@@ -1,4 +1,4 @@
-<head xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     <link rel="stylesheet" href="/static/css/bootstrap.css">
     <link rel="stylesheet" href="/static/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="/static/css/simple.css">
@@ -6,18 +6,18 @@
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     {# для боковой шапки#}
     {#    <meta name="viewport" content="width=device-width, initial-scale=1">#}
-    {% load staticfiles %}
     <script class="cssdeck" src="/static/js/jquery-2.1.3.min.js"></script>
-    <script src="{% static 'js/clients.js' %}"></script>
+    <script src='/static/js/clients.js'></script>
 
     <title> Добавить клиента</title>
 </head>
+
 <body>
-
-
 <form action="/addClient/" method="POST">{% csrf_token %}
-    <header>
-        <table align="right">
+
+    <div id="head">
+        <div align="right"><a class="exit" href="/auth/logout">Выйти ({{ username }})</a></div>
+        <table class="mytable">
             <tr>
                 <td>
                     <button class="btn" name="sbm" value="{{ save_btn }}">
@@ -29,18 +29,18 @@
                     </button>
                 </td>
                 <td>
+
                     <a href="/clients/">
                         <button class="btn">Назад</button>
                     </a>
-                </td>
-                <td>
-                    <button class="btn" name="sbm"><a href="/auth/logout">Выйти ({{ username }})</a></button>
-                </td>
 
-
+                </td>
             </tr>
         </table>
-    </header>
+
+    </div>
+
+
     {% csrf_token %}
 
     <nav>
@@ -59,105 +59,107 @@
 
     <script src="/static/js/scroll.js"></script>
 
-    </div class="container">
+
     <div class="py-5 text-center">
         {#    <img class="d-block mx-auto mb-4" src="{{ site.baseurl }}/docs/{{ site.docs_version }}/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">#}
+        {##}
+        {#    </div>#}
+        <div id="content"></div>
+        <div id="content"></div>
+        <div class="panel">
+            <div class="row">
+                <div class="col-md-10 order-md-1">
 
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 order-md-1">
-
-                <section id="name"><h3>ФИО</h3></section>
-                {{ client_f.printForm |safe }}
-                <section id="passport"><h3 class="mb-3">Паспортные данные</h3></section>
-                {{ passport_f.printForm |safe }}
-                <h6 class="mb-3">Aдрес регистрации</h6>
-                {{ registration_addr_f.printForm |safe }}
-                <br>
-                <h6> Адрес регистрации совпадает с адресом проживания?</h6>
-                <div class="col-md-2">
-                    <select id="select_id" class="form-control" maxlength="2" onChange="showFactAddressForm(this);">
-                        <option value="1">Да</option>
-                        <option value="2">Нет</option>
-                    </select>
-                </div>
-                <div id="actualAddress">
-                    {{ registration_addr_f.printHiddenForm |safe }}
-                </div>
-                <br>
-                <section id="snils"><h3 class="mb-3">СНИЛС</h3></section>
-                <div class="row">
-                    <div class="col-md-4">
-                        {{ additional_client_info_f.snils_number }}
+                    <section id="name"><h3>ФИО</h3></section>
+                    {{ client_f.printForm |safe }}
+                    <section id="passport"><h3 class="mb-3">Паспортные данные</h3></section>
+                    {{ passport_f.printForm |safe }}
+                    <h6 class="mb-3">Aдрес регистрации</h6>
+                    {{ registration_addr_f.printForm |safe }}
+                    <br>
+                    <h6> Адрес регистрации совпадает с адресом проживания?</h6>
+                    <div class="col-md-2">
+                        <select id="select_id" class="form-control" maxlength="2" onChange="showFactAddressForm(this);">
+                            <option value="1">Да</option>
+                            <option value="2">Нет</option>
+                        </select>
                     </div>
-                </div>
-
-                <section id="jobinfo"><h4 class="mb-3">Информация о работе</h4></section>
-                {{ job_f.printForm |safe }}
-                <br>
-                <h6>Информация о человеке который подтвердит инфо о работе</h6>
-                {{ approver_f.printForm |safe }}
-                <br>
-                <h6>Адрес места работы</h6>
-                {{ job_addr_f.printForm |safe }}
-                <br>
-                <h6>Банковские реквизиты работодателя</h6>
-                {{ bankdetail_f.printForm |safe }}
-                <div style="display: inline">
-                    <h6>Информация о кредитах </h6>
-                    {{ credit_f.printForm |safe }}
-                </div>
-                <div style="display: inline">
-                    <h6>Информация о кредитах </h6>
-                    {{ credit_f.printForm |safe }}
-                </div>
-                <button type="button" class="btn btn-outline-primary" onclick="cloneCreditForm(this)">+</button>
-                <br>
-                <br>
-                <h6>Дополнительная информация о клиенте</h6>
-                <h6>Информация о родственниках</h6>
-                <section id="children"><h3>Дети</h3></section>
-                <button type="button" onclick="addClientChildForm()" class="btn btn-outline-primary">+</button>
-                <div id="childs_id"></div>
-                <br>
-                <section id="revenue"><h3>Сведения о доходах заявителя</h3></section>
-                <p>Недвижимость cдаваемая в аренду</p>
-                <button type="button" onclick="rentalPropertyForm()" class="btn btn-outline-primary">+</button>
-                {{ rental_f.printForm |safe }}<br/>
-                <p>Пенсия</p>
-                {{ pension_f.printForm |safe }}<br/>
-                <br/>
-                <section id="costs"><h3>Сведения о расходах заявителя</h3></section>
-                <p>Алименты</p>
-                <div class="row">
-                    <div class="col-md-4">
-                        {{ additional_client_info_f.aliments }}
+                    <div id="actualAddress">
+                        {{ registration_addr_f.printHiddenForm |safe }}
                     </div>
+                    <br>
+                    <section id="snils"><h3 class="mb-3">СНИЛС</h3></section>
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{ additional_client_info_f.snils_number }}
+                        </div>
+                    </div>
+
+                    <section id="jobinfo"><h4 class="mb-3">Информация о работе</h4></section>
+                    {{ job_f.printForm |safe }}
+                    <br>
+                    <h6>Информация о человеке который подтвердит инфо о работе</h6>
+                    {{ approver_f.printForm |safe }}
+                    <br>
+                    <h6>Адрес места работы</h6>
+                    {{ job_addr_f.printForm |safe }}
+                    <br>
+                    <h6>Банковские реквизиты работодателя</h6>
+                    {{ bankdetail_f.printForm |safe }}
+                    <div style="display: inline">
+                        <h6>Информация о кредитах </h6>
+                        {{ credit_f.printForm |safe }}
+                    </div>
+                    <div style="display: inline">
+                        <h6>Информация о кредитах </h6>
+                        {{ credit_f.printForm |safe }}
+                    </div>
+                    <button type="button" class="btn btn-outline-primary" onclick="cloneCreditForm(this)">+</button>
+                    <br>
+                    <br>
+                    <h6>Дополнительная информация о клиенте</h6>
+                    <h6>Информация о родственниках</h6>
+                    <section id="children"><h3>Дети</h3></section>
+                    <button type="button" onclick="addClientChildForm()" class="btn btn-outline-primary">+</button>
+                    <div id="childs_id"></div>
+                    <br>
+                    <section id="revenue"><h3>Сведения о доходах заявителя</h3></section>
+                    <p>Недвижимость cдаваемая в аренду</p>
+                    <button type="button" onclick="rentalPropertyForm()" class="btn btn-outline-primary">+</button>
+                    {{ rental_f.printForm |safe }}<br/>
+                    <p>Пенсия</p>
+                    {{ pension_f.printForm |safe }}<br/>
+                    <br/>
+                    <section id="costs"><h3>Сведения о расходах заявителя</h3></section>
+                    <p>Алименты</p>
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{ additional_client_info_f.aliments }}
+                        </div>
+                    </div>
+                    <section id="property"><h3>Сведения имуществе заявителя</h3></section>
+                    <i>Раздел не заполняется, если недвижимость планируется к продаже или находится в залоге</i>
+                    <p>Недвижимое имущество</p>
+                    {{ imm_prop_f.printForm |safe }}
+                    <p>Движимое имущество</p>
+                    {{ car_f.printForm |safe }}
+                    <br/>
+                    <input type="submit" name="sbm" class="btn btn-outline-primary" value="{{ save_btn }}">
                 </div>
-                <section id="property"><h3>Сведения имуществе заявителя</h3></section>
-                <i>Раздел не заполняется, если недвижимость планируется к продаже или находится в залоге</i>
-                <p>Недвижимое имущество</p>
-                {{ imm_prop_f.printForm |safe }}
-                <p>Движимое имущество</p>
-                {{ car_f.printForm |safe }}
-                <br/>
-                <input type="submit" name="sbm" class="btn btn-outline-primary" value="{{ save_btn }}">
             </div>
-        </div>
 
-    </div>
-    <script src="{% static 'js/multi-input.js' %}"></script>
+        </div>
+        <script src="/static/js/multi-input.js"></script>
 </form>
 </body>
 
-<footer class="my-5 pt-5 text-muted text-center text-small">
-    <ul class="list-inline">
-        <li class="list-inline-item"><a href="#">Privacy</a></li>
-        <li class="list-inline-item"><a href="#">Terms</a></li>
-        <li class="list-inline-item"><a href="#">Support</a></li>
-    </ul>
-</footer>
+{#<footer class="my-5 pt-5 text-muted text-center text-small">#}
+{#    <ul class="list-inline">#}
+{#        <li class="list-inline-item"><a href="#">Privacy</a></li>#}
+{#        <li class="list-inline-item"><a href="#">Terms</a></li>#}
+{#        <li class="list-inline-item"><a href="#">Support</a></li>#}
+{#    </ul>#}
+{#</footer>#}
 </div>
 
 {#<div class="container">#}
@@ -314,6 +316,6 @@
 {#    </div>#}
 {##}
 {#</div>#}
-
+</div>
 
 <script src="/static/js/scroll.js"></script>
