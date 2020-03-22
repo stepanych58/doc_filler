@@ -47,7 +47,10 @@ def writeClientDoc(client_id, doc_id):
 class SberPoFormeBanka:
 	def write(client, anketa):
 		jobInfo = getObjectByClient(client, 'JobInfo');
-		jobaddress = jobInfo.address
+		# print(jobInfo.__dict__)
+		jobaddress = Address.objects.get(id=jobInfo.address_id)
+		bankdetail = BankDetail.objects.get(id=jobInfo.bank_detail_id)
+
 		# organization = client.organizationinfo
 		# organization_address = organization.address
 		# organization_postaddress = organization.post_address
@@ -67,12 +70,17 @@ class SberPoFormeBanka:
 		read = reads.getFormTextFields()
 		Page = reads.getPage(0)
 		for i, value in Page.items():
+			print(read)
+			read['undefined_2']=''
+			read['undefined_3']=''
+			read['20']=''
 			read['1'] = client.last_name
 			read['2'] = client.first_name
 			read['undefined_4'] = client.part_name
 			read['undefined_5'] = jobInfo.position
 			# Организация
 			read['1_2'] = jobInfo.full_name
+			read['2_2'] = '' #продолжение поля 1_2
 			read['fill_11'] = jobaddress.index
 			read['fill_12'] = jobaddress.city
 			read['undefined_6'] = jobaddress.street
@@ -80,13 +88,15 @@ class SberPoFormeBanka:
 			read['fill_15'] = jobaddress.housing
 			read['fill_16'] = jobaddress.structure
 			read['fill_17'] = jobaddress.flat
-			read['fill_25'] = jobaddress.accountent_number
-			read['undefined_8'] = jobInfo.hr_number
+			read['fill_25'] = jobInfo.account_phone_number
+			read['undefined_8'] = jobInfo.hr_phone_number
 			read['undefined_9'] = jobInfo.inn_number
-			# read['fill_28'] = organization_bank_detail.account_number
-			# read['fill_29'] = organization_bank_detail.correspondent_account_number
-			# read['fill_30'] = organization_bank_detail.bic
-			# read['fill_31'] = organization_bank_detail.bank_name
+			read['fill_28'] = bankdetail.account_number
+			read['fill_29'] = bankdetail.correspondent_account_number
+			read['fill_30'] = bankdetail.bic
+			read['fill_31'] = bankdetail.bank_name
+			read['fill_36'] = 'fill_36' #прописью среднемесячный доход за последние N месяцев
+			read['fill_41'] = 'fill_41' #Достоверность сведений в справке подтверждаю: Должность
 			# почтовый адрес
 			read['fill_18'] = jobaddress.index
 			read['fill_19'] = jobaddress.city

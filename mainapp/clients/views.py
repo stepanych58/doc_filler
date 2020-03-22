@@ -46,6 +46,7 @@ def addClient(request):
 												  'passport_f': empty_passp_form,
 												  'registration_addr_f': AddressForm(initial=address_initial, counter=0),
 												  'job_addr_f': AddressForm(initial=address_initial, counter=2),
+												  'job_post_addr_f': AddressForm(initial=address_initial, counter=3),
 												  'job_f': JobInfoForm(counter=0),
 												  'bankdetail_f': BankDetailForm(),
 												  'approver_f': ApproverForm(),
@@ -57,74 +58,56 @@ def addClient(request):
 												  'car_f': AutoForm(),
 												  'p_table': 'addClient',
 												  'username': username,
-												  # 's_f': StbeTestForm(),
-												  # 'credit_f': credits_factory,
-												  # 'client_f': client_form_set,
-												  # 'address_f': address_factory,
-												  # 'postaddress_f': post_address_factory,
-												  # 'bankdetail_f': bank_detail_factory,
-												  # 'orginfo_f': organization_factory,
 												  'additional_client_info_f': AdditionalClientInfoForm(),
 												  'save_btn': 'Add'
 												  })
 	elif sbm == 'Add' or 'Update':
 		сlient = getClient(post)
+		jobInfo = updateOrCreateObjByClient(post, 0, сlient, 'JobInfo')
+		credit = updateOrCreateObjByClient(post, '', сlient, 'Ipoteka')
+		additionalInfo = updateOrCreateObjByClient(post, '', сlient, 'AdditionalClientInfo')
+
 		if sbm == 'Update':
 			print('Update')
 			# //get job, get address id, get address
 			passport = updateOrCreateObjByClient(post, '', сlient, 'Passport')
-			updateOrCreateAddressObj(post, 0, passport.registration_address.id)
-			jobInfo = updateOrCreateObjByClient(post, 0, сlient, 'JobInfo')
+			updateOrCreateById(post, 'Address', 0, passport.registration_address.id)
 			if jobInfo.address is not None:
-				updateOrCreateAddressObj(post, 2, jobInfo.address.id)
+				updateOrCreateById(post, 'Address', 2, jobInfo.address.id)
 			else:
 				print('address dosnt exist for ' + str(сlient.first_name) + ' ' +str(сlient.last_name))
+				jobInfo.address = createObj(post, 'Address', AddressForm.Meta.labels.keys(), counter=2)
+
+			if jobInfo.post_address is not None:
+				updateOrCreateById(post, 'Address', 3, jobInfo.post_address.id)
+			else:
+				print('post_address dosnt exist for ' + str(сlient.first_name) + ' ' +str(сlient.last_name))
+				jobInfo.post_address = createObj(post, 'Address', AddressForm.Meta.labels.keys(), counter=3)
+
+			if jobInfo.approver is not None:
+				updateOrCreateById(post, 'Approver', '', jobInfo.approver.id)
+			else:
+				print('approver dosnt exist for ' + str(сlient.first_name) + ' ' +str(сlient.last_name))
+				jobInfo.approver = createObj(post, 'Approver', ApproverForm.Meta.labels.keys())
+
+			if jobInfo.bank_detail is not None:
+				updateOrCreateById(post, 'BankDetail', '', jobInfo.bank_detail.id)
+			else:
+				print('bank detail doesnt exist for ' + str(сlient.first_name) + ' ' +str(сlient.last_name))
+				jobInfo.bank_detail = createObj(post, 'BankDetail', BankDetailForm.Meta.labels.keys())
+			jobInfo.save()
+
 		if 	sbm == 'Add':
 			print('Add')
 			passport = getPassport(post, сlient)
-			jobAddress = createAddressObj(post=post, counterp=2)
-			jobInfo = updateOrCreateObjByClient(post, 0, сlient, 'JobInfo')
+			jobAddress = createObj(post, 'Address', AddressForm.Meta.labels.keys(), counter=2)
+			jobPostAddress = createObj(post, 'Address', AddressForm.Meta.labels.keys(), counter=3)
 			jobInfo.address = jobAddress
+			jobInfo.post_address = jobPostAddress
+			jobInfo.approver = createObj(post, 'Approver', ApproverForm.Meta.labels.keys())
+			jobInfo.bank_detail = createObj(post, 'BankDetail', BankDetailForm.Meta.labels.keys())
 			jobInfo.save()
-		# 	create address create job with address
-		#
-		# jobAddress = updateOrCreateJobAddressObj()
-	# snils = snils_factory(post)
-	# address = address_factory(post)
-	# post_address = post_address_factory(post)
-	# organization = organization_factory(post)
-	# bank_detail = bank_detail_factory(post)
-	# additional_client_info = additional_client_info_factory(post)
-	# credit = credits_factory(post)
-	#
-	# if (client.is_valid() and passport.is_valid() and address.is_valid() and bank_detail.is_valid() and
-	# 		snils.is_valid() and organization.is_valid() and post_address.is_valid()):
-	# 	client = client.save()
-	# 	passport.instance.client = client
-	# 	passport.save()
-	# 	snils.instance.client = client
-	# 	todo dont add existing addresses in table
-	# 	address = address.save()
-	# 	post_address = post_address.save()
-	# 	bank_detail = bank_detail.save()
-	# 	organization.instance.client = client
-	# 	organization.instance.address = address
-	# 	organization.instance.bank_detail = bank_detail
-	# 	organization.instance.post_address = post_address
-	# 	organization.save()
-	# 	additional_client_info.instance.client = client
-	# 	credit.instance.client = client
-	# 	additional_client_info.save()
-	# 	credit.save()
-	# if additional_client_info.is_valid():
-	# 	additional_client_info.save()
-	# else:
-	# 	print(additional_client_info.errors)
-	# else:
-	# 	for errorform in (
-	# 			client, passport, snils, address, bank_detail, organization, additional_client_info,
-	# 			credit):
-	# 		print(errorform.errors)
+
 	return HttpResponseRedirect('/clients/');
 
 def clientForm(request):
@@ -150,39 +133,42 @@ def clientForm(request):
 #https://github.com/csev/dj4e-samples/blob/master/form/views.py
 @login_required
 def edit_client_page(request, client_id):
+	username = auth.get_user(request).username
 	client_inst = Client.objects.get(id=client_id);
 	clientHasPassport = hasattr(client_inst, 'passport')
-	clientHasNotJob = hasattr(client_inst, 'jobinfo')
-	print('clientHasNotJob: '+ str(clientHasNotJob))
+	# clientHasNotJob = hasattr(client_inst, 'jobinfo')
+	clientHasAdditionalInfo = hasattr(client_inst, 'additionalclientinfo')
 	passportForm = getForm(clientHasPassport, 'PassportForm', client_inst, 'passport')
 	regAddressForm = getRegAddressForm(clientHasPassport, client_inst)
 	jobInfoForm = getFormByForeignKey(client_inst, 'JobInfo', 0)
 	addressInst = jobInfoForm.instance.address
+	organizationPostAddr = jobInfoForm.instance.post_address
+	organizationPostAddrForm = AddressForm(instance=organizationPostAddr, counter=3)
 	addressForm = AddressForm(instance=addressInst, counter=2)
+	additionalInfoForm = getFormWithoutCounter(clientHasAdditionalInfo, 'AdditionalClientInfoForm',
+								 client_inst, 'additionalclientinfo')
+	approverForm = ApproverForm(instance=jobInfoForm.instance.approver)
+	bankDetailForm = BankDetailForm(instance=jobInfoForm.instance.bank_detail)
+
 	return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 												  'client_f': ClientForm(instance=client_inst),
 												  'passport_f': passportForm,
 												  'registration_addr_f': regAddressForm,
 												  'job_addr_f': addressForm,
+												  'job_post_addr_f': organizationPostAddrForm,
 												  'job_f': jobInfoForm,
-												  'bankdetail_f': BankDetailForm(),
-												  'approver_f': ApproverForm(),
+												  'bankdetail_f': bankDetailForm,
+												  'approver_f': approverForm,
 												  'credit_f': IpotekaForm(),
 												  'relative_f': ClientRelativeForm(),
 												  'rental_f': RentalIncomeForm(),
 												  'pension_f': PensionValueForm(),
 												  'imm_prop_f': ImmovablePropForm(),
 												  'car_f': AutoForm(),
-												  # 's_f': StbeTestForm(),
-												  # 'credit_f': credits_factory,
-												  # 'client_f': client_form_set,
-												  # 'address_f': address_factory,
-												  # 'postaddress_f': post_address_factory,
-												  # 'bankdetail_f': bank_detail_factory,
-												  # 'orginfo_f': organization_factory,
-												  'additional_client_info_f': AdditionalClientInfoForm(),
-											      'save_btn':'Update'
-												  })
+												  'additional_client_info_f': additionalInfoForm,
+											      'save_btn':'Update',
+												  'username': username,
+											  })
 
 @login_required
 def generateReport(request):
@@ -199,7 +185,6 @@ def deleteChecked(request):
 	docs = Document.objects.filter(id__in=doc_ids)
 	docs.delete()
 	return HttpResponseRedirect('/clients/');
-
 
 def login(request):
 	return render(request, 'accounts/login.html')

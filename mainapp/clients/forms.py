@@ -2,7 +2,6 @@
 from django import forms
 from django.forms.widgets import Input, Select, DateInput, Textarea, EmailInput
 
-from .choises import *
 from .models import *
 # Util methods
 from .widgets import ManyValueInput, Duration, MultipleSelect
@@ -52,8 +51,8 @@ class AbstractForm(forms.ModelForm):
 	hiddenValue = '';
 	useCounter = False
 
-	def __init__(self, data = {}, initial=None, instance=None, counter = ''):
-		forms.ModelForm.__init__(self, data = data, initial= initial, instance=instance)
+	def __init__(self, data={}, initial=None, instance=None, counter = ''):
+		forms.ModelForm.__init__(self,data=data, initial= initial, instance=instance)
 		self.counter = counter;
 
 	def getValue(self, value):
@@ -249,6 +248,8 @@ class BankDetailForm(AbstractForm):
 
 
 class AdditionalClientInfoForm(AbstractForm):
+	def __init__(self, initial=None, instance=None, counter = ''):
+		AbstractForm.__init__(self, data=None, initial= initial, instance=instance)
 	class Meta:
 		model = AdditionalClientInfo
 		fields = ['snils_number', 'aliments']
@@ -260,7 +261,7 @@ class AdditionalClientInfoForm(AbstractForm):
 		}
 
 
-class CreditForm(AbstractForm):
+class ClientCreditForm(AbstractForm):
 	formId = 'creditForm';
 
 	class Meta:
@@ -298,7 +299,7 @@ class CreditForm(AbstractForm):
 		}
 
 
-class IpotekaForm(CreditForm):
+class IpotekaForm(ClientCreditForm):
 	formId = 'ipotekaForm';
 	counter = 0
 	class Meta:

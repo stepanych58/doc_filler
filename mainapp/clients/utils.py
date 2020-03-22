@@ -66,39 +66,35 @@ def updateOrCreateObjByClient(post, counterp, clientp, modelClass):
 	obj.save()
 	return obj;
 
-def createAddressObj(post, counterp = ''):
-	# defaults = initDefaults(post, counterp, AddressForm.Meta.labels.keys())
-	# print('Address defaults:' + str(defaults))
-	address = Address.objects.create(
-			index = getPostValue(post, 'index', counterp),
-			country =getPostValue(post, 'country', counterp),  # страна
-			oblast=getPostValue(post, 'oblast', counterp),  # область/республика/край
-			rayon=getPostValue(post, 'rayon', counterp),  # район
-			city= getPostValue(post, 'city', counterp),  # город/поселок
-			street= getPostValue(post, 'street', counterp),  # улица
-			buildingNumber= getPostValue(post, 'buildingNumber', counterp),  # номер дома
-			housing= getPostValue(post, 'housing', counterp),  # корпус
-			structure= getPostValue(post, 'structure', counterp),  # строение
-			flat= str(getPostValue(post, 'flat', counterp)));
-	return address;
+def createObj(post, modelClass, fields, counter =''):
+	obj = globals()[modelClass].objects.create()
+	for field in fields:
+		setattr(obj, field, getPostValue(post, field, counter))
+	obj.save()
+	return obj;
 
-def updateOrCreateAddressObj(post, counterp, addressId):
-	address = Address.objects.update_or_create(
+# def createAddressObj(post, counterp = ''):
+# 	address = Address.objects.create(
+# 			index = getPostValue(post, 'index', counterp),
+# 			country =getPostValue(post, 'country', counterp),  # страна
+# 			oblast=getPostValue(post, 'oblast', counterp),  # область/республика/край
+# 			rayon=getPostValue(post, 'rayon', counterp),  # район
+# 			city= getPostValue(post, 'city', counterp),  # город/поселок
+# 			street= getPostValue(post, 'street', counterp),  # улица
+# 			buildingNumber= getPostValue(post, 'buildingNumber', counterp),  # номер дома
+# 			housing= getPostValue(post, 'housing', counterp),  # корпус
+# 			structure= getPostValue(post, 'structure', counterp),  # строение
+# 			flat= str(getPostValue(post, 'flat', counterp)));
+# 	return address;
+
+def updateOrCreateById(post, modelName, counterp, addressId):
+	keys = globals()[modelName + 'Form'].Meta.labels.keys()
+	defaults = initDefaults(post, counterp, keys)[0]
+	result = globals()[modelName].objects.update_or_create(
 	    id = addressId,
-		defaults ={
-			'index': getPostValue(post, 'index', counterp),
-			'country': getPostValue(post, 'country', counterp),  # страна
-			'oblast': getPostValue(post, 'oblast', counterp),  # область/республика/край
-			'rayon': getPostValue(post, 'rayon', counterp),  # район
-			'city': getPostValue(post, 'city', counterp),  # город/поселок
-			'street': getPostValue(post, 'street', counterp),  # улица
-			'buildingNumber': getPostValue(post, 'buildingNumber', counterp),  # номер дома
-			'housing': getPostValue(post, 'housing', counterp),  # корпус
-			'structure': getPostValue(post, 'structure', counterp),  # строение
-			'flat': str(getPostValue(post, 'flat', counterp))  # квартира/офис
-		}
+		defaults = defaults
 	)[0]
-	return address;
+	return result;
 
 def updateClient(post, client):
 	client.first_name = getPostValue(post, 'first_name');
@@ -110,7 +106,7 @@ def updateClient(post, client):
 def getPassport(post, сlient):
 	passport = PassportForm(post)
 	passport.instance.client = сlient
-	passport.instance.registration_address = createAddressObj(post=post, counterp=0)
+	passport.instance.registration_address = createObj(post, 'Address', AddressForm.Meta.labels.keys(), counter=0)
 	passport = passport.save()
 	return passport
 
@@ -135,6 +131,10 @@ def getForm(isExist, formClass, instance, attr, counter=''):
 	return globals()[formClass](instance=getattr(instance, attr), counter=counter) \
 		if isExist \
 		else globals()[formClass](counter=counter);
+def getFormWithoutCounter(isExist, formClass, instance, attr):
+	return globals()[formClass](instance=getattr(instance, attr)) \
+		if isExist \
+		else globals()[formClass]();
 
 def getObjectByClient(client_inst, modelClass):
 	related__filter = globals()[modelClass].objects.select_related().filter(client=client_inst)

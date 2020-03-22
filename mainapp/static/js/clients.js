@@ -219,17 +219,16 @@ function showIpotekaForm(elem) {
     }
 }
 
-function showFactAddressForm(elem) {
+function showFactAddressForm(elem, id) {
     var selectedValue = elem.options[elem.selectedIndex].text;
+    var actualAddressField = document.getElementById(id);
     if (selectedValue === 'Да') {
         // console.log('Адрес регистрации совпадает с адресом проживания');
-        var actualAddressField = document.getElementById('actualAddress_');
         if (actualAddressField) {
             actualAddressField.style = 'display: none'
         }
     } else {
         // console.log('Адрес регистрации не совпадает с адресом проживания');
-        var actualAddressField = document.getElementById('actualAddress_');
         if (actualAddressField) {
             actualAddressField.style = ''
         }
