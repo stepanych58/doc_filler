@@ -65,7 +65,6 @@
         {##}
         {#    </div>#}
         <div id="content"></div>
-        <div id="content"></div>
         <div class="panel">
             <div class="row">
                 <div class="col-md-10 order-md-1">
@@ -95,7 +94,7 @@
                         </div>
                     </div>
 
-                    <section id="jobinfo"><h4 class="mb-3">Информация о работе</h4></section>
+                    <section id="jobinfo"><h3 class="mb-3">Информация о работе</h3></section>
                     {{ job_f.printForm |safe }}
                     <br>
                     <h6>Информация о человеке который подтвердит инфо о работе</h6>
@@ -144,7 +143,7 @@
                     <p>Движимое имущество</p>
                     {{ car_f.printForm |safe }}
                     <br/>
-                    <input type="submit" name="sbm" class="btn btn-outline-primary" value="{{ save_btn }}">
+{#                    <input type="submit" name="sbm" class="btn btn-outline-primary" value="{{ save_btn }}">#}
                 </div>
             </div>
 
@@ -153,13 +152,13 @@
 </form>
 </body>
 
-{#<footer class="my-5 pt-5 text-muted text-center text-small">#}
-{#    <ul class="list-inline">#}
-{#        <li class="list-inline-item"><a href="#">Privacy</a></li>#}
-{#        <li class="list-inline-item"><a href="#">Terms</a></li>#}
-{#        <li class="list-inline-item"><a href="#">Support</a></li>#}
-{#    </ul>#}
-{#</footer>#}
+<footer class="my-5 pt-5 text-muted text-center text-small">
+    <ul class="list-inline">
+        <li class="list-inline-item"><a href="#">Privacy</a></li>
+        <li class="list-inline-item"><a href="#">Terms</a></li>
+        <li class="list-inline-item"><a href="#">Support</a></li>
+    </ul>
+</footer>
 </div>
 
 {#<div class="container">#}
