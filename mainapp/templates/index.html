@@ -2,41 +2,78 @@
 <html>
 <title>Главная страница</title>
 <head>
+
+    <meta charset="UTF-8"/>
     <!-- Favicon -->
-  <link rel="shortcut icon" href="/static/images/icons/favicon.ico">
+    <link rel="shortcut icon" href="/static/images/icons/favicon.ico">
 
-<!-- Plugins CSS -->
-  <link rel="stylesheet" href="/static/css/bootstrap.css">
-  <link rel="stylesheet" href="/static/css/bootstrap-select.min.css">
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/simple.css">
+
+    <!--javascript -->
+    <script src="/static/js/clients.js"></script>
+    <script src="/static/js/jquery.min-3.1.0.js"></script>
+
+    <script> //поиск по таблице
+    $(document).ready(function () {
+        $("#search-client").keyup(function () {
+            _this = this;
+
+            $.each($("#info-clients tbody tr li"), function () {
+                if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1) {
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                }
+            });
+
+        });
+
+        $("#search-doc").keyup(function () {
+            _this = this;
+
+            $.each($("#info-docs tbody tr li"), function () {
+                if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1) {
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                }
+            });
+
+        });
+
+    });
+    </script>
 
 
-  <!-- Theme CSS -->
-  <link rel="stylesheet" href="/static/css/style.css">
 </head>
+
 
 <body>
 
-{% load staticfiles %}
-{% csrf_token %}
 
 
 
 <div class="background">
-  <div class="layer background-image underconstruction"></div>
-<div class="layer clouds">
+    <div class="layer background-image underconstruction"></div>
+    <div class="layer clouds">
 
 
- <div id="wrapper">
-     {% if p_table == 'clients' %}
-        {% include 'clients.html' %}
-     {% endif %}
-     {% if p_table == 'addClient' %}
-        {% include 'addClient.html' %}
-     {% endif %}
-     {% if p_table == 'templates' %}
-        {% include 'templates.html' %}
-     {% endif %}
-{% include 'clients_button.html' %}
+        <div id="wrapper">
+            {% if p_table == 'clients' %}
+                {% include 'clients.html' %}
+            {% endif %}
+            {% if p_table == 'addClient' %}
+                {% include 'addClient.html' %}
+            {% endif %}
+            {% if p_table == 'templates' %}
+                {% include 'templates.html' %}
+            {% endif %}
+            {% include 'clients_button.html' %}
 
 
 
