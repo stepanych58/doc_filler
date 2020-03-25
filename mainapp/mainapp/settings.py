@@ -44,8 +44,6 @@ INSTALLED_APPS = [
     'clients',
     'psycopg2',
     'jsonfield',
-    'allauth',
-    'allauth.account',
     'login_auth',
     'django.forms',
 

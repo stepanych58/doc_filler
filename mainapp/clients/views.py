@@ -188,3 +188,13 @@ def deleteChecked(request):
 
 def login(request):
 	return render(request, 'accounts/login.html')
+
+
+# def delete(self, request, *args, **kwargs):
+#
+# 	self.object = self.get_object()
+# 	if self.request.user != self.object.author:
+# 		return self.handle_no_permission()
+# 	success_url = self.get_success_url()
+# 	self.object.delete()
+# 	return HttpResponseRedirect(success_url)

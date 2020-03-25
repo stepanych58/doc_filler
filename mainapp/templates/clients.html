@@ -55,13 +55,17 @@
                                     <ul>
                                         {% csrf_token %}
                                         {% for p_client in all_clients %}
+{#                                            {% if request.user == p_client.author %}#}
                                             <li>
                                                 <input type="checkbox" name="cl_checked" id="1"
                                                        value="{{ p_client.id }}">
                                                 <a href="/edit_client_page/{{ p_client.id }}">
-                                                    {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
+                                                    {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }} - {{ p_client.author }}
                                                 </a>
                                             </li>
+{#                                            {% else %}#}
+
+{#                                            {% endif %}#}
 
                                         {% endfor %}
                                     </ul>
