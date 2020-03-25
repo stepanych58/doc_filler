@@ -1,15 +1,5 @@
-<head>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="/static/css/simple.css">
-    <link rel="stylesheet" href="/static/css/checkbox.css">
-    <script src="/static/js/clients.js"></script>
-
-</head>
-<body>
-
 <div id="head">
     <div align="right"><a class="exit" href="/auth/logout">Выйти ({{ username }})</a></div>
-
 
 
     <table class="mytable" align="center">
@@ -35,7 +25,6 @@
 
 <div class="py-5 text-center">
     <div id="content"></div>
-    <div id="content"></div>
     <form action="/clientForm/" method="POST" style="display:inline;">
         <table class="mytable">
             <tr>
@@ -46,46 +35,49 @@
             </tr>
             <tr>
 
-                <td>
+                <td class="mytd">
 
-                    <input class=form-control id=searchs-text onkeyup=tableSearch() placeholder="Поиск по клиентам"
+                    <input class=form-control id=search-client placeholder="Поиск по клиентам"
                            type=text>
                     <div id="scrolltable">
-                        <table class="mytable" id=info-table>
+                        <table class="mytable" id=info-clients>
+
                             <tr>
-                                <td class="mytd">
+                                <td>
                                     <ul>
                                         {% csrf_token %}
                                         {% for p_client in all_clients %}
-{#                                            {% if request.user == p_client.author %}#}
-                                            <li>
-                                                <input type="checkbox" name="cl_checked" id="1"
-                                                       value="{{ p_client.id }}">
-                                                <a href="/edit_client_page/{{ p_client.id }}">
-                                                    {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }} - {{ p_client.author }}
-                                                </a>
-                                            </li>
-{#                                            {% else %}#}
+                                            {% if request.user == p_client.author %}
+                                                <li>
+                                                    <input type="checkbox" name="cl_checked" id="1"
+                                                           value="{{ p_client.id }}">
+                                                    <a href="/edit_client_page/{{ p_client.id }}">
+                                                        {{ p_client.first_name }} {{ p_client.part_name }} {{ p_client.last_name }}
+                                                        - {{ p_client.author }} <!-- пока для теста, далее уберу -->
+                                                    </a>
+                                                </li>
+                                            {% else %}
 
-{#                                            {% endif %}#}
+                                            {% endif %}
 
                                         {% endfor %}
                                     </ul>
                                 </td>
                             </tr>
+
                         </table>
                     </div>
                 </td>
-                <td>
+                <td class="mytd">
 
-                    <input class=form-control id=search-text onkeyup=tableSearch() placeholder="Поиск по анкетам"
+                    <input class=form-control id=search-doc placeholder="Поиск по анкетам"
                            type=text>
                     <div id="scrolltable">
 
-                        <table id="info-table" class="mytable">
+                        <table class="mytable" id="info-docs">
                             <tr>
 
-                                <td class="mytd">
+                                <td>
                                     <ul>
                                         {% for doc in all_docs %}
                                             {% load staticfiles %}
@@ -105,9 +97,4 @@
             </tr>
         </table>
     </form>
-
-</body>
-
-
-
-</html>
+</div>

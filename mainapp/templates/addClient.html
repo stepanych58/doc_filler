@@ -1,18 +1,21 @@
 <head xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+    <link rel="shortcut icon" href="/static/images/icons/favicon.ico">
     <link rel="stylesheet" href="/static/css/bootstrap.css">
     <link rel="stylesheet" href="/static/css/bootstrap-select.min.css">
+{#    <link rel="stylesheet" href="/static/css/style.css">#}
     <link rel="stylesheet" href="/static/css/simple.css">
-    {# для боковой шапки #}
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    {# для боковой шапки#}
-    {#    <meta name="viewport" content="width=device-width, initial-scale=1">#}
-    <script class="cssdeck" src="/static/js/jquery-2.1.3.min.js"></script>
+    <script class="cssdeck" src="/static/js/jquery.min-3.1.0.js"></script>
     <script src='/static/js/clients.js'></script>
 
     <title> Добавить клиента</title>
 </head>
 
+
 <body>
+ <div class="background">
+    <div class="layer background-image underconstruction">
+
 <form action="/addClient/" method="POST">{% csrf_token %}
 
     <div id="head">
@@ -59,7 +62,6 @@
 
     <script src="/static/js/scroll.js"></script>
 
-
     <div class="py-5 text-center">
         {#    <img class="d-block mx-auto mb-4" src="{{ site.baseurl }}/docs/{{ site.docs_version }}/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">#}
         {##}
@@ -86,7 +88,8 @@
                     </div>
                     <div id="actualAddress" style="display: none;">
                         {{ registration_addr_f.printForm |safe }}
-                    </div>                    <br>
+                    </div>
+                    <br>
                     <section id="snils"><h3 class="mb-3">СНИЛС</h3></section>
                     <div class="row">
                         <div class="col-md-4">
@@ -155,14 +158,15 @@
                     <p>Движимое имущество</p>
                     {{ car_f.printForm |safe }}
                     <br/>
-{#                    <input type="submit" name="sbm" class="btn btn-outline-primary" value="{{ save_btn }}">#}
+                    {#                    <input type="submit" name="sbm" class="btn btn-outline-primary" value="{{ save_btn }}">#}
                 </div>
             </div>
 
         </div>
         <script src="/static/js/multi-input.js"></script>
+    </div>
 </form>
-</body>
+
 
 <footer class="my-5 pt-5 text-muted text-center text-small">
     <ul class="list-inline">
@@ -327,6 +331,8 @@
 {#    </div>#}
 {##}
 {#</div>#}
+ </div>
+</div>
 </div>
 
 <script src="/static/js/scroll.js"></script>

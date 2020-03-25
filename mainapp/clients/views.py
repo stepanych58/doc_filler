@@ -22,7 +22,10 @@ view_params = {'all_clients': Client.objects.all(),
 def welcomePage(request):
 	username = auth.get_user(request).username
 	context = {'username': username}
-	return render(request, 'welcome.html',  context)
+	if username:
+		return HttpResponseRedirect('/clients/');
+	else:
+		return render(request, 'accounts/login.html',  context)
 
 
 @login_required()

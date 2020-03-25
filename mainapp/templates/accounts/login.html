@@ -1,124 +1,145 @@
 
+<html>
 <head>
-	<meta charset="utf-8">
-    <title>Авторизация</title>
+    <meta charset="utf-8">
+    <title>Добро пожаловать</title>
+
+    <!-- Favicon -->
     <link rel="shortcut icon" href="/static/images/icons/favicon.ico">
-	<link rel="stylesheet" type="text/css" href="/static/css/styles.css" />
-	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-select.min.css">
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/simple.css">
+    <link rel="stylesheet" href="/static/css/login.css">
 
 
-  <script type="text/javascript" src="/static/css/placeholder.js"></script>
-
-  <!-- Plugins CSS -->
-  <link rel="stylesheet" href="/static/css/bootstrap.css">
-  <link rel="stylesheet" href="/static/css/bootstrap-select.min.css">
-  <link rel="stylesheet" href="/static/css/font-awesome.min.css">
-  <link rel="stylesheet" href="/static/css/animate.css">
-  <link rel="stylesheet" href="/static/css/owl.carousel.css">
-  <link rel="stylesheet" href="/static/css/jquery.mCustomScrollbar.min.css">
-  
-  <!-- Theme CSS -->
-  <link rel="stylesheet" href="/static/css/style.css">
-
-
-	
 </head>
-<div class="background">
-  <div class="layer background-image underconstruction"></div>
-  
-  <div class="layer clouds">
-		<div class="cloud cloud-1">
-			<img src="/static/content/img/cloud-1.png" width="1600" height="850" alt="#">
-		</div>
-		
-		<div class="cloud cloud-2">
-			<img src="/static/content/img/cloud-2.png" width="1600" height="850" alt="#">
-		</div>
-		
-		<div class="cloud cloud-3">
-			<img src="/static/content/img/cloud-1.png" width="1600" height="850" alt="#">
-		</div>
-  </div>
-</div>
 <body>
-
-	<div class="main">
-
-    <p align="center">
-    <a href="/"><img src="/static/img/stepan.svg" width="108" height="78" alt="#"></a>
-</p>
+<div id="head">
+    {% if username %}
+        <div align="right"><a class="exit" href="/auth/logout">Выйти ({{ username }})</a></div>
+    {% endif %}
 
 
-  <section class="section active">
-		<div class="section-wrap">
-			<div class="section-/static/content/">
-				<div class="container">
-					<div class="contact-wrap relative">
-						<h1 class="h2	-section-title text-center"
-							data-animation="fadeInDown"
-							data-out-animation="fadeOutUp"
-							data-out-animation-delay="100">Вcё будет круто</h1>
-
-						<div class="row section-description text-center">
-							<div class="col-sm-8 col-sm-offset-2">
-								<p class="lead"
-									data-animation="fadeInDown"
-									data-out-animation="fadeOutUp"
-									data-out-animation-delay="100">Скоро всё заработает;)</p>
-							</div>
-						</div>
-{% block login_auth %}
+    <table class="mytable" align="center">
+        <td>
 
 
-<form action='/auth/login/' method='POST'>
-{% csrf_token %}
-<form id="slick-login">
-<form action='/auth/login/' method='POST'>
-
-<label for="login"></label>
- <input type='text' name='username' id='username' class="placeholder" placeholder="Логин">
+        </td>
 
 
-
- <label for="pass"></label>
-   <input type='password' name='password' id='password' class = 'placeholder' placeholder = 'Пароль'>
-
-
-
-
-
-
-
-
-
-
-
-{% if login_error %}
-<label class='error'>{{ login_error }}</label>
-{% endif %}
-
-
-
-
-<div class="button-box text-center">
-<button class="btn"
-					data-hover="Войти"
-					class="btn btn-default progress-button btn-submit"
-					value="clients"
-					data-animation="fadeInDown"
-					data-animation-delay="900"
-					data-out-animation="fadeOutUp"
-					data-out-animation-delay="100">
-						<span class="button-label">Войти</span>
-				</button>
+        </tr>
+    </table>
 </div>
-</form>
-</form>
 
+<div class="background">
+    <div class="layer background-image underconstruction"></div>
+
+    <div class="layer clouds">
+        <div class="cloud cloud-1">
+            <img src="/static/content/img/cloud-1.png" width="1600" height="850" alt="#">
+        </div>
+
+        <div class="cloud cloud-2">
+            <img src="/static/content/img/cloud-2.png" width="1600" height="850" alt="#">
+        </div>
+
+        <div class="cloud cloud-3">
+            <img src="/static/content/img/cloud-1.png" width="1600" height="850" alt="#">
+        </div>
     </div>
-    </div>
-    </div>
+</div>
+
+
+
+
+{% block login_auth %}
+    <form method="post" action="/auth/login/" class="contact-form">{% csrf_token %}
+        <svg width="200px" height="200px" viewBox="0 0 200 200" aria-labelledby="svg-title svg-desc">
+            <title id="svg-title">Floating Ghost</title>
+            <style type="text/css">
+                @keyframes float {
+                    from {
+                        transform: translate(0, 0px);
+                    }
+                    to {
+                        transform: translate(0, 8px);
+                    }
+                }
+
+                @keyframes float-arm {
+                    from {
+                        transform: translate(-1px, 0px);
+                    }
+                    to {
+                        transform: translate(1px, 4px);
+                    }
+                }
+
+                #ghost-body {
+                    animation: float 2s linear alternate infinite;
+                }
+
+                .ghost-arm {
+                    animation: float-arm 3s linear alternate infinite;
+                }
+
+                .pupil, #mouth, .ghost-arm {
+                    transition: all 0.25s;
+                }
+            </style>
+            <g id="ghost-body" fill="white" fill="#fff" stroke="#999" stroke-width="3" stroke-linejoin="round">
+                <path d="M 54,181 C 44,131 13,11 99,11 185,12 164,110 150,182 146,195 139,185 137,177 134,170 126,169 124,179 120,192 114,190 109,179 105,167 98,166 94,179 92,185 85,193 79,179 74,170 68,168 66,179 62,193 56,191 54,181 Z"/>
+                <path id="eye-right" class="eye" fill="#ffffee"
+                      d="M 69,71 C 69,64 73,54 84,55 96,56 100,62 100,70 100,79 89,83 84,83 78,83 69,80 69,71 Z"/>
+                <path id="eye-left" class="eye" fill="#ffffee"
+                      d="M 105,73 C 104,66 108,57 120,57 130,57 134,65 134,71 134,80 125,85 119,85 114,85 105,82 105,73 Z"/>
+                <circle id="pupil-right" class="pupil" cx="84" cy="69" r="3" fill="rgba(0,0,0,0.25)"/>
+                <circle id="pupil-left" class="pupil" cx="120" cy="71" r="3" fill="rgba(0,0,0,0.25)"/>
+                <path id="mouth"
+                      d="M 75,115 C 79,120 91,126 101,125 110,125 126,118 127,114 125,117 117,125 101,125 85,126 79,117 75,115 Z"
+                      fill="#aa4040" stroke="#600"/>
+                <path id="ghost-arm-right" class="ghost-arm" d="M 45,89 C 25,92 9,108 11,124 13,141 27,115 48,119"/>
+                <path id="ghost-arm-left" class="ghost-arm"
+                      d="M 155,88 C 191,90 194,114 192,125 191,137 172,109 155,116"
+                      data-hover="M 155,88 C 145,68 105,51 103,62 102,74 123,117 155,116" style="animation-delay:-1s"/>
+            </g>
+        </svg>
+        <fieldset id="email-field" class="with-placeholder">
+            <legend>Логин</legend>
+            <div>
+                <input type="text" name="username" id="username">
+
+            </div>
+        </fieldset>
+        <fieldset id="password-field">
+            <legend>Пароль</legend>
+            <div>
+                <input type="password" name="password" id="password">
+            </div>
+        </fieldset>
+        {% if login_error %}
+            <label class='error'>{{ login_error }}</label>
+        {% endif %}
+        <p align="center"><br>
+
+            <button class="btn">
+                Войти
+            </button>
+        </p>
+
+    </form>
 {% endblock login_auth %}
+
+<footer>
+
+    <p>2020</p>
+
+</footer>
 
 </body>
 </html>

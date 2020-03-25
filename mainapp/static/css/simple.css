@@ -6,7 +6,7 @@ border-top: 0px;
 .panel
 {
     width:80%;
-    margin-left:200px;
+    margin-left:15%;
     /*margin-right: 10%;*/
     margin-bottom: 30%;
 
@@ -19,6 +19,11 @@ border-top: 0px;
     width: 700px;
     /*height: 100px;*/
     border-top: 0px;
+}
+
+.mytr
+{
+    background-color: rgba(90, 187, 238, 0.4);
 }
 .mytd
 {
@@ -86,7 +91,7 @@ width: 2px;
 /* Navigation */
 
 nav {
-    /*height: 100%;*/
+    height: 100%;
     margin-top: 4%;
     /*width: 200px; !* Set the width of the sidebar *!*/
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
@@ -95,7 +100,7 @@ nav {
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 20px;
     font-size: 24px;
-    background: #ffffff;
+    /*background: #ffffff;*/
 }
 
 nav ul {
@@ -103,7 +108,7 @@ nav ul {
     top: 50%;
     /*position: relative;*/
     list-style: none;
-    text-align: right;
+    /*text-align: right;*/
 }
 nav ul li {
   /*display: inline-block;*/
