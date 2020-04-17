@@ -67,7 +67,6 @@ def addClient(request):
 	elif sbm == 'Add' or 'Update':
 		сlient = getClient(post)
 		jobInfo = updateOrCreateObjByClient(post, 0, сlient, 'JobInfo')
-		credit = updateOrCreateObjByClient(post, '', сlient, 'Ipoteka')
 		additionalInfo = updateOrCreateObjByClient(post, '', сlient, 'AdditionalClientInfo')
 
 		if sbm == 'Update':
@@ -75,43 +74,34 @@ def addClient(request):
 			# //get job, get address id, get address
 			passport = updateOrCreateObjByClient(post, '', сlient, 'Passport')
 			updateOrCreateById(post, 'Address', 0, passport.registration_address.id)
-			if jobInfo.address is not None:
-				updateOrCreateById(post, 'Address', 2, jobInfo.address.id)
-			else:
-				print('address dosnt exist for ' + str(сlient.first_name) + ' ' +str(сlient.last_name))
-				jobInfo.address = createObj(post, 'Address', AddressForm.Meta.labels.keys(), counter=2)
-
-			if jobInfo.post_address is not None:
-				updateOrCreateById(post, 'Address', 3, jobInfo.post_address.id)
-			else:
-				print('post_address dosnt exist for ' + str(сlient.first_name) + ' ' +str(сlient.last_name))
-				jobInfo.post_address = createObj(post, 'Address', AddressForm.Meta.labels.keys(), counter=3)
-
-			if jobInfo.approver is not None:
-				updateOrCreateById(post, 'Approver', '', jobInfo.approver.id)
-			else:
-				print('approver dosnt exist for ' + str(сlient.first_name) + ' ' +str(сlient.last_name))
-				jobInfo.approver = createObj(post, 'Approver', ApproverForm.Meta.labels.keys())
-
-			if jobInfo.bank_detail is not None:
-				updateOrCreateById(post, 'BankDetail', '', jobInfo.bank_detail.id)
-			else:
-				print('bank detail doesnt exist for ' + str(сlient.first_name) + ' ' +str(сlient.last_name))
-				jobInfo.bank_detail = createObj(post, 'BankDetail', BankDetailForm.Meta.labels.keys())
+			updateOrCeateObjectParameter(jobInfo, 'address', 'Address', 2, post, сlient)
+			updateOrCeateObjectParameter(jobInfo, 'post_address', 'Address', 3, post, сlient)
+			updateOrCeateObjectParameter(jobInfo, 'approver', 'Approver', '', post, сlient)
+			updateOrCeateObjectParameter(jobInfo, 'bank_detail', 'BankDetail', '', post, сlient)
 			jobInfo.save()
 
 		if 	sbm == 'Add':
 			print('Add')
 			passport = getPassport(post, сlient)
-			jobAddress = createObj(post, 'Address', AddressForm.Meta.labels.keys(), counter=2)
-			jobPostAddress = createObj(post, 'Address', AddressForm.Meta.labels.keys(), counter=3)
+			jobAddress = createObj(post, 'Address', counter=2)
+			jobPostAddress = createObj(post, 'Address', counter=3)
 			jobInfo.address = jobAddress
 			jobInfo.post_address = jobPostAddress
-			jobInfo.approver = createObj(post, 'Approver', ApproverForm.Meta.labels.keys())
-			jobInfo.bank_detail = createObj(post, 'BankDetail', BankDetailForm.Meta.labels.keys())
+			jobInfo.approver = createObj(post, 'Approver')
+			jobInfo.bank_detail = createObj(post, 'BankDetail')
 			jobInfo.save()
+		credit = updateOrCreateObjByClient(post, '', сlient, 'Ipoteka')
 
 	return HttpResponseRedirect('/clients/');
+
+def updateOrCeateObjectParameter(object, objectParameter, parameterModelClass, counter, post, сlient):
+	attr = getattr(object, objectParameter)
+	if attr is not None:
+		updateOrCreateById(post, parameterModelClass, counter, attr.id)
+	else:
+		print('bank detail doesnt exist for ' + str(сlient.first_name) + ' ' + str(сlient.last_name))
+		obj = createObj(post, 'BankDetail')
+		setattr(object, objectParameter, obj)
 
 def clientForm(request):
 	print('clientForm start')
@@ -138,23 +128,19 @@ def clientForm(request):
 def edit_client_page(request, client_id):
 	username = auth.get_user(request).username
 	client_inst = Client.objects.get(id=client_id);
-	clientHasPassport = hasattr(client_inst, 'passport')
-	# clientHasNotJob = hasattr(client_inst, 'jobinfo')
-	clientHasAdditionalInfo = hasattr(client_inst, 'additionalclientinfo')
-	passportForm = getForm(clientHasPassport, 'PassportForm', client_inst, 'passport')
-	regAddressForm = getRegAddressForm(clientHasPassport, client_inst)
+	passportForm = getForm('PassportForm', client_inst, 'passport')
+	regAddressForm = getRegAddressForm(client_inst)
 	jobInfoForm = getFormByForeignKey(client_inst, 'JobInfo', 0)
-	addressInst = jobInfoForm.instance.address
-	organizationPostAddr = jobInfoForm.instance.post_address
-	organizationPostAddrForm = AddressForm(instance=organizationPostAddr, counter=3)
-	addressForm = AddressForm(instance=addressInst, counter=2)
-	additionalInfoForm = getFormWithoutCounter(clientHasAdditionalInfo, 'AdditionalClientInfoForm',
+	organizationPostAddrForm = AddressForm(instance=jobInfoForm.instance.post_address, counter=3)
+	addressForm = AddressForm(instance=jobInfoForm.instance.address, counter=2)
+	additionalInfoForm = getFormWithoutCounter('AdditionalClientInfoForm',
 								 client_inst, 'additionalclientinfo')
 	approverForm = ApproverForm(instance=jobInfoForm.instance.approver)
 	bankDetailForm = BankDetailForm(instance=jobInfoForm.instance.bank_detail)
-
+	creditForm = getFormByForeignKey(client_inst, 'Ipoteka')
 	return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
-												  'client_f': ClientForm(instance=client_inst),
+											  'username': username,
+											  'client_f': ClientForm(instance=client_inst),
 												  'passport_f': passportForm,
 												  'registration_addr_f': regAddressForm,
 												  'job_addr_f': addressForm,
@@ -162,7 +148,7 @@ def edit_client_page(request, client_id):
 												  'job_f': jobInfoForm,
 												  'bankdetail_f': bankDetailForm,
 												  'approver_f': approverForm,
-												  'credit_f': IpotekaForm(),
+												  'credit_f': creditForm,
 												  'relative_f': ClientRelativeForm(),
 												  'rental_f': RentalIncomeForm(),
 												  'pension_f': PensionValueForm(),
@@ -170,7 +156,6 @@ def edit_client_page(request, client_id):
 												  'car_f': AutoForm(),
 												  'additional_client_info_f': additionalInfoForm,
 											      'save_btn':'Update',
-												  'username': username,
 											  })
 
 @login_required

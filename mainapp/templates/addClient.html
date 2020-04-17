@@ -43,7 +43,6 @@
 
     </div>
 
-
     {% csrf_token %}
 
     <nav>
@@ -52,6 +51,7 @@
             <li><a href="#passport">Паспорт</a></li>
             <li><a href="#snils">СНИЛС</a></li>
             <li><a href="#jobinfo">Работа</a></li>
+            <li><a href="#credits">Информация о кредитах</a></li>
             <li><a href="#children">Дети</a></li>
             <li><a href="#revenue">Доходы</a></li>
             <li><a href="#costs">Расходы</a></li>
@@ -120,12 +120,9 @@
 
                     <h6>Банковские реквизиты работодателя</h6>
                     {{ bankdetail_f.printForm |safe }}
+
                     <div style="display: inline">
-                        <h6>Информация о кредитах </h6>
-                        {{ credit_f.printForm |safe }}
-                    </div>
-                    <div style="display: inline">
-                        <h6>Информация о кредитах </h6>
+                       <section> <h6 id="credits">Информация о кредитах</h6> </section>
                         {{ credit_f.printForm |safe }}
                     </div>
                     <button type="button" class="btn btn-outline-primary" onclick="cloneCreditForm(this)">+</button>

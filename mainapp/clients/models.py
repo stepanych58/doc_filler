@@ -10,7 +10,7 @@ PDF_TEMPLATE_DIR = STATICFILES_DIRS[8]
 PDF_GENERATED_RESULT_DIR = STATICFILES_DIRS[3]
 
 class Client(models.Model):
-	author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор', blank=True, null=True)
+	# author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор', blank=True, null=True)
 	first_name = models.CharField(max_length=30, default='Иван')
 	part_name = models.CharField(max_length=30, default='Иванович')
 	last_name = models.CharField(max_length=30, default='Иванов')

@@ -4,7 +4,8 @@ from .forms import *
 from .models import *
 import json
 
-
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 client_initial = {'last_name': 'Иванов',
 				  'first_name': 'Иван',
 				  'part_name': 'Иванович', }
@@ -31,42 +32,65 @@ address_initial = {
 empty_client_form = ClientForm(initial=client_initial)
 empty_passp_form = PassportForm(initial=passport_initial)
 
+def getDefaultContext(request):
+	context ={
+		'all_clients': Client.objects.all(),
+		'username': auth.get_user(request).username,
+	}
+	return context;
+
+def addContextValue(context, key, value):
+	context[key] = value;
+	return context;
 
 def initDefaults(post, counter='', keys={}):
-	print('initDefaults start counter : ' + str(counter))
-	print(post)
-	defaults = {}; empty_fields = {}
+	# print('initDefaults start counter : ' + str(counter))
+	# print(post)
+	defaults = {}; empty_fields = {}; mvi_fields ={};
 	for key in keys:
+		mviValue = False
 		print(key)
 		postValue = getPostValue(post, key, counter)
 		print(postValue)
 		if postValue is None or len(postValue) == 0:
+			postValue = getPostValue(post, key, '_mvi')
+			mviValue = True
+		if postValue is None or len(postValue) == 0:
 			empty_fields[key] = None
+		elif mviValue:
+			mvi_fields[key] = postValue
 		else:
 			defaults[key] = postValue
-	# print('initDefaults end defaults : ' + str(defaults))
-	# print('initDefaults end empty_fields : ' + str(empty_fields))
-	return defaults, empty_fields
+	print('initDefaults end defaults : ' , defaults)
+	print('initDefaults end empty_fields : ' , empty_fields)
+	print('initDefaults end mvi_fields : ', mvi_fields)
+	return defaults, empty_fields, mvi_fields
 
 def getPostValue(post, param, counter=''):
 	return post.get(str(param + str(counter)))
 
 def updateOrCreateObjByClient(post, counterp, clientp, modelClass):
+	print("updateOrCreateObjByClient")
 	parsedPost = initDefaults(post, counterp, globals()[str(modelClass + 'Form')].Meta.labels.keys())
 	defaults = parsedPost[0]
-	# print(post)
-	# print(modelClass)
-	# print(defaults)
+	print(post)
+	print(modelClass)
+	print(defaults)
 	obj = globals()[modelClass].objects.update_or_create(
 		client = clientp,
 		defaults = defaults)[0];
 	emtyFields = parsedPost[1]
+	mviFields = parsedPost[2]
 	for key in emtyFields:
 		setattr(obj, key, emtyFields[key])
+	# for key in mviFields:
+	# 	setattr(obj, key, mviFields[key])
 	obj.save()
+	print(obj)
 	return obj;
 
-def createObj(post, modelClass, fields, counter =''):
+def createObj(post, modelClass, counter =''):
+	fields = globals()[modelClass + 'Form'].Meta.labels.keys()
 	obj = globals()[modelClass].objects.create()
 	for field in fields:
 		setattr(obj, field, getPostValue(post, field, counter))
@@ -87,11 +111,15 @@ def createObj(post, modelClass, fields, counter =''):
 # 			flat= str(getPostValue(post, 'flat', counterp)));
 # 	return address;
 
-def updateOrCreateById(post, modelName, counterp, addressId):
+def updateOrCreateById(post, modelName, counterp, id):
+	print("updateOrCreateById start ", modelName)
+	print("post ", post)
 	keys = globals()[modelName + 'Form'].Meta.labels.keys()
-	defaults = initDefaults(post, counterp, keys)[0]
-	result = globals()[modelName].objects.update_or_create(
-	    id = addressId,
+	init_defaults = initDefaults(post, counterp, keys)
+	defaults = init_defaults[0]
+	model = globals()[modelName]
+	result = model.objects.update_or_create(
+	    id = id,
 		defaults = defaults
 	)[0]
 	return result;
@@ -106,7 +134,7 @@ def updateClient(post, client):
 def getPassport(post, сlient):
 	passport = PassportForm(post)
 	passport.instance.client = сlient
-	passport.instance.registration_address = createObj(post, 'Address', AddressForm.Meta.labels.keys(), counter=0)
+	passport.instance.registration_address = createObj(post, 'Address', counter=0)
 	passport = passport.save()
 	return passport
 
@@ -119,19 +147,22 @@ def getClient(post):
 		сlient = ClientForm(post).save();
 	return сlient
 
-def getRegAddressForm(clientHasPassport, client_inst):
+def getRegAddressForm(client_inst):
 	regAddressForm = AddressForm(counter=0)
-	if clientHasPassport:
-		passportHasAddress = hasattr(client_inst.passport, 'registration_address')
-		regAddressForm = getForm(passportHasAddress, 'AddressForm',
+	if hasattr(client_inst, 'passport'):
+		regAddressForm = getForm('AddressForm',
 									 client_inst.passport, 'registration_address', counter=0)
 	return regAddressForm;
 
-def getForm(isExist, formClass, instance, attr, counter=''):
+def getForm(formClass, instance, attr, counter=''):
+	isExist = hasattr(instance, attr)
+	print('isExist: ', isExist)
 	return globals()[formClass](instance=getattr(instance, attr), counter=counter) \
 		if isExist \
 		else globals()[formClass](counter=counter);
-def getFormWithoutCounter(isExist, formClass, instance, attr):
+
+def getFormWithoutCounter(formClass, instance, attr):
+	isExist = hasattr(instance, attr)
 	return globals()[formClass](instance=getattr(instance, attr)) \
 		if isExist \
 		else globals()[formClass]();
