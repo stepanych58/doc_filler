@@ -1,8 +1,9 @@
 <div class="input-group col-md-8">
-    <input type="number" name="{{widget.name}}_mvi" value="{{widget.value}}" class="form-control"
-                                         maxlength="15" id="id_amount">
-        <select name="currency" class="" id="id_currency">
-        <option value="1" selected="">RUB</option>
-        <option value="2">$</option>
+    <input type="number" name="{{ widget.name }}_mvi" value="{{ widget.value }}" class="form-control"
+           maxlength="15" id="id_amount">
+    <select name="{{ widget.name }}_mvi_currency" class="" id="id_{{ widget.name }}_mvi_currency">
+        {% for x,y in widget.currancy_options %}
+            <option value={{x}} {% if x == widget.selectedValue %} selected {% endif %}>{{y}}</option>
+        {% endfor %}
     </select>
 </div>

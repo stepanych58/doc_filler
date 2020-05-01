@@ -29,6 +29,12 @@ def printCol(self,
 			div1_class = 'col-md-2'
 	if isinstance(input, MultipleSelect):
 		print('ms input: ' + str(input))
+	if isinstance(input, ManyValueInput):
+		# print('mv input: ', inputValue)
+		if not (not inputValue):
+			print('amount, currency: ', inputValue.amount, inputValue.currency)
+			input.selectedValue = inputValue.currency
+			inputValue = inputValue.amount
 	return '<div class="' + div1_class + '">' + \
 		   hiddenIdInput +\
 		   '<label for="id_' + label_id + str(counter) + '">' + label + '</label>' + \
@@ -262,48 +268,10 @@ class AdditionalClientInfoForm(AbstractForm):
 
 
 class ClientCreditForm(AbstractForm):
-	formId = 'creditForm';
-
-	class Meta:
-		model = ClientCredit
-		exclude = ('client',)
-		labels = {
-			'requested_field': 'Кредит:',
-			'type': 'Тип кредита',
-			'credit_goal': 'Цель кредита',
-			'special_programms': 'Специальные программы',
-			'desired_pay_period': 'Желаемый платежный период',
-			'insurance': 'Страхование рисков',
-			'creditor_name': 'Банк кредитор',
-			'duration': 'Желаемый срок кредитования',
-			'date_start': 'Дата начала кредитования',
-			'date_end': 'Дата окончания кредита',
-			'value': 'Cумма кредита',
-			'month_pay': 'Месячный платеж',
-			'leftover': 'Остаток'}
-		widgets = {
-			'requested_field': Select(attrs={'class': 'form-control', }, choices=СREDIT_REQS),
-			'type': Select(attrs={'class': 'form-control', 'onChange': 'showIpotekaForm(this);', },
-						   choices=СREDIT_TYPES),
-			'credit_goal': simpleInput,
-			'special_programms': simpleInput,
-			'desired_pay_period': simpleInput,
-			'insurance': simpleInput,
-			'creditor_name': simpleInput,
-			'duration': simpleInput,
-			'date_start': simpleDate,
-			'date_end': simpleDate,
-			'value': ManyValueInput(),
-			'month_pay': ManyValueInput(),
-			'leftover': ManyValueInput(),
-		}
-
-
-class IpotekaForm(ClientCreditForm):
 	formId = 'ipotekaForm';
 	counter = 0
 	class Meta:
-		model = Ipoteka
+		model = ClientCredit
 		exclude = ('client',)
 		labels = {
 			'requested_field': 'Кредит:',
@@ -322,7 +290,7 @@ class IpotekaForm(ClientCreditForm):
 			'duration': 'Желаемый срок кредитования',
 			'date_start': 'Дата начала кредитования',
 			'date_end': 'Дата окончания кредита',
-			'value': 'Cумма кредита',
+			'credit_value': 'Cумма кредита',
 			'month_pay': 'Месячный платеж',
 			'leftover': 'Остаток',
 			'reask': 'Вариант перезапроса, если не подтвержден',
@@ -345,7 +313,7 @@ class IpotekaForm(ClientCreditForm):
 			'duration': Duration(),
 			'date_start': simpleDate,
 			'date_end': simpleDate,
-			'value': ManyValueInput(),
+			'credit_value': ManyValueInput(),
 			'month_pay': ManyValueInput(),
 			'leftover': ManyValueInput(),
 			'reask': Select(attrs={'class': 'form-control', }, choices=IPOTEKA_REASK),

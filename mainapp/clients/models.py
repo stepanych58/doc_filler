@@ -164,10 +164,10 @@ class ClientCredit(models.Model):
 	duration = models.CharField(max_length=3, default="12", blank=True, null = True)  #Желаемый срок кредитования
 	date_start = models.DateField(default="2000-01-01", null = True)
 	date_end = models.DateField(default="2005-01-01", null = True)
-	value = models.ForeignKey(
+	credit_value = models.ForeignKey(
 		ManyValue,
 		on_delete=models.CASCADE,
-		related_name = 'value_rn',
+		related_name = 'credit_value_rn',
 		primary_key=False, null = True
 	)  # сумма кредита
 	month_pay = models.ForeignKey(
@@ -183,8 +183,6 @@ class ClientCredit(models.Model):
 		primary_key=False, null = True
 	)  # остаток
 	reask = models.CharField(choices=IPOTEKA_REASK, max_length=50, default=IPOTEKA_REASK[0], null = True)
-
-class Ipoteka(ClientCredit):
 	property_value = models.CharField(max_length=100, default="1 000 000", blank=True, null = True)  # стоимость объекта недвижимости
 	immovables_region = models.CharField(max_length=100, default="Самарский регион",
 										 blank=True, null = True)  # регион объекта недвижимости
@@ -192,7 +190,12 @@ class Ipoteka(ClientCredit):
 									   default=IMMOVABLE_PROPERTY_CHOISES[0], null = True)  # регион объекта недвижимости
 	product_type = models.CharField(choices=IPOTEKA_TYPES, max_length=50,
 									default=IPOTEKA_TYPES[0], null = True)  # наименование ипотечного продукта
-	first_pay = models.CharField(max_length=100, default="1000", blank=True, null = True)  # размер первого платежа
+	first_pay = models.ForeignKey(
+		ManyValue,
+		on_delete=models.CASCADE,
+		related_name = 'first_pay_rn',
+		primary_key=False, null = True
+	)  # остаток  # размер первого платежа
 	source_for_first_pay = models.CharField(max_length=100, default="личные накопления",
 											blank=True, null = True)  # источник первоначального взноса
 

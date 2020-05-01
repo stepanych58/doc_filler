@@ -5,7 +5,6 @@ from .models import *
 import json
 
 from django.contrib import auth
-from django.contrib.auth.decorators import login_required
 client_initial = {'last_name': 'Иванов',
 				  'first_name': 'Иван',
 				  'part_name': 'Иванович', }
@@ -32,6 +31,20 @@ address_initial = {
 empty_client_form = ClientForm(initial=client_initial)
 empty_passp_form = PassportForm(initial=passport_initial)
 
+
+class ManyValueTamplate():
+	def __init__(self, value, currency):
+		self.value= value
+		self.currency = currency
+	def getValue(self):
+		return self.value
+	def getCurrency(self):
+		return self.currency
+
+	def __str__(self):
+		return "[" + str(self.value) + "|" + str(self.currency) + "]";
+
+
 def getDefaultContext(request):
 	context ={
 		'all_clients': Client.objects.all(),
@@ -52,30 +65,34 @@ def initDefaults(post, counter='', keys={}):
 		print(key)
 		postValue = getPostValue(post, key, counter)
 		print(postValue)
-		if postValue is None or len(postValue) == 0:
+		if not postValue:
 			postValue = getPostValue(post, key, '_mvi')
 			mviValue = True
-		if postValue is None or len(postValue) == 0:
+		if not postValue:
 			empty_fields[key] = None
 		elif mviValue:
-			mvi_fields[key] = postValue
+			postCurrency = getPostValue(post, key, '_mvi_currency')
+			print(" postValue ", postValue)
+			print(" postCurrency ", postCurrency)
+			mvi_fields[key] = ManyValueTamplate(value=postValue, currency=postCurrency)
 		else:
 			defaults[key] = postValue
 	print('initDefaults end defaults : ' , defaults)
 	print('initDefaults end empty_fields : ' , empty_fields)
-	print('initDefaults end mvi_fields : ', mvi_fields)
+	resStr=''
+	for key in  mvi_fields:
+		resStr += str(key) + ": " + str(mvi_fields[key]) + ", "
+	print('initDefaults end mvi_fields : ', resStr)
 	return defaults, empty_fields, mvi_fields
 
 def getPostValue(post, param, counter=''):
 	return post.get(str(param + str(counter)))
 
 def updateOrCreateObjByClient(post, counterp, clientp, modelClass):
-	print("updateOrCreateObjByClient")
+	print("updateOrCreateObjByClient start for", modelClass)
 	parsedPost = initDefaults(post, counterp, globals()[str(modelClass + 'Form')].Meta.labels.keys())
 	defaults = parsedPost[0]
 	print(post)
-	print(modelClass)
-	print(defaults)
 	obj = globals()[modelClass].objects.update_or_create(
 		client = clientp,
 		defaults = defaults)[0];
@@ -83,8 +100,9 @@ def updateOrCreateObjByClient(post, counterp, clientp, modelClass):
 	mviFields = parsedPost[2]
 	for key in emtyFields:
 		setattr(obj, key, emtyFields[key])
-	# for key in mviFields:
-	# 	setattr(obj, key, mviFields[key])
+	for key in mviFields:
+		manyValueTemplate = mviFields[key]
+		setattr(obj, key, ManyValue.objects.create(amount=manyValueTemplate.getValue(), currency=manyValueTemplate.getCurrency()))
 	obj.save()
 	print(obj)
 	return obj;
@@ -171,11 +189,24 @@ def getObjectByClient(client_inst, modelClass):
 	related__filter = globals()[modelClass].objects.select_related().filter(client=client_inst)
 	return related__filter[0] if len(related__filter)>0 else None;
 
+def getObjectsByClient(client_inst, modelClass):
+	related__filter = globals()[modelClass].objects.select_related().filter(client=client_inst)
+	return related__filter;
+
 def getFormByForeignKey(client_inst, modelClass, counter=''):
 	inst = getObjectByClient(client_inst, modelClass)
 	formClass = modelClass + 'Form'
 	return globals()[formClass](counter=counter) if inst is None else  globals()[formClass](instance=inst,
 																							counter=counter);
+def getFormsByForeignKey(client_inst, modelClass, counter=''):
+	insts = getObjectsByClient(client_inst, modelClass)
+	formClass = modelClass + 'Form'
+	forms = list()
+	for inst in insts:
+		form = globals()[formClass](counter=counter) if inst is None else  globals()[formClass](instance=inst,
+																							counter=counter)
+		forms.append(form)
+	return forms;
 
 def getCheckedItems(request):
 	client_view_params = request.body.decode('utf-8')

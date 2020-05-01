@@ -53,7 +53,7 @@ def addClient(request):
 												  'job_f': JobInfoForm(counter=0),
 												  'bankdetail_f': BankDetailForm(),
 												  'approver_f': ApproverForm(),
-												  'credit_f': IpotekaForm(),
+												  'credit_f': ClientCreditForm(),
 												  'relative_f': ClientRelativeForm(),
 												  'rental_f': RentalIncomeForm(),
 												  'pension_f': PensionValueForm(),
@@ -90,7 +90,7 @@ def addClient(request):
 			jobInfo.approver = createObj(post, 'Approver')
 			jobInfo.bank_detail = createObj(post, 'BankDetail')
 			jobInfo.save()
-		credit = updateOrCreateObjByClient(post, '', сlient, 'Ipoteka')
+		credit = updateOrCreateObjByClient(post, '', сlient, 'ClientCredit')
 
 	return HttpResponseRedirect('/clients/');
 
@@ -137,7 +137,7 @@ def edit_client_page(request, client_id):
 								 client_inst, 'additionalclientinfo')
 	approverForm = ApproverForm(instance=jobInfoForm.instance.approver)
 	bankDetailForm = BankDetailForm(instance=jobInfoForm.instance.bank_detail)
-	creditForm = getFormByForeignKey(client_inst, 'Ipoteka')
+	creditForms = getFormsByForeignKey(client_inst, 'ClientCredit')
 	return render(request, 'addClient.html', {'all_clients': Client.objects.all(),
 											  'username': username,
 											  'client_f': ClientForm(instance=client_inst),
@@ -148,7 +148,7 @@ def edit_client_page(request, client_id):
 												  'job_f': jobInfoForm,
 												  'bankdetail_f': bankDetailForm,
 												  'approver_f': approverForm,
-												  'credit_f': creditForm,
+												  'credit_fs': creditForms,
 												  'relative_f': ClientRelativeForm(),
 												  'rental_f': RentalIncomeForm(),
 												  'pension_f': PensionValueForm(),

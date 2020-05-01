@@ -123,7 +123,9 @@
 
                     <div style="display: inline">
                        <section> <h6 id="credits">Информация о кредитах</h6> </section>
-                        {{ credit_f.printForm |safe }}
+                         {% for credit_f in credit_f %}
+                            {{ credit_f.printForm |safe }}
+                         {% endfor %}
                     </div>
                     <button type="button" class="btn btn-outline-primary" onclick="cloneCreditForm(this)">+</button>
                     <br>
