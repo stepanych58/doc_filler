@@ -16,7 +16,9 @@ view_params = {'all_clients': Client.objects.all(),
 			   'all_docs': Document.objects.all(),
 			   'test_param': 'tp',
 			   'p_table': 'clients',
-			   'all_clients_files': ClientsFile.objects.all(), }
+			   'all_clients_files': ClientsFile.objects.all(),
+			   'authors': Author.objects.all(),
+			   }
 
 
 def welcomePage(request):

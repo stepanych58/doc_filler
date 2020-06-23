@@ -43,6 +43,9 @@ def writeClientDoc(client_id, doc_id):
 	writer_class = globals()[p_doc.class_name]
 	writer_class.write(p_client, p_doc)
 
+	print('dasdas')
+
+
 
 class SberPoFormeBanka:
 	def write(client, anketa):
