@@ -4,6 +4,6 @@ psycopg2==2.8.4
 jsonfield==2.0.2
 django-allauth==0.41.0
 pypdf2==1.26.0
-django==2.2.8
+django==2.2.21
 #django-ckeditor
 #cookiecutter
